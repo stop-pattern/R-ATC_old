@@ -14,10 +14,11 @@ ATC_6::~ATC_6()
 
 void ATC_6::SetLimit(int signal) {
 	Limit = speedlimit[signal];
+	bell = true;
 }
 
 
-void ATC_6::CheckPattern(State status, int * panel, int * sound) {
+void ATC_6::CheckPattern(State status, int * panel, int * sound) {sound[5] = (bell = true) ? 1 : 0;
 	panel[67] = int(Limit);	//速度矢印1k
 	panel[66] = int(Limit) % 10 > 5.0 ? (int(Limit / 10) + 1) * 10 : int(Limit / 10) * 10;	//速度矢印5k
 	if (status.V > Limit) {    //ブレーキ動作判定
