@@ -45,7 +45,6 @@ struct Beacon		//Beaconに関する情報
 	int Data = 0;	//Beaconの第三引数の値
 };
 
-Hand handle;
 enum Reverser	//レバーサー位置
 {
 	Back = -1,	//後進

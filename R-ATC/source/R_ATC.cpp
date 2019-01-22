@@ -1,8 +1,10 @@
 #include <math.h>
+#include "../header/ats.h"
 #include "../header/R_ATC.h"
-#include "../header/Header.h"
 
-
+extern Hand handle;
+extern Spec specific;
+extern int signal;
 
 
 void R_ATC::Status(State S, int * p, int * s) {	//ATCó‘ÔŠÇ—

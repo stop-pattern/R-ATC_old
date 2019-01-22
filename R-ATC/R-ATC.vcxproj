@@ -128,7 +128,7 @@
     <ClCompile Include="source\R_ATC.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\dllmain.def" />
+    <None Include="dllmain.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

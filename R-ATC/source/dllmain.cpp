@@ -7,10 +7,10 @@
 
 #include <string.h>
 #include <math.h>
-#include "../header/Header.h"
-#include "../header/define.h"
 #include "../header/R_ATC.h"
 #include "../ATC-6/ATC-6.h"
+#include "../header/Header.h"
+#include "../header/define.h"
 
 #include <fstream>
 
@@ -63,7 +63,7 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.B = manual.B;
 	handle.R = manual.R;
 
-	if (ATACS.stat == 0) {
+	if (ATACS.stat == 0 && signal > 8 && signal < 36) {
 		ATC6.CheckPattern(S, p, s);	//ATC-6
 	}
 	ATACS.Status(S, p, s);	//状態管理

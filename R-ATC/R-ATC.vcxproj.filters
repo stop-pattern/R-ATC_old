@@ -52,7 +52,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\dllmain.def">
+    <None Include="dllmain.def">
       <Filter>Source</Filter>
     </None>
   </ItemGroup>

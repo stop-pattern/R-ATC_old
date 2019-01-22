@@ -1,6 +1,9 @@
 #pragma once
+#ifndef _ATC6_
+#define _ATC6_
+
+
 #include"../header/ats.h"
-#include "../header/header.h"
 
 class ATC_6
 {
@@ -16,4 +19,5 @@ public:
 	void CheckPattern(State, int *, int *);
 };
 
-ATC_6 ATC6;
+
+#endif // !_ATC6_

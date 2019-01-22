@@ -1,4 +1,8 @@
 #pragma once
+#ifndef _RATC_
+#define _RATC_
+
+
 #include "ats.h"
 #include "define.h"
 
@@ -41,4 +45,5 @@ private:
 };
 
 
-R_ATC ATACS;
+
+#endif // !_RATC_
