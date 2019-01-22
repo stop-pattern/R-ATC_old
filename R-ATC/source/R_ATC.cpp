@@ -1,7 +1,6 @@
 #include <math.h>
 #include "../header/R_ATC.h"
 #include "../header/Header.h"
-#include "../header/Getini.h"
 
 
 
@@ -58,7 +57,7 @@ void R_ATC::Pattern(State S, int * p, int * s) {	//ATCパターン速度照査
 
 		if (S.Z + notice_dist > Location[param::P_pretrain] - (pow(S.V, 2) / DECELERATION_BRAKE)) {	//前方予告
 			p[ATC_Panel::pattern] = true;
-			for (int i = 1; i >= 11; i++) {
+			for (int i = 1; i < 10; i++) {
 				brake_speed[i] = brake_speed[0] / 10 * i;
 			}
 		}
@@ -67,16 +66,20 @@ void R_ATC::Pattern(State S, int * p, int * s) {	//ATCパターン速度照査
 			brake_speed[0] = S.V;
 		}
 
-		for (int i = 0; i >= PATTERN_BRAKE; i++) {	//B動作
-			if (brake_speed[ini.brake_div[i]] >= pattern_speed[0]) {
-				handle.B = (specific.B - 1) / ini.handle_div * ini.brake_div[i];
+		//for (int i = 0; i < PATTERN_BRAKE; i++) {	//B動作
+			//if (brake_speed[ini.brake_div[i]] >= pattern_speed[0]) {
+			//	handle.B = (specific.B - 1) / ini.handle_div * ini.brake_div[i];
+			//	p[ATC_Panel::ATCbrake] = true;
+			//}
+			if (S.V >= pattern_speed[0]) {
+				handle.B = (specific.B - 1);	// / ini.handle_div * ini.brake_div[i];
 				p[ATC_Panel::ATCbrake] = true;
 			}
 			else
 			{
 				p[ATC_Panel::ATCbrake] = false;
 			}
-		}
+		//}
 
 		p[ATC_Panel::Limit_1] = int(pattern_speed[0]);
 		p[ATC_Panel::Limit_5] = int(pattern_speed[0]) % 10 > 5.0 ? (int(pattern_speed[0] / 10) + 1) * 10 : int(pattern_speed[0] / 10) * 10;

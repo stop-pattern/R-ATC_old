@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ATC-6">
+      <UniqueIdentifier>{c1284d91-2fc5-4edf-be6b-b82bd1864a65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\R_ATC.h">
@@ -21,14 +24,14 @@
     <ClInclude Include="header\Header.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="header\Getini.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="header\define.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="header\ats.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ATC-6\ATC-6.h">
+      <Filter>ATC-6</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -38,14 +41,14 @@
     <ClCompile Include="source\Function.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="source\Getini.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="source\Header.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\R_ATC.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ATC-6\ATC-6.cpp">
+      <Filter>ATC-6</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

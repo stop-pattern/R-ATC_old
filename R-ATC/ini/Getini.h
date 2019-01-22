@@ -1,9 +1,6 @@
 ﻿#pragma once
-#include <Windows.h>
-#include "define.h"
-#include <string>
+#include "../header/define.h"
 
-using namespace std;
 
 class ImportConfig {
 	public:
@@ -16,6 +13,3 @@ class ImportConfig {
 	void GetIni(string);
 
 };
-
-
-ImportConfig ini;

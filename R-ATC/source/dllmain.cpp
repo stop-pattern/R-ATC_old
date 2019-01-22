@@ -5,13 +5,12 @@
  *プロジェクト名変更時は、dllmain.defの "LIBRARY" に設定された "PITemp" という文字列を新たなプロジェクト名に変更してください。
 */
 
-#include "../header/ats.h"
 #include <string.h>
 #include <math.h>
-#include "../header/R_ATC.h"
 #include "../header/Header.h"
 #include "../header/define.h"
-#include "../header/Getini.h"
+#include "../header/R_ATC.h"
+#include "../ATC-6/ATC-6.h"
 
 #include <fstream>
 
@@ -34,13 +33,13 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	return TRUE;
 }
 
-DE void SC Load() {
+DE void SC Load() {/*
 	ini.GetIni(iniPath);
 	ofstream fs;
 	fs.open("./output.log", ios::app);
 	while (!fs.is_open())
 		fs << iniPath << endl;
-	fs.close();
+	fs.close();*/
 }
 DE void SC Dispose() {
 }
@@ -64,6 +63,9 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.B = manual.B;
 	handle.R = manual.R;
 
+	if (ATACS.stat == 0) {
+		ATC6.CheckPattern(S, p, s);	//ATC-6
+	}
 	ATACS.Status(S, p, s);	//状態管理
 	ATACS.Calc();	//先行計算
 	ATACS.Pattern(S, p, s);	//指令制御
@@ -75,27 +77,27 @@ DE Hand SC Elapse(State S, int * p, int * s)
 		p[84] = abs(int(S.V)) / 10 % 10;
 		p[85] = abs(int(S.V)) % 10;
 		p[93] = abs(S.I);	//test
-		//ユニット
-		if (S.I = 0)
-		{
-			p[105] = 0;
-			p[106] = 0;
-			p[107] = 0;
-			p[108] = 0;
-		}
-		else
-		{
-			p[41] = true;
-			p[42] = true;
-			p[43] = true;
-			p[44] = true;
-		}
-		for (size_t i = 105; i < 109; i++)
-		{
+	//ユニット
+	if (S.I = 0)
+	{
+		p[105] = 0;
+		p[106] = 0;
+		p[107] = 0;
+		p[108] = 0;
+	}
+	else
+	{
+		p[41] = true;
+		p[42] = true;
+		p[43] = true;
+		p[44] = true;
+	}
+	for (size_t i = 105; i < 109; i++)
+	{
 		if (S.I > 0 && p[i] != 1 && rand() % 25 == 0) { p[i] = 1; }
 		else if (S.I < 0 && p[i] != 2 && rand() % 25 == 0) { p[i] = 2; }
 		else if (S.I == 0 && p[i] != 0 && rand() % 25 == 0) { p[i] = 0; }
-		}
+	}
 
 	handle.C = ConstSPInfo::Continue;
 	//s[255] = SoundInfo::Continue;
@@ -127,6 +129,7 @@ DE void SC HornBlow(int k) {
 
 }
 DE void SC SetSignal(int a) {
+	ATC6.SetLimit(a);
 	signal = a;
 }
 DE void SC SetBeaconData(Beacon b) {
@@ -153,14 +156,14 @@ DE void SC SetBeaconData(Beacon b) {
 	case ATC_Beacon::PreTrainDistance_3:
 	case ATC_Beacon::PreTrainDistance_4:
 	case ATC_Beacon::PreTrainDistance_5:
-		Sort(b.Data, ATACS.distance,5);
+		Sort(b.Data, ATACS.distance, 5);
 		break;
 	case ATC_Beacon::PreTrainTime_1:
 	case ATC_Beacon::PreTrainTime_2:
 	case ATC_Beacon::PreTrainTime_3:
 	case ATC_Beacon::PreTrainTime_4:
 	case ATC_Beacon::PreTrainTime_5:
-		Sort(b.Data, ATACS.time,5);
+		Sort(b.Data, ATACS.time, 5);
 		break;
 	case 235:
 		ATACS.Location[1] = b.Data;

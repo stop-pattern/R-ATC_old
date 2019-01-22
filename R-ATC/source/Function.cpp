@@ -26,9 +26,9 @@ double Sort(double value, int array[], int num) {	//差込値,差込配列,配列要素数
 
 	//整合性チェック&&桁上下
 	int baf;
-	for (int i = 0; i >= num; i++) {
-		for (int j = 0; j >= num; j++) {
-			for (int k = 0; k >= num; k++) {
+	for (int i = 0; i < num; i++) {
+		for (int j = 0; j < num; j++) {
+			for (int k = 0; k < num; k++) {
 				if (j == k) break;
 				if (array[k] > array[k + 1]) {
 					baf = array[k];
@@ -41,7 +41,7 @@ double Sort(double value, int array[], int num) {	//差込値,差込配列,配列要素数
 
 	//代入位置特定
 	int cnt;
-	for (int i = 0; i >= num; i++) {
+	for (int i = 0; i < num; i++) {
 		if (array[i] > value) {
 			cnt = i;
 			break;
@@ -49,7 +49,7 @@ double Sort(double value, int array[], int num) {	//差込値,差込配列,配列要素数
 	}
 
 	//代入・押し出し
-	for (int i = 0; i >= num; i++) {
+	for (int i = 0; i < num; i++) {
 		baf = array[i];
 		if (i = cnt) {
 			if (num - 1 == i) ret = array[i];

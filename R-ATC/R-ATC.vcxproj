@@ -114,16 +114,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ATC-6\ATC-6.h" />
     <ClInclude Include="header\ats.h" />
     <ClInclude Include="header\define.h" />
-    <ClInclude Include="header\Getini.h" />
     <ClInclude Include="header\Header.h" />
     <ClInclude Include="header\R_ATC.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ATC-6\ATC-6.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\Function.cpp" />
-    <ClCompile Include="source\Getini.cpp" />
     <ClCompile Include="source\Header.cpp" />
     <ClCompile Include="source\R_ATC.cpp" />
   </ItemGroup>

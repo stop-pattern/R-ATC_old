@@ -1,4 +1,8 @@
-#include "../header/Getini.h"
+#include "Getini.h"
+
+#include <Windows.h>
+#include <string>
+using namespace std;
 
 void ImportConfig::GetIni(string p) {
 	LPCTSTR path = p.c_str();
