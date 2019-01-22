@@ -1,0 +1,223 @@
+﻿端子台signal領域			
+			
+			
+x	0	標準	ATS停止
+x	1	標準	ATS警戒
+x	2	標準	ATS注意
+x	3	標準	ATS減速
+x	4	標準	ATS進行
+x	5		
+x	6		
+x	7		
+x	8		
+o	9	ATC	ATC-02
+o	10	ATC	ATC-01
+o	11	ATC	ATC-05
+o	12	ATC	ATC-10
+o	13	ATC	ATC-15
+o	14	ATC	ATC-20
+o	15	ATC	ATC-25
+o	16	ATC	ATC-30
+o	17	ATC	ATC-35
+o	18	ATC	ATC-40
+o	19	ATC	ATC-45
+o	20	ATC	ATC-50
+o	21	ATC	ATC-55
+o	22	ATC	ATC-60
+o	23	ATC	ATC-65
+o	24	ATC	ATC-70
+o	25	ATC	ATC-75
+o	26	ATC	ATC-80
+o	27	ATC	ATC-85
+o	28	ATC	ATC-90
+o	29	ATC	ATC-95
+o	30	ATC	ATC-100
+o	31	ATC	ATC-105
+o	32	ATC	ATC-110
+o	33	ATC	ATC-115
+o	34	ATC	ATC-120
+x	35	10型	ATC-ORP(01)
+x	36		
+x	37		
+x	38		
+x	39		
+x	40		
+x	41		
+x	42		
+x	43		
+x	44		
+x	45		
+x	46		
+x	47		
+x	48		
+x	49		
+x	50		
+x	51		
+x	52		
+x	53		
+x	54		
+x	55		
+x	56		
+x	57		
+x	58		
+x	59		
+x	60		
+x	61		
+x	62		
+x	63		
+x	64		
+x	65		
+x	66		
+x	67		
+x	68		
+x	69		
+x	70		
+x	71		
+x	72		
+x	73		
+x	74		
+x	75		
+x	76		
+x	77		
+x	78		
+x	79		
+x	80		
+x	81		
+x	82		
+x	83		
+x	84		
+x	85		
+x	86		
+x	87		
+x	88		
+x	89		
+x	90		
+x	91		
+x	92		
+x	93		
+x	94		
+x	95		
+x	96		
+x	97		
+x	98		
+x	99		
+?	100	R-ATC	R-ATC0
+?	101	R-ATC	R-ATC1
+?	102	R-ATC	R-ATC2
+?	103	R-ATC	R-ATC3
+?	104	R-ATC	R-ATC4
+?	105	R-ATC	R-ATC5
+?	106	R-ATC	R-ATC6
+?	107	R-ATC	R-ATC7
+?	108	R-ATC	予約
+?	109	R-ATC	R-ATC開通
+?	110	R-ATC	R-ATC絶対停止
+x	111		
+x	112		
+x	113		
+x	114		
+x	115		
+x	116		
+x	117		
+x	118		
+x	119		
+x	120		
+x	121		
+x	122		
+x	123		
+x	124		
+x	125		
+x	126		
+x	127		
+x	128		
+x	129		
+x	130		
+x	131		
+x	132		
+x	133		
+x	134		
+x	135		
+x	136		
+x	137		
+x	138		
+x	139		
+x	140		
+x	141		
+x	142		
+x	143		
+x	144		
+x	145		
+x	146		
+x	147		
+x	148		
+x	149		
+x	150		
+x	151		
+x	152		
+x	153		
+x	154		
+x	155		
+x	156		
+x	157		
+x	158		
+x	159		
+x	160		
+x	161		
+x	162		
+x	163		
+x	164		
+x	165		
+x	166		
+x	167		
+x	168		
+x	169		
+x	170		
+x	171		
+x	172		
+x	173		
+x	174		
+x	175		
+x	176		
+x	177		
+x	178		
+x	179		
+x	180		
+x	181		
+x	182		
+x	183		
+x	184		
+x	185		
+x	186		
+x	187		
+x	188		
+x	189		
+x	190		
+x	191		
+x	192		
+x	193		
+x	194		
+x	195		
+x	196		
+x	197		
+x	198		
+x	199		
+x	200	D-ATC	D-ATC絶対停止
+x	201	D-ATC	D-ATC1区
+x	202	D-ATC	D-ATC2区
+x	203	D-ATC	D-ATC3区
+x	204	D-ATC	D-ATC4区
+x	205	D-ATC	D-ATC5区
+x	206	D-ATC	D-ATC6区
+x	207	D-ATC	D-ATC7区
+x	208	D-ATC	D-ATC8区
+x	209	D-ATC	D-ATC9区
+x	210	D-ATC	D-ATC10区
+x	211	D-ATC	D-ATC11区
+x	212	D-ATC	D-ATC12区
+x	213	D-ATC	D-ATC13区
+x	214	D-ATC	D-ATC14区
+x	215	D-ATC	D-ATC15区
+x	216	D-ATC	D-ATC16区
+x	217	D-ATC	D-ATC17区
+x	218	D-ATC	D-ATC18区
+x	219	D-ATC	D-ATC開通
