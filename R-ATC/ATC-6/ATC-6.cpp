@@ -24,9 +24,10 @@ void ATC_6::Check(State status, int *panel, int *sound)
 	//単打ベル
 	sound[5] = (Bell == true) ? 1 : 0;
 	Bell = false;
-
-	panel[67] = int(LimitSpeed);	//速度矢印1k
-	panel[66] = int(LimitSpeed) % 10 > 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//速度矢印5k
+	
+	panel[ATC_Panel::Limit_1] = int(LimitSpeed);	//速度矢印1k
+	panel[ATC_Panel::Limit_5] = int(LimitSpeed) % 10 > 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//速度矢印5k
+	panel[ATC_Panel::ATC01] = (LimitSpeed == 0) ? 1 : 0;	//ATC-01
 
 	if (status.V > LimitSpeed) { //ブレーキ動作判定
 		panel[ATC_Panel::ATCbrake] = true;
