@@ -1,4 +1,4 @@
-#include "Getini.h"
+ï»¿#include "Getini.h"
 
 #include <Windows.h>
 #include <string>
@@ -29,12 +29,12 @@ UINT GetPrivateProfileInt(
 						);
 
 DWORD GetPrivateProfileString(
-							LPCTSTR lpAppName,	//ƒZƒNƒVƒ‡ƒ“–¼
-							LPCTSTR lpKeyName,	//ƒL[–¼
-							LPCTSTR nDefault,	//ƒfƒtƒHƒ‹ƒg’l
-							LPTSTR lpReturnedString,	//•Ô‚è’lŠi”[æƒ|ƒCƒ“ƒ^
-							DWORD nSize	//lpReturnedString‚Ìƒoƒbƒtƒ@ƒTƒCƒY
-							LPCTSTR lpFileName	//ƒtƒ@ƒCƒ‹–¼
+							LPCTSTR lpAppName,	//ã‚»ã‚¯ã‚·ãƒ§ãƒ³å
+							LPCTSTR lpKeyName,	//ã‚­ãƒ¼å
+							LPCTSTR nDefault,	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
+							LPTSTR lpReturnedString,	//è¿”ã‚Šå€¤æ ¼ç´å…ˆãƒã‚¤ãƒ³ã‚¿
+							DWORD nSize	//lpReturnedStringã®ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+							LPCTSTR lpFileName	//ãƒ•ã‚¡ã‚¤ãƒ«å
 							);
 
 DWORD GetPrivateProfileSection(

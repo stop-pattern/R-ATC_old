@@ -1,13 +1,13 @@
-#include <math.h>
+ï»¿#include <math.h>
 #include "../header/ats.h"
-#include "../header/R_ATC.h"
+#include "R-ATC.h"
 
 extern Hand handle;
 extern Spec specific;
 extern int signal;
 
 
-void R_ATC::Status(State S, int * p, int * s) {	//ATCó‘ÔŠÇ—
+void R_ATC::Status(State S, int * p, int * s) {	//ATCå‹•ä½œ
 	bool x = 0;
 
 	if (signal >= 100 && signal <= 110)
@@ -49,7 +49,7 @@ void R_ATC::Calc() {
 }
 
 
-void R_ATC::Pattern(State S, int * p, int * s) {	//ATCƒpƒ^[ƒ“‘¬“xÆ¸
+void R_ATC::Pattern(State S, int * p, int * s) {	//ATCï¿½pï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Æï¿½
 	if (stat != stat::off)
 	{
 		target = Location[param::P_pretrain] - S.Z;
@@ -57,7 +57,7 @@ void R_ATC::Pattern(State S, int * p, int * s) {	//ATCƒpƒ^[ƒ“‘¬“xÆ¸
 		pattern_speed[1] = sqrt(target * DECELARATION_EMR) < Limit[param::P_pretrain] ? sqrt(target * DECELARATION_EMR) : Limit[param::P_pretrain];
 		notice_dist = S.V / 1000 * NOTICE_TIME / 60 / 60;
 
-		if (S.Z + notice_dist > Location[param::P_pretrain] - (pow(S.V, 2) / DECELERATION_BRAKE)) {	//‘O•û—\
+		if (S.Z + notice_dist > Location[param::P_pretrain] - (pow(S.V, 2) / DECELERATION_BRAKE)) {	//ï¿½Oï¿½ï¿½ï¿½\ï¿½ï¿½
 			p[ATC_Panel::pattern] = true;
 			for (int i = 1; i < 10; i++) {
 				brake_speed[i] = brake_speed[0] / 10 * i;
@@ -68,7 +68,7 @@ void R_ATC::Pattern(State S, int * p, int * s) {	//ATCƒpƒ^[ƒ“‘¬“xÆ¸
 			brake_speed[0] = S.V;
 		}
 
-		//for (int i = 0; i < PATTERN_BRAKE; i++) {	//B“®ì
+		//for (int i = 0; i < PATTERN_BRAKE; i++) {	//Bï¿½ï¿½ï¿½ï¿½
 			//if (brake_speed[ini.brake_div[i]] >= pattern_speed[0]) {
 			//	handle.B = (specific.B - 1) / ini.handle_div * ini.brake_div[i];
 			//	p[ATC_Panel::ATCbrake] = true;

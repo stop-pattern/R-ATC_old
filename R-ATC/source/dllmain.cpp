@@ -7,7 +7,7 @@
 
 #include <string.h>
 #include <math.h>
-#include "../header/R_ATC.h"
+#include "../R-ATC/R-ATC.h"
 #include "../ATC-6/ATC-6.h"
 #include "../header/Header.h"
 #include "../header/define.h"
@@ -63,8 +63,9 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.B = manual.B;
 	handle.R = manual.R;
 
-	if (ATACS.stat == 0 && signal > 8 && signal < 36) {
-		ATC6.CheckPattern(S, p, s);	//ATC-6
+	if (ATACS.stat == 0) {	//ATACSoff
+		if (ATC6.status == true)ATC6.Check(S, p, s);	//ATC-6
+		if (ATC6.Emergency == true)ATC6.EmergencyDrive(S, p, s);
 	}
 	ATACS.Status(S, p, s);	//状態管理
 	ATACS.Calc();	//先行計算
@@ -72,12 +73,12 @@ DE Hand SC Elapse(State S, int * p, int * s)
 
 	//*/TIMS代用機能
 		//速度計
-		p[50] = abs(int(S.V));
-		p[83] = abs(int(S.V)) / 100 % 10;
-		p[84] = abs(int(S.V)) / 10 % 10;
-		p[85] = abs(int(S.V)) % 10;
-		p[93] = abs(S.I);	//test
-	//ユニット
+	p[50] = abs(int(S.V));
+	p[83] = abs(int(S.V)) / 100 % 10;
+	p[84] = abs(int(S.V)) / 10 % 10;
+	p[85] = abs(int(S.V)) % 10;
+	p[93] = abs(S.I);	//test
+//ユニット
 	if (S.I = 0)
 	{
 		p[105] = 0;
@@ -122,6 +123,16 @@ DE void SC DoorClose() {
 
 
 DE void SC KeyDown(int k) {
+
+	switch (k)
+	{
+	case ATSKeys::C1:	//ATC-6非常運転
+		ATC6.Emergency = true;
+		break;
+
+	default:
+		break;
+	}
 }
 DE void SC KeyUp(int k) {
 }
@@ -129,7 +140,7 @@ DE void SC HornBlow(int k) {
 
 }
 DE void SC SetSignal(int a) {
-	ATC6.SetLimit(a);
+	ATC6.GetSignal(a);
 	signal = a;
 }
 DE void SC SetBeaconData(Beacon b) {

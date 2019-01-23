@@ -1,4 +1,4 @@
-#include <Windows.h>
+ï»¿#include <Windows.h>
 #include <string>
 
 using namespace std;
@@ -15,22 +15,22 @@ void GetPath(HMODULE hModule) {
 	string drive, dir, fname, ext;
 	GetModuleFileNameA(hModule, FilePath, MAX_PATH);
 	dllPath = string(FilePath);
-	//_splitpath(&fpath, &drive, &dir, &fname, &ext);//ƒpƒX–¼‚ğ\¬—v‘f‚É•ª‰ğ‚µ‚Ü‚·
+	//_splitpath(&fpath, &drive, &dir, &fname, &ext);//ãƒ‘ã‚¹åã‚’æ§‹æˆè¦ç´ ã«åˆ†è§£ã—ã¾ã™
 	int drive_i = dllPath.find_first_of("\\");
 	int path_i = dllPath.find_last_of("\\") + 1;
 	int ext_i = dllPath.find_last_of(".");
 	drive = dllPath.substr(0, drive_i);
-	dir = dllPath.substr(drive_i, path_i - drive_i);//0•¶š–Ú‚©‚ç‚V•¶šØ‚èo‚· "C:\\aaa\\"
-	fname = dllPath.substr(path_i, ext_i - path_i);// ‚V•¶š–Ú‚©‚ç‚R•¶šØ‚èo‚·@"bbb"
-	ext = dllPath.substr(ext_i, dllPath.size() - ext_i); // 10•¶š–Ú‚©‚ç‚S•¶šØ‚èo‚· ".txt"
+	dir = dllPath.substr(drive_i, path_i - drive_i);//0æ–‡å­—ç›®ã‹ã‚‰ï¼—æ–‡å­—åˆ‡ã‚Šå‡ºã™ "C:\\aaa\\"
+	fname = dllPath.substr(path_i, ext_i - path_i);// ï¼—æ–‡å­—ç›®ã‹ã‚‰ï¼“æ–‡å­—åˆ‡ã‚Šå‡ºã™ã€€"bbb"
+	ext = dllPath.substr(ext_i, dllPath.size() - ext_i); // 10æ–‡å­—ç›®ã‹ã‚‰ï¼”æ–‡å­—åˆ‡ã‚Šå‡ºã™ ".txt"
 	iniPath = drive + dir + fname + ".ini";
 }
 
 
-double Sort(double value, int array[], int num) {	//·’l,·”z—ñ,”z—ñ—v‘f”
-	double ret;	//‰Ÿ‚µo‚µ(•Ô’l)
+double Sort(double value, int array[], int num) {	//å·®è¾¼å€¤,å·®è¾¼é…åˆ—,é…åˆ—è¦ç´ æ•°
+	double ret;	//æŠ¼ã—å‡ºã—(è¿”å€¤)
 
-	//®‡«ƒ`ƒFƒbƒN&&Œ…ã‰º
+	//æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯&&æ¡ä¸Šä¸‹
 	int baf;
 	for (int i = 0; i < num; i++) {
 		for (int j = 0; j < num; j++) {
@@ -45,7 +45,7 @@ double Sort(double value, int array[], int num) {	//·’l,·”z—ñ,”z—ñ—v‘f”
 		}
 	}
 
-	//‘ã“üˆÊ’u“Á’è
+	//ä»£å…¥ä½ç½®ç‰¹å®š
 	int cnt;
 	for (int i = 0; i < num; i++) {
 		if (array[i] > value) {
@@ -54,7 +54,7 @@ double Sort(double value, int array[], int num) {	//·’l,·”z—ñ,”z—ñ—v‘f”
 		}
 	}
 
-	//‘ã“üE‰Ÿ‚µo‚µ
+	//ä»£å…¥ãƒ»æŠ¼ã—å‡ºã—
 	for (int i = 0; i < num; i++) {
 		baf = array[i];
 		if (i = cnt) {

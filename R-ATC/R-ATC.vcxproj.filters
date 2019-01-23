@@ -16,11 +16,11 @@
     <Filter Include="ATC-6">
       <UniqueIdentifier>{c1284d91-2fc5-4edf-be6b-b82bd1864a65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="R-ATC">
+      <UniqueIdentifier>{d571cf89-eb6e-4971-84e8-9397728a11c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\R_ATC.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="header\Header.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -33,6 +33,9 @@
     <ClInclude Include="ATC-6\ATC-6.h">
       <Filter>ATC-6</Filter>
     </ClInclude>
+    <ClInclude Include="R-ATC\R-ATC.h">
+      <Filter>R-ATC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dllmain.cpp">
@@ -44,11 +47,11 @@
     <ClCompile Include="source\Header.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="source\R_ATC.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="ATC-6\ATC-6.cpp">
       <Filter>ATC-6</Filter>
+    </ClCompile>
+    <ClCompile Include="R-ATC\R-ATC.cpp">
+      <Filter>R-ATC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
