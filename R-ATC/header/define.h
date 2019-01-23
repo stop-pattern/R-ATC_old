@@ -126,9 +126,9 @@ enum ATC_Signal {
 	R_ATC_3,
 	R_ATC_4,
 	R_ATC_5,
-	R_ATC_2段P1,
-	R_ATC_2段P1,
-	R_ATC_2段P1,
+	R_ATC_2P_1,
+	R_ATC_2P_2,
+	R_ATC_2P_3,
 	R_ATC_強制開通,
 	R_ATC_絶対停止 = 60,
 
