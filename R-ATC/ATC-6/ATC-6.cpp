@@ -8,14 +8,14 @@ extern Hand handle;
 
 void ATC_6::GetSignal(int signal)
 {
-	if ((signal > 8 && signal < 36) || (signal > 100 && signal < 113)) {
+	//if ((signal > 8 && signal < 36) || (signal > 100 && signal < 113)) {
 		Emergency = false;
 		if (LimitSpeed != SpeedLimit[signal]) {
 			Bell = true;
 			LimitSpeed = SpeedLimit[signal];
 			if (signal == 35)LimitSpeed = ATC6_ORP_SPEED;
 		}
-	}
+	//}
 }
 
 void ATC_6::Check(State status, int *panel, int *sound)
