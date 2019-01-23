@@ -23,7 +23,7 @@ void ATC_6::Check(State status, int *panel, int *sound)
 {
 	//単打ベル
 	if (Bell == true) {
-		sound[5] = 1;
+		sound[ATC_6_bell] = 1;
 		Bell = false;
 	}
 	//sound[5] = (Bell == true) ? 1 : 0;

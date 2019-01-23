@@ -88,4 +88,63 @@ ATACS{
 		ATACS常用
 }
 */
+enum ATC_Sound {
+	ATC_6_bell = 5,
+};
+enum ATC_Signal {
+	ATC_02 = 9,
+	ATC_01,
+	ATC_05,
+	ATC_10,
+	ATC_15,
+	ATC_20,
+	ATC_25,
+	ATC_30,
+	ATC_35,
+	ATC_40,
+	ATC_45,
+	ATC_50,
+	ATC_55,
+	ATC_60,
+	ATC_65,
+	ATC_70,
+	ATC_75,
+	ATC_80,
+	ATC_85,
+	ATC_90,
+	ATC_95,
+	ATC_100,
+	ATC_105,
+	ATC_110,
+	ATC_115,
+	ATC_120,
+	ATC_ORP = 35,
 
+	R_ATC_0 = 50,
+	R_ATC_1,
+	R_ATC_2,
+	R_ATC_3,
+	R_ATC_4,
+	R_ATC_5,
+	R_ATC_2段P1,
+	R_ATC_2段P1,
+	R_ATC_2段P1,
+	R_ATC_強制開通,
+	R_ATC_絶対停止 = 60,
+
+	ATC_6_02 = 101,
+	ATC_6_01,
+	ATC_6_15,
+	ATC_6_25,
+	ATC_6_45,
+	ATC_6_55,
+	ATC_6_65,
+	ATC_6_75,
+	ATC_6_90,
+	ATC_6_100,
+	ATC_6_110,
+	ATC_6_120 = 112,
+};
+enum ATC_Switch {
+	非常運転 = 5,
+};
