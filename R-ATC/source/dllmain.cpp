@@ -64,12 +64,18 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.R = manual.R;
 
 	if (ATACS.stat == 0) {	//ATACSoff
+		if (ATC6.Emergency == true)ATC6.EmergencyDrive(S, p, s);	//ATC-6非常運転
 		if (ATC6.status == true)ATC6.Check(S, p, s);	//ATC-6
-		if (ATC6.Emergency == true)ATC6.EmergencyDrive(S, p, s);
 	}
 	ATACS.Status(S, p, s);	//状態管理
 	ATACS.Calc();	//先行計算
 	ATACS.Pattern(S, p, s);	//指令制御
+
+	if (ATACS.stat == 0 && ATC6.status == false)
+	{
+		p[ATC_Panel::ATC01] = 2;
+	}
+
 
 	//*/TIMS代用機能
 		//速度計

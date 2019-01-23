@@ -2,6 +2,7 @@
 #include "../header/define.h"
 
 extern Spec specific;
+extern Hand manual;
 extern Hand handle;
 
 
@@ -36,6 +37,9 @@ void ATC_6::Check(State status, int *panel, int *sound)
 
 void ATC_6::EmergencyDrive(State status, int *panel, int *sound)
 {
+	if (status.V == 0 && manual.B == specific.B && manual.P == 0){
+		
+	}
 	panel[56] = true;
 	LimitSpeed = ATC6_EMERGENCY_SPEED;
 }
