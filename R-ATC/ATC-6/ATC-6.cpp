@@ -22,9 +22,13 @@ void ATC_6::GetSignal(int signal)
 void ATC_6::Check(State status, int *panel, int *sound)
 {
 	//単打ベル
-	sound[5] = (Bell == true) ? 1 : 0;
-	Bell = false;
-	
+	if (Bell == true) {
+		sound[5] = 1;
+		Bell = false;
+	}
+	//sound[5] = (Bell == true) ? 1 : 0;
+	//Bell = false;
+
 	panel[ATC_Panel::Limit_1] = int(LimitSpeed);	//速度矢印1k
 	panel[ATC_Panel::Limit_5] = int(LimitSpeed) % 10 > 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//速度矢印5k
 	panel[ATC_Panel::ATC01] = (LimitSpeed == 0) ? 1 : 0;	//ATC-01
@@ -38,9 +42,9 @@ void ATC_6::Check(State status, int *panel, int *sound)
 
 void ATC_6::EmergencyDrive(State status, int *panel, int *sound)
 {
-	if (status.V == 0 && manual.B == specific.B && manual.P == 0){
-		
+	if (status.V == 0 && manual.B == specific.B && manual.P == 0) {
+
 	}
-	panel[56] = true;
+	panel[ATC_Panel::ATCemdrive] = true;
 	LimitSpeed = ATC6_EMERGENCY_SPEED;
 }
