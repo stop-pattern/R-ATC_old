@@ -7,6 +7,20 @@
 #define NOTICE_TIME 1.5	//P接近表示時間[s]
 #define PATTERN_BRAKE 5	//ATC緩和パターン段数
 
+enum ATC_status
+{
+	OFF = 0,
+
+	R__ATC = 10,
+	R__ATC_receive = 2,
+	R__ATC_backup = 4,
+
+	ATC__6 = 20,
+	ATC__6_emergency = 21,
+
+	ATC__10 = 30,
+	ATC__10_ORP = 31,
+};
 
 enum ATC_Beacon {
 	SpeedUp = 211,	//ATC最高速度変化(即時)
@@ -28,6 +42,10 @@ enum ATC_Beacon {
 	PreTrainTime_5 = 234,	//先行列車時刻更新
 	Status = 236,	//ATC状態管理
 	SetPattern = 0,	//2段パターン設定
+//端子台未定義
+	//指定インデックスを02に
+	ATC02_time = 237,	//指定時間[ms]経過後解除
+	ATC02_distance = 238,	//指定距離[m]走行後
 };
 enum ATC_Panel {
 	ATCpower = 52,	//ATC電源

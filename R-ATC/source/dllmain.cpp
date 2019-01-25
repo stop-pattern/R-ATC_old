@@ -13,6 +13,7 @@
 #include "../header/define.h"
 
 #include <fstream>
+extern int ATCstatus;
 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -46,11 +47,11 @@ DE void SC Dispose() {
 DE int SC GetPluginVersion() {
 	return PI_VERSION;
 }
-DE void SC SetVehicleSpec(Spec s)
-{
+DE void SC SetVehicleSpec(Spec s) {
 	specific.A = s.A;
 	specific.J = s.J;
 	specific.B = s.B;
+	specific.E = s.B + 1;
 	specific.C = s.C;
 	specific.P = s.P;
 }
@@ -63,26 +64,23 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.B = manual.B;
 	handle.R = manual.R;
 
-	if (ATACS.stat == 0) {	//ATACSoff
-		if (ATC6.Emergency == true)ATC6.EmergencyDrive(S, p, s);	//ATC-6非常運転
-		if (ATC6.status == true)ATC6.Check(S, p, s);	//ATC-6
-	}
-	ATACS.Status(S, p, s);	//状態管理
-	ATACS.Calc();	//先行計算
-	ATACS.Pattern(S, p, s);	//指令制御
 
-	if (ATACS.stat == 0 && ATC6.status == false)
-	{
-		p[ATC_Panel::ATC01] = 2;
-	}
+	if (ATC6.Emergency == true)ATC6.EmergencyDrive(S, p, s);	//ATC-6非常運転
+	ATC6.Check(S, p, s);	//ATC-6
+
+	//ATACS.Status(S, p, s);	//状態管理
+	//ATACS.Calc(S, p, s);	//先行計算
+	//ATACS.Pattern(S, p, s);	//指令制御
+
+	if (ATCstatus == ATC_status::OFF) p[ATC_Panel::ATC01] = 2;
 
 
 	//*/TIMS代用機能
 		//速度計
 	p[50] = abs(int(S.V));
-	p[83] = abs(int(S.V)) / 100 % 10;
-	p[84] = abs(int(S.V)) / 10 % 10;
-	p[85] = abs(int(S.V)) % 10;
+	p[83] = abs(int(signal)) / 100 % 10;
+	p[84] = abs(int(signal)) / 10 % 10;
+	p[85] = abs(int(signal)) % 10;
 	p[93] = abs(S.I);	//test
 //ユニット
 	if (S.I = 0)
@@ -133,7 +131,9 @@ DE void SC KeyDown(int k) {
 	switch (k)
 	{
 	case ATSKeys::C1:	//ATC-6非常運転
-		ATC6.Emergency = true;
+		if (manual.P == 0 && manual.B == specific.B + 1) {
+			ATC6.Emergency = true;
+		}
 		break;
 
 	default:
@@ -146,6 +146,23 @@ DE void SC HornBlow(int k) {
 
 }
 DE void SC SetSignal(int a) {
+
+	if (a > 9) {
+		if (a == 35) ATCstatus = ATC_status::ATC__10_ORP;
+		if (a < 35) ATCstatus = ATC_status::ATC__10;
+		else if (a > 49)
+		{
+			if (a < 61) ATCstatus = ATC_status::R__ATC;
+			else if (a > 100) {
+				if (a < 113)ATCstatus = ATC_status::ATC__6;
+				else ATCstatus = ATC_status::OFF;
+			}
+			else ATCstatus = ATC_status::OFF;
+		}
+		else ATCstatus = ATC_status::OFF;
+	}
+	else ATCstatus = ATC_status::OFF;
+
 	ATC6.GetSignal(a);
 	signal = a;
 }

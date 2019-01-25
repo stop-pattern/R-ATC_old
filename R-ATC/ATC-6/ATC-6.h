@@ -2,7 +2,7 @@
 #ifndef _ATC6_
 #define _ATC6_
 
-#define ATC6_EMERGENCY_SPEED 25
+#define ATC6_EMERGENCY_SPEED 15
 #define ATC6_ORP_SPEED 15
 
 #include"../header/ats.h"

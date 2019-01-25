@@ -11,30 +11,31 @@ class R_ATC {
 public:
 	int stat;	//ATCstatus
 
-	double Limit[3] = { 0,ATC_MAX,0 };	//�������x[km/h]
-	double Location[3] = { 0,0,0 };	//�ڕW������[m]
+	double StopLimit;	//停止限界残距離
 
-	int distance[5];	//��s������[m]
-	int time[5];	//��s����[ms]
-	double a, b, c[3];	//���x����p���p�����[�^�[
-	bool reload;	//�ύX���f�w��
+	double Limit[3] = { 0,ATC_MAX,0 };	//制限速度[km/h]
+	double Location[3] = { 0,0,0 };	//過走限界[m]
+
+	int distance[5];	//先行列車距離程[m]
+	int time[5];	//先行列車時刻[ms]
+	double a, b, c[3];	//線形回帰パラメーター
+	bool reload;	//再読み込み判定
 
 
-	double target;	//��~�_�c����
-	double pattern_speed[2];	//���e�ō����x
+	double target;	//目標
+	double pattern_speed[2];	//P接近速度
 	//double pattern_brake;	//���e�ō����x
-	double notice_dist;	//P�ڋߔ��苗��
-	double brake_speed[11];	//�����J�n���x�L�^
+	double notice_dist;	//P接近距離
+	double brake_speed[11];	//B開始速度記録
 
-	void Status(State, int *, int *);	//ATC��ԊǗ�
-	void Calc(void);	//��s�v�Z
-	void Pattern(State, int *, int *);	//ATC�p�^�[�����x�ƍ�
-	//void Sort(int, int array[]);	//��s�ύX�n��q�ʉߎ����בւ�����
+	void Status(State, int *, int *);	//ATC状態管理
+	void Calc(State, int *, int *);	//パラメーター算出
+	void Pattern(State, int *, int *);	//ATC制御
 private:
 	enum param {
-		P_none = 0,	//�Ȑ�������
-		P_pretrain = 1,	//��s����
-		P_2step = 2,	//2�iP
+		P_none = 0,	//通常
+		P_pretrain = 1,	//先行連動P
+		P_2step = 2,	//2段P
 	};
 	enum stat {
 		off = 0,
