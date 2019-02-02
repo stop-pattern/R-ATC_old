@@ -18,7 +18,6 @@
 
 
 
-
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved
@@ -185,7 +184,7 @@ DE void SC SetSignal(int a) {
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
 	case ATC_Beacon::SpeedDown:
-		//R_ATC::PreTrain.P_Location;
+		R_ATC::PreTrain.P_Location;
 		//= int(b.Data / 1000);
 	case ATC_Beacon::SpeedUp:
 		R_ATC::Limit[0] = b.Data % 1000;

@@ -22,12 +22,10 @@ double R_ATC::pattern_speed[2];	//P接近速度
 //double R_ATC::pattern_brake;	//���e�ō����x
 double R_ATC::notice_dist;	//P接近距離
 double R_ATC::brake_speed[11];	//B開始速度記録
-
-
-R_ATC::Pattern PreTrain;    //先行列車連動P
-R_ATC::Pattern Step2;   //2段P
-R_ATC::Pattern Crossing;    //踏切防護P
-R_ATC::Pattern Route;   //路線依存P（曲線速度制限）
+R_ATC::Pattern R_ATC::PreTrain;    //先行列車連動P
+R_ATC::Pattern R_ATC::Step2;   //2段P
+R_ATC::Pattern R_ATC::Crossing;    //踏切防護P
+R_ATC::Pattern R_ATC::Route;   //路線依存P（曲線速度制限）
 
 
 

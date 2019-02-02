@@ -48,6 +48,11 @@ namespace R_ATC {
 		double c;	//先行計算用線形回帰パラメーター
 	};
 
+	extern R_ATC::Pattern PreTrain;    //先行列車連動P
+	extern R_ATC::Pattern Step2;   //2段P
+	extern R_ATC::Pattern Crossing;    //踏切防護P
+	extern R_ATC::Pattern Route;   //路線依存P（曲線速度制限）
+
 
 	enum param {
 		P_none = 0,	//通常
