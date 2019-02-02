@@ -51,17 +51,17 @@ x	46
 x	47		
 x	48		
 x	49		
-x	50		
-x	51		
-x	52		
-x	53		
-x	54		
-x	55		
-x	56		
-x	57		
-x	58		
-x	59		
-x	60		
+x	50	R-ATC	R-ATC0
+x	51	R-ATC	R-ATC1
+x	52	R-ATC	R-ATC2
+x	53	R-ATC	R-ATC3
+x	54	R-ATC	R-ATC4
+x	55	R-ATC	R-ATC5
+x	56	R-ATC	R-ATC2段P1
+x	57	R-ATC	R-ATC2段P2
+x	58	R-ATC	R-ATC2段P3
+x	59	R-ATC	R-ATC強制開通
+x	60	R-ATC	R-ATC絶対停止
 x	61		
 x	62		
 x	63		
@@ -101,19 +101,19 @@ x	96
 x	97		
 x	98		
 x	99		
-?	100	R-ATC	R-ATC0
-?	101	R-ATC	R-ATC1
-?	102	R-ATC	R-ATC2
-?	103	R-ATC	R-ATC3
-?	104	R-ATC	R-ATC4
-?	105	R-ATC	R-ATC5
-?	106	R-ATC	R-ATC6
-?	107	R-ATC	R-ATC7
-?	108	R-ATC	予約
-?	109	R-ATC	R-ATC開通
-?	110	R-ATC	R-ATC絶対停止
-x	111		
-x	112		
+?	100		
+?	101	6型	ATC-02
+?	102	6型	ATC-01
+?	103	6型	ATC-15
+?	104	6型	ATC-25
+?	105	6型	ATC-45
+?	106	6型	ATC-55
+?	107	6型	ATC-65
+?	108	6型	ATC-75
+?	109	6型	ATC-90
+?	110	6型	ATC-100
+x	111	6型	ATC-110
+x	112	6型	ATC-120
 x	113		
 x	114		
 x	115		
@@ -201,23 +201,23 @@ x	196
 x	197		
 x	198		
 x	199		
-x	200	D-ATC	D-ATC絶対停止
-x	201	D-ATC	D-ATC1区
-x	202	D-ATC	D-ATC2区
-x	203	D-ATC	D-ATC3区
-x	204	D-ATC	D-ATC4区
-x	205	D-ATC	D-ATC5区
-x	206	D-ATC	D-ATC6区
-x	207	D-ATC	D-ATC7区
-x	208	D-ATC	D-ATC8区
-x	209	D-ATC	D-ATC9区
-x	210	D-ATC	D-ATC10区
-x	211	D-ATC	D-ATC11区
-x	212	D-ATC	D-ATC12区
-x	213	D-ATC	D-ATC13区
-x	214	D-ATC	D-ATC14区
-x	215	D-ATC	D-ATC15区
-x	216	D-ATC	D-ATC16区
-x	217	D-ATC	D-ATC17区
-x	218	D-ATC	D-ATC18区
-x	219	D-ATC	D-ATC開通
+x	200		
+x	201		
+x	202		
+x	203		
+x	204		
+x	205		
+x	206		
+x	207		
+x	208		
+x	209		
+x	210		
+x	211		
+x	212		
+x	213		
+x	214		
+x	215		
+x	216		
+x	217		
+x	218		
+x	219		

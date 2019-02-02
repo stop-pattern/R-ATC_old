@@ -2,25 +2,19 @@
 #ifndef _ATC6_
 #define _ATC6_
 
+#include"../header/ats.h"
+
 #define ATC6_EMERGENCY_SPEED 15
 #define ATC6_ORP_SPEED 15
 
-#include"../header/ats.h"
 
-class ATC_6
-{
-private:
-	/* data */
-	//int signal;
-	const int SpeedLimit[256] = { 0,0,0,0,0,0,0,0,0,0,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,25,45,55,65,75,90,100,110,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };	//信号インデックス
-	int LimitSpeed;	//制限速度
-public:
-	bool status;	//ATC状態
-	bool Emergency;	//非常運転
-	bool Bell;	//単打ベル
-	void GetSignal(int);
-	void Check(State, int *, int *);
-	void EmergencyDrive(State, int *, int *);
+namespace ATC6 {
+	extern bool status;	//ATC状態
+	extern bool Emergency;	//非常運転
+	extern bool Bell;	//単打ベル
+	extern void GetSignal(int);
+	extern void Check(State, int *, int *);
+	extern void EmergencyDrive(State, int *, int *);
 };
 
 

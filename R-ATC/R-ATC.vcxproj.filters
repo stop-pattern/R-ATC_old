@@ -19,6 +19,9 @@
     <Filter Include="R-ATC">
       <UniqueIdentifier>{d571cf89-eb6e-4971-84e8-9397728a11c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ATC-10">
+      <UniqueIdentifier>{0908771a-a834-4b21-a2b8-d7d1f668b9ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Header.h">
@@ -35,6 +38,15 @@
     </ClInclude>
     <ClInclude Include="R-ATC\R-ATC.h">
       <Filter>R-ATC</Filter>
+    </ClInclude>
+    <ClInclude Include="TIMS.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ATC-10\ATC-10.h">
+      <Filter>ATC-10</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,10 +65,18 @@
     <ClCompile Include="R-ATC\R-ATC.cpp">
       <Filter>R-ATC</Filter>
     </ClCompile>
+    <ClCompile Include="ATC-10\ATC-10.cpp">
+      <Filter>ATC-10</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dllmain.def">
       <Filter>Source</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

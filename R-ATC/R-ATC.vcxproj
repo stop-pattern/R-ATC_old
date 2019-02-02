@@ -114,13 +114,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ATC-10\ATC-10.h" />
     <ClInclude Include="ATC-6\ATC-6.h" />
     <ClInclude Include="header\ats.h" />
     <ClInclude Include="header\define.h" />
     <ClInclude Include="header\Header.h" />
     <ClInclude Include="R-ATC\R-ATC.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="TIMS.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ATC-10\ATC-10.cpp" />
     <ClCompile Include="ATC-6\ATC-6.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\Function.cpp" />
@@ -129,6 +133,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="dllmain.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

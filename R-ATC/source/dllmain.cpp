@@ -9,11 +9,14 @@
 #include <math.h>
 #include "../R-ATC/R-ATC.h"
 #include "../ATC-6/ATC-6.h"
+#include "../ATC-10/ATC-10.h"
 #include "../header/Header.h"
 #include "../header/define.h"
+#include "../TIMS.h"
 
 #include <fstream>
-extern int ATCstatus;
+
+
 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -65,24 +68,36 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.R = manual.R;
 
 
-	if (ATC6.Emergency == true)ATC6.EmergencyDrive(S, p, s);	//ATC-6非常運転
-	ATC6.Check(S, p, s);	//ATC-6
+	if (ATC6::Emergency == true)ATC6::EmergencyDrive(S, p, s);	//ATC-6非常運転
+	ATC6::Check(S, p, s);	//ATC-6
 
-	//ATACS.Status(S, p, s);	//状態管理
-	//ATACS.Calc(S, p, s);	//先行計算
-	//ATACS.Pattern(S, p, s);	//指令制御
+	//R_ATC::Status(S, p, s);	//状態管理
+	//R_ATC::Calc(S, p, s);	//先行計算
+	//R_ATC::Control(S, p, s);	//指令制御
 
+	//02
 	if (ATCstatus == ATC_status::OFF) p[ATC_Panel::ATC01] = 2;
 
+	//ATS構内
+	if (ATCstatus == ATC_status::OFF) {
+		if (S.V > SPEED_ATS_OFF) {
+			/*
+			handle.P = 0;
+			handle.B = specific.E;
+			*/
+		}
+	}
 
-	//*/TIMS代用機能
-		//速度計
+#ifdef  TIMS	//TIMS代用機能
+
+	//速度計
 	p[50] = abs(int(S.V));
 	p[83] = abs(int(signal)) / 100 % 10;
 	p[84] = abs(int(signal)) / 10 % 10;
 	p[85] = abs(int(signal)) % 10;
 	p[93] = abs(S.I);	//test
-//ユニット
+
+	//ユニット
 	if (S.I = 0)
 	{
 		p[105] = 0;
@@ -103,6 +118,7 @@ DE Hand SC Elapse(State S, int * p, int * s)
 		else if (S.I < 0 && p[i] != 2 && rand() % 25 == 0) { p[i] = 2; }
 		else if (S.I == 0 && p[i] != 0 && rand() % 25 == 0) { p[i] = 0; }
 	}
+#endif //  TIMS
 
 	handle.C = ConstSPInfo::Continue;
 	//s[255] = SoundInfo::Continue;
@@ -132,7 +148,7 @@ DE void SC KeyDown(int k) {
 	{
 	case ATSKeys::C1:	//ATC-6非常運転
 		if (manual.P == 0 && manual.B == specific.B + 1) {
-			ATC6.Emergency = true;
+			ATC6::Emergency = true;
 		}
 		break;
 
@@ -163,16 +179,16 @@ DE void SC SetSignal(int a) {
 	}
 	else ATCstatus = ATC_status::OFF;
 
-	ATC6.GetSignal(a);
+	ATC6::GetSignal(a);
 	signal = a;
 }
 DE void SC SetBeaconData(Beacon b) {
-	switch (b.Num)
-	{
+	switch (b.Num) {
 	case ATC_Beacon::SpeedDown:
-		ATACS.Location[0] = int(b.Data / 1000);
+		//R_ATC::PreTrain.P_Location;
+		//= int(b.Data / 1000);
 	case ATC_Beacon::SpeedUp:
-		ATACS.Limit[0] = b.Data % 1000;
+		R_ATC::Limit[0] = b.Data % 1000;
 		break;
 	case ATC_Beacon::PlatformStart_1:
 	case ATC_Beacon::PlatformStart_2:
@@ -190,23 +206,28 @@ DE void SC SetBeaconData(Beacon b) {
 	case ATC_Beacon::PreTrainDistance_3:
 	case ATC_Beacon::PreTrainDistance_4:
 	case ATC_Beacon::PreTrainDistance_5:
-		Sort(b.Data, ATACS.distance, 5);
+		Sort(b.Data, R_ATC::distance, 5);
 		break;
 	case ATC_Beacon::PreTrainTime_1:
 	case ATC_Beacon::PreTrainTime_2:
 	case ATC_Beacon::PreTrainTime_3:
 	case ATC_Beacon::PreTrainTime_4:
 	case ATC_Beacon::PreTrainTime_5:
-		Sort(b.Data, ATACS.time, 5);
+		Sort(b.Data, R_ATC::time, 5);
 		break;
 	case 235:
-		ATACS.Location[1] = b.Data;
+		R_ATC::Location[1] = b.Data;
 		break;
 	case ATC_Beacon::Status:
-		ATACS.stat = b.Data;
+		R_ATC::stat = b.Data;
 		break;
 	case ATC_Beacon::SetPattern:
-		ATACS.Location[2] = b.Data;
+		//R_ATC::
+		R_ATC::Location[2] = b.Data;
+		break;
+	case ATC_Beacon::notice_f:
+		ATC10::Notice(b);
+		break;
 	default:
 		break;
 	}
