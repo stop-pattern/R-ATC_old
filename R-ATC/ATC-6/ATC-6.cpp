@@ -49,9 +49,9 @@ void ATC6::Check(State status, int *panel, int *sound) {
 		}
 
 		//単打ベル
-		sound[ATC_6_bell] = SoundInfo::PlayContinue;
+		sound[ATC_bell] = SoundInfo::PlayContinue;
 		if (Bell == true) {
-			sound[ATC_6_bell] = SoundInfo::PlayOnce;
+			sound[ATC_bell] = SoundInfo::PlayOnce;
 		}
 		Bell = false;
 	}

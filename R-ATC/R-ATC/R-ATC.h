@@ -27,21 +27,21 @@ namespace R_ATC {
 	extern double notice_dist;	//P接近距離
 	extern double brake_speed[11];	//B開始速度記録
 
-	extern void Status(State, int *, int *);	//ATC状態管理
-	extern void Calc(State, int *, int *);	//パラメーター算出
-	extern void Control(State, int *, int *);	//ATC制御
 
 	class Pattern {
 	public:
 		//double target;	//停止限界[m]
 		double StopLimit;	//停止限界残距離[m]
-		int target_Speed;	//目標速度[km/h]
-		int target_Location;	//目標距離程[m]
+		double target_Speed;	//目標速度[km/h]
+		double target_Location;	//目標距離程[m]
 		double P_Speed;	//P接近速度
 		double B_Speed;	//B動作速度
+		double E_Speed;	//EB動作速度
 		double P_Location;	//P接近距離
 		double B_Location;	//B動作距離
+		double E_Location;	//EB動作距離
 		void calc();
+		bool useage;	//線形回帰判別
 	private:
 		double a;	//先行計算用線形回帰パラメーター
 		double b;	//先行計算用線形回帰パラメーター
@@ -52,6 +52,12 @@ namespace R_ATC {
 	extern R_ATC::Pattern Step2;   //2段P
 	extern R_ATC::Pattern Crossing;    //踏切防護P
 	extern R_ATC::Pattern Route;   //路線依存P（曲線速度制限）
+
+
+	extern void Status(State, int *, int *);	//ATC状態管理
+	extern void Calc(State, int *, int *);	//パラメーター算出
+	extern void Control(State, int *, int *);	//ATC制御
+	extern bool Update(State, Pattern);	//P更新・判定
 
 
 	enum param {

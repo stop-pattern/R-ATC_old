@@ -122,6 +122,12 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	handle.C = ConstSPInfo::Continue;
 	//s[255] = SoundInfo::Continue;
 
+	if (S.V >= 7.5)
+	{
+		//[km/h/s]	(S.V - Stat.V)
+	}
+
+	Stat = S;
 	return handle;
 }
 DE void SC SetPower(int p) {
@@ -184,10 +190,9 @@ DE void SC SetSignal(int a) {
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
 	case ATC_Beacon::SpeedDown:
-		R_ATC::PreTrain.P_Location;
-		//= int(b.Data / 1000);
+		R_ATC::Route.target_Location = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
 	case ATC_Beacon::SpeedUp:
-		R_ATC::Limit[0] = b.Data % 1000;
+		R_ATC::Route.target_Speed = int(b.Data % 1000);	//下3桁のみ
 		break;
 	case ATC_Beacon::PlatformStart_1:
 	case ATC_Beacon::PlatformStart_2:
@@ -214,17 +219,14 @@ DE void SC SetBeaconData(Beacon b) {
 	case ATC_Beacon::PreTrainTime_5:
 		Sort(b.Data, R_ATC::time, 5);
 		break;
-	case 235:
-		R_ATC::Location[1] = b.Data;
-		break;
 	case ATC_Beacon::Status:
 		R_ATC::stat = b.Data;
 		break;
-	case ATC_Beacon::SetPattern:
-		//R_ATC::
-		R_ATC::Location[2] = b.Data;
+	case ATC_Beacon::Set2StepPattern:
+		R_ATC::Step2.target_Location = b.Data;
+		R_ATC::Step2.target_Speed = 0;
 		break;
-	case ATC_Beacon::notice_f:
+	case ATC_Beacon::ATC10_notice_f:
 		ATC10::Notice(b);
 		break;
 	default:
