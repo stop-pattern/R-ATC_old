@@ -4,9 +4,11 @@
 #include "R-ATC.h"
 
 extern Hand handle;
+extern State Stat;
 extern Spec specific;
 extern int signal;
 extern int ATCstatus;
+
 
 //define
 int R_ATC::stat;	//ATCstatus
@@ -57,87 +59,124 @@ void R_ATC::Status(State S, int * panel, int * sound) {	//ATC動作
 		//停止限界設定?=>P接近&B動作
 		if (0)
 		{
-			if (S.V > PreTrain.P_Speed) {
-				panel[ATC_Panel::pattern] = true;
-				if (S.V > PreTrain.B_Speed) {
-					panel[ATC_Panel::ATCbrake] = true;
-					handle.B = specific.B;
-				}
+
+			//停止限界残距離
+
+			if (int(StopLimit / 1000) % 100 == 0) {
+				panel[ATC_Panel::StopLimit_10000] = 0;
 			}
-			if (S.V > Step2.P_Speed) {
-				panel[ATC_Panel::pattern] = true;
-				if (S.V > Step2.B_Speed) {
-					panel[ATC_Panel::ATCbrake] = true;
-					handle.B = specific.B;
-				}
+			else {
+				panel[ATC_Panel::StopLimit_10000] = int(StopLimit / 1000) % 100;
 			}
-			if (S.V > Crossing.P_Speed) {
-				panel[ATC_Panel::pattern] = true;
-				if (S.V > Crossing.B_Speed) {
-					panel[ATC_Panel::ATCbrake] = true;
-					handle.B = specific.B;
-				}
+
+
+
+
+			if (int(StopLimit / 10) % 100 == 0) {
+				panel[ATC_Panel::StopLimit_100] = 0;
 			}
-			if (S.V > Route.P_Speed) {
-				panel[ATC_Panel::pattern] = true;
-				if (S.V > Route.B_Speed) {
-					panel[ATC_Panel::ATCbrake] = true;
-					handle.B = specific.B;
-				}
+			else {
+				panel[ATC_Panel::StopLimit_100] = int(StopLimit / 10) % 100;
 			}
+
+
+			if (int(StopLimit * 10) % 100 == 0) {
+				panel[ATC_Panel::StopLimit_1] = 100;
+			}
+			else {
+				panel[ATC_Panel::StopLimit_1] = int(StopLimit * 10) % 100;
+			}
+
+
 		}
-
-		//停止限界残距離
-
-		if (int(StopLimit / 1000) % 100 == 0) {
-			panel[ATC_Panel::StopLimit_10000] = 0;
+		else
+		{
+			panel[ATC_Panel::ATC] = stat;
+			panel[ATC_Panel::here] = stat;
+			panel[ATC_Panel::RATC] = stat;
+			panel[ATC_Panel::Limit_1] = false;
+			panel[ATC_Panel::Limit_5] = false;
+			panel[ATC_Panel::StopLimit_10000] = false;
+			panel[ATC_Panel::StopLimit_100] = false;
+			panel[ATC_Panel::StopLimit_1] = false;
 		}
-		else {
-			panel[ATC_Panel::StopLimit_10000] = int(StopLimit / 1000) % 100;
-		}
-
-
-
-
-		if (int(StopLimit / 10) % 100 == 0) {
-			panel[ATC_Panel::StopLimit_100] = 0;
-		}
-		else {
-			panel[ATC_Panel::StopLimit_100] = int(StopLimit / 10) % 100;
-		}
-
-
-		if (int(StopLimit * 10) % 100 == 0) {
-			panel[ATC_Panel::StopLimit_1] = 100;
-		}
-		else {
-			panel[ATC_Panel::StopLimit_1] = int(StopLimit * 10) % 100;
-		}
-
-
 	}
-	else
-	{
-		panel[ATC_Panel::ATC] = stat;
-		panel[ATC_Panel::here] = stat;
-		panel[ATC_Panel::RATC] = stat;
-		panel[ATC_Panel::Limit_1] = false;
-		panel[ATC_Panel::Limit_5] = false;
-		panel[ATC_Panel::StopLimit_10000] = false;
-		panel[ATC_Panel::StopLimit_100] = false;
-		panel[ATC_Panel::StopLimit_1] = false;
-	}
+
 }
 
 
-void R_ATC::Calc(State S, int * p, int * s) {
-	
+void R_ATC::Calc(State S, int * panel, int * sound) {
+	//先行列車
+	if (S.V > PreTrain.P_Speed) {
+		panel[ATC_Panel::pattern] = true;
+		if (S.V > PreTrain.B_Speed) {
+			panel[ATC_Panel::ATCbrake] = true;
+			handle.B = specific.B;
+			if (S.V > PreTrain.E_Speed) {
+				panel[ATC_Panel::ATCemr] = true;
+				handle.B = specific.E;
+			}
+			else panel[ATC_Panel::ATCemr] = false;
+		}
+		else panel[ATC_Panel::ATCbrake] = false;
+	}
+	else panel[ATC_Panel::pattern] = false;
+
+
+	//2段パターン
+	if (S.V > Step2.P_Speed) {
+		panel[ATC_Panel::pattern] = true;
+		if (S.V > Step2.B_Speed) {
+			panel[ATC_Panel::ATCbrake] = true;
+			handle.B = specific.B;
+			if (S.V > Step2.E_Speed) {
+				panel[ATC_Panel::ATCemr] = true;
+				handle.B = specific.E;
+			}
+			else panel[ATC_Panel::ATCemr] = false;
+		}
+		else panel[ATC_Panel::ATCbrake] = false;
+	}
+	else panel[ATC_Panel::pattern] = false;
+
+
+	//踏切
+	if (S.V > Crossing.P_Speed) {
+		panel[ATC_Panel::pattern] = true;
+		if (S.V > Crossing.B_Speed) {
+			panel[ATC_Panel::ATCbrake] = true;
+			handle.B = specific.B;
+			if (S.V > Crossing.E_Speed) {
+				panel[ATC_Panel::ATCemr] = true;
+				handle.B = specific.E;
+			}
+			else panel[ATC_Panel::ATCemr] = false;
+		}
+		else panel[ATC_Panel::ATCbrake] = false;
+	}
+	else panel[ATC_Panel::pattern] = false;
+
+
+	//路線
+	if (S.V > Route.P_Speed) {
+		panel[ATC_Panel::pattern] = true;
+		if (S.V > Route.B_Speed) {
+			panel[ATC_Panel::ATCbrake] = true;
+			handle.B = specific.B;
+			if (S.V > Route.E_Speed) {
+				panel[ATC_Panel::ATCemr] = true;
+				handle.B = specific.E;
+			}
+			else panel[ATC_Panel::ATCemr] = false;
+		}
+		else panel[ATC_Panel::ATCbrake] = false;
+	}
+	else panel[ATC_Panel::pattern] = false;
 }
 
 
 void R_ATC::Control(State S, int * panel, int * sound) {	//ATC判定
-	if (stat != stat::off)
-	{
+	if (stat != stat::off) {
 		target = Location[param::P_pretrain] - S.Z;
 		sqrt(target * DECELERATION_BRAKE) < Limit[param::P_pretrain] ? pattern_speed[0] = sqrt(target * DECELERATION_BRAKE) : pattern_speed[0] = Limit[param::P_pretrain];
 		sqrt(target * DECELARATION_EMR) < Limit[param::P_pretrain] ? pattern_speed[1] = sqrt(target * DECELARATION_EMR) : pattern_speed[1] = Limit[param::P_pretrain];
@@ -173,14 +212,25 @@ void R_ATC::Control(State S, int * panel, int * sound) {	//ATC判定
 		panel[ATC_Panel::Limit_1] = int(pattern_speed[0]);
 		int(pattern_speed[0]) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(pattern_speed[0] / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(pattern_speed[0] / 10) * 10;
 	}
-	else
-	{
+	else {
 		panel[ATC_Panel::pattern] = false;
 		panel[ATC_Panel::ATCbrake] = false;
 	}
 }
 
-void R_ATC::Pattern::calc(){
+
+bool R_ATC::Update(State S, R_ATC::Pattern pat) {
+	if (S.Z > pat.target_Location) {
+		return false;
+	}
+	return false;
+}
 
 
+void R_ATC::Pattern::calc() {
+	Pattern::StopLimit = Stat.Z - Pattern::target_Location;	//停止限界更新
+	if (Pattern::useage = true) {
+		Pattern::target_Location = Stat.T * Pattern::a + Pattern::b;
+		Pattern::target_Speed;
+	}
 }

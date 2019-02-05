@@ -55,9 +55,9 @@ void ATC10::Check(State status, int *panel, int *sound) {
 		}
 
 		//’P‘Åƒxƒ‹
-		sound[ATC_6_bell] = SoundInfo::PlayContinue;
+		sound[ATC_bell] = SoundInfo::PlayContinue;
 		if (Bell == true) {
-			sound[ATC_6_bell] = SoundInfo::PlayOnce;
+			sound[ATC_bell] = SoundInfo::PlayOnce;
 		}
 		Bell = false;
 	}

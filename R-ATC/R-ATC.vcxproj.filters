@@ -45,8 +45,8 @@
     <ClInclude Include="ATC-10\ATC-10.h">
       <Filter>ATC-10</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header</Filter>
+    <ClInclude Include="resource\resource.h">
+      <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +75,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
+    <ResourceCompile Include="resource\Resource.rc">
       <Filter>Resource</Filter>
     </ResourceCompile>
   </ItemGroup>

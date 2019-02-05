@@ -120,7 +120,7 @@
     <ClInclude Include="header\define.h" />
     <ClInclude Include="header\Header.h" />
     <ClInclude Include="R-ATC\R-ATC.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource\resource.h" />
     <ClInclude Include="TIMS.h" />
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +135,7 @@
     <None Include="dllmain.def" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
+    <ResourceCompile Include="resource\Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,55 +7,78 @@
 #define NOTICE_TIME 1.5	//P接近表示時間[s]
 #define PATTERN_BRAKE 5	//ATC緩和パターン段数
 
+#define STOPLIMIT_UPDATE 
+/*
+(StopLimit != false && rand() % STOPLIMIT_UPDATE == 0) { panel[]; }	//←とかやる？
+*/
+
 #define SPEED_ATS_OFF 15	//ATS非保安(構内)時照査速度
 
 //信号インデックス
-const int SpeedLimit[256] = { 0,0,0,0,0,0,0,0,0,0,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,25,45,55,65,75,90,100,110,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+const int SpeedLimit[256] = {0,0,0,0,0,0,0,0,0,0,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,0,0,125,130,135,140,145,150,155,160,165,170,175,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,25,45,55,65,75,90,100,110,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 
 enum ATC_status
 {
-	OFF = 0,
+	OFF = 000,
 
-	R__ATC = 10,
-	R__ATC_receive = 2,
-	R__ATC_backup = 4,
+	R__ATC = 1,
+	ATC__6 = 2,
+	ATC__10 = 3,
 
-	ATC__6 = 20,
+	R__ATC_on = 10,
+	R__ATC_receive = 12,
+	R__ATC_backup = 14,
+
+	ATC__6_on = 20,
 	ATC__6_emergency = 21,
 
-	ATC__10 = 30,
+	ATC__10_on = 30,
 	ATC__10_ORP = 31,
 };
 
+
 enum ATC_Beacon {
-	SpeedUp = 211,	//ATC最高速度変化(即時)
-	SpeedDown = 212,	//ATC最高速度変化(P制御)
-	PlatformStart_1 = 220,	//ホーム区始端
-	PlatformStart_2 = 221,	//ホーム区始端
-	PlatformEnd_1 = 222,	//ホーム区終端
-	PlatformEnd_2 = 223,	//ホーム区終端
-	LocationCorrection = 224,	//R-ATC距離補正
-	PreTrainDistance_1 = 225,	//先行列車位置更新
-	PreTrainDistance_2 = 226,	//先行列車位置更新
-	PreTrainDistance_3 = 227,	//先行列車位置更新
-	PreTrainDistance_4 = 228,	//先行列車位置更新
-	PreTrainDistance_5 = 229,	//先行列車位置更新
-	PreTrainTime_1 = 230,	//先行列車時刻更新
-	PreTrainTime_2 = 231,	//先行列車時刻更新
-	PreTrainTime_3 = 232,	//先行列車時刻更新
-	PreTrainTime_4 = 233,	//先行列車時刻更新
-	PreTrainTime_5 = 234,	//先行列車時刻更新
-	Status = 236,	//ATC状態管理
-	SetPattern = 0,	//2段パターン設定
+	//ATC-10
+	ATC10_notice_f = 7,	//前方予告(強制)
+	ATC10_ORP_extension = 12,	//ORP添線始点
+	ATC10_notice_i = 31,	//前方予告(リアルタイム)
+	ATC10_notice_f_2 = 46,	//前方予告(強制)
+	ATC10_ORP_extension_2 = 47,	//ORP添線始点
+	ATC10_notice_i_2 = 48,	//前方予告(リアルタイム)
+
+	//R-ATC
+	Status = 150,	//ATC状態管理
+	SpeedUp,	//ATC最高速度変化(即時)
+	SpeedDown,	//ATC最高速度変化(P制御)
+	PlatformStart_1,	//ホーム区始端
+	PlatformStart_2,	//ホーム区始端
+	PlatformEnd_1,	//ホーム区終端
+	PlatformEnd_2,	//ホーム区終端
+	LocationCorrection,	//R-ATC距離補正
+	PreTrainDistance_1,	//先行列車位置更新
+	PreTrainDistance_2,	//先行列車位置更新
+	PreTrainDistance_3,	//先行列車位置更新
+	PreTrainDistance_4,	//先行列車位置更新
+	PreTrainDistance_5,	//先行列車位置更新
+	PreTrainTime_1,	//先行列車時刻更新
+	PreTrainTime_2,	//先行列車時刻更新
+	PreTrainTime_3,	//先行列車時刻更新
+	PreTrainTime_4,	//先行列車時刻更新
+	PreTrainTime_5,	//先行列車時刻更新
+	Set2StepPattern,	//2段パターン設定
+
+
 //端子台未定義
 	//指定インデックスを02に
-	ATC02_time = 237,	//指定時間[ms]経過後解除
-	ATC02_distance = 238,	//指定距離[m]走行後
+	ATC02_set_distance = 256,	//距離設定から02
+	ATC02_set_time,	//指定時刻から02
+	ATC02_end_time,	//指定時間[ms]経過後解除
+	ATC02_end_distance,	//指定距離[m]走行後
 
-	//ATC-10
-	notice_f = 7,	//前方予告
-	notice_i = 46,	//前方予告
 };
+
+
 enum ATC_Panel {
 	ATCpower = 52,	//ATC電源
 	ATC = 53,	//ATC
@@ -102,6 +125,7 @@ enum ATC_Panel {
 
 //端子台未定義
 };
+
 /*panel
 ATACS{
 	右上
@@ -124,9 +148,19 @@ ATACS{
 		ATACS常用
 }
 */
+
+
 enum ATC_Sound {
-	ATC_6_bell = 5,
+	ATC_bell = 5,	//ATC単打ベル
+	ATC10_notice = 9,	//前方予告
+	ATC10_ORP = 18,	//ORPピープ
+	ATC10_bell = 19,	//車警ベル
+	ATS_trance = 26,	//ATS切換完了
+	ATC_trance = 28,	//ATC切換完了
+	RATC_bell = 50,	//R-ATCベル
 };
+
+
 enum ATC_Signal {
 	ATC_02 = 9,
 	ATC_01,
@@ -181,6 +215,8 @@ enum ATC_Signal {
 	ATC_6_110,
 	ATC_6_120 = 112,
 };
+
+
 enum ATC_Switch {
 	非常運転 = 5,
 };
