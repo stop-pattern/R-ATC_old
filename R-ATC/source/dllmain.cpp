@@ -208,12 +208,14 @@ DE void SC SetBeaconData(Beacon b) {
 	case ATC_Beacon::PreTrainDistance_3:
 	case ATC_Beacon::PreTrainDistance_4:
 	case ATC_Beacon::PreTrainDistance_5:
+		R_ATC::PreTrain_Distance.push_back(b.Data);
 		break;
 	case ATC_Beacon::PreTrainTime_1:
 	case ATC_Beacon::PreTrainTime_2:
 	case ATC_Beacon::PreTrainTime_3:
 	case ATC_Beacon::PreTrainTime_4:
 	case ATC_Beacon::PreTrainTime_5:
+		R_ATC::PreTrain_Time.push_back(b.Data);
 		break;
 	case ATC_Beacon::Status:
 		R_ATC::stat = b.Data;

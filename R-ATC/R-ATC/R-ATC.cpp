@@ -23,6 +23,9 @@ double R_ATC::pattern_speed[2];	//P接近速度
 //double R_ATC::pattern_brake;	//���e�ō����x
 double R_ATC::notice_dist;	//P接近距離
 double R_ATC::brake_speed[11];	//B開始速度記録
+//先行列車
+std::vector<int> PreTrain_Time;	//時刻
+std::vector<int> PreTrain_Distance;	//距離
 R_ATC::Pattern R_ATC::PreTrain(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //先行列車連動P
 R_ATC::Pattern R_ATC::Step2(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //2段P
 R_ATC::Pattern R_ATC::Crossing(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //踏切防護P

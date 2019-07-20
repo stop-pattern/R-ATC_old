@@ -2,7 +2,7 @@
 #ifndef _RATC_
 #define _RATC_
 
-
+#include <vector>
 #include "../header/ats.h"
 #include "../header/define.h"
 
@@ -25,6 +25,10 @@ namespace R_ATC {
 	//extern double pattern_brake;	//���e�ō����x
 	extern double notice_dist;	//P接近距離
 	extern double brake_speed[11];	//B開始速度記録
+
+	//先行列車
+	extern std::vector<int> PreTrain_Time;	//時刻
+	extern std::vector<int> PreTrain_Distance;	//距離
 
 
 	class Pattern {
