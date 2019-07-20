@@ -1,5 +1,6 @@
 ﻿#include <Windows.h>
 #include <string>
+#include "..\header\Header.h"
 
 using namespace std;
 
@@ -65,4 +66,7 @@ double Sort(double value, int array[], int num) {	//差込値,差込配列,配�
 	}
 
 	return ret;
+}
+
+void reload(void) {
 }

@@ -15,6 +15,9 @@ string dllPath;	//.dllのpath
 string iniPath;	//.iniのpath
 
 int signal;	//信号インデックス
+double speed;	//現在速度
+double distance;	//現在位置
+
 bool door;	//ドア状態
 int ATCstatus;	//ATC状態
 int LimitSpeed;	//制限速度
@@ -28,5 +31,6 @@ Hand handle;	//ハンドル制御値
 
 void GetPath(HMODULE hModule);
 double Sort(double, int array[], int);
+void reload(void);	//駅ジャンプ時再読み込み処理
 
 #endif // !HEADER

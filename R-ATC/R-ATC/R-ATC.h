@@ -10,15 +10,14 @@
 namespace R_ATC {
 	extern int stat;	//ATCstatus
 
+	extern bool P;	//P接近
+	extern bool Bell;	//ATCベル
+
 	extern double StopLimit;	//停止限界残距離
 
-	extern double Limit[3];	//制限速度[km/h]
-	extern double Location[3];	//過走限界[m]
+	extern double Limit;	//制限速度[km/h]
+	extern double Location;	//過走限界[m]
 
-	extern int distance[5];	//先行列車距離程[m]
-	extern int time[5];	//先行列車時刻[ms]
-	extern double a, b, c[3];	//線形回帰パラメーター
-	extern bool reload;	//再読み込み判定
 
 
 	extern double target;	//目標
@@ -30,19 +29,28 @@ namespace R_ATC {
 
 	class Pattern {
 	public:
-		//double target;	//停止限界[m]
-		double StopLimit;	//停止限界残距離[m]
-		double target_Speed;	//目標速度[km/h]
-		double target_Location;	//目標距離程[m]
+		double Limit;	//制限速度[km/h] <=ATC現示値(=P_Speed
+		double target;	//停止限界[m] <=距離程
+		double StopLimit;	//停止限界残距離[m] <=毎フレーム更新値
+		double target_Speed;	//目標速度[km/h] <=入力値(固定)
+		double target_Location;	//目標距離程[m] <=入力値(固定)
 		double P_Speed;	//P接近速度
 		double B_Speed;	//B動作速度
 		double E_Speed;	//EB動作速度
 		double P_Location;	//P接近距離
 		double B_Location;	//B動作距離
 		double E_Location;	//EB動作距離
-		void calc();
+		Pattern(double, double, double);
+		void calc(State, int *, int *);
+		void out(State, int *, int *);
 		bool useage;	//線形回帰判別
+		double jadge(void);	//P制御採用判定
+		void SetBeaconData(int, int);
 	private:
+		double param;	//P制御採用判定用
+		double P_deceleration;	//P接近減速定数
+		double B_deceleration;	//B動作減速定数
+		double E_deceleration;	//EB動作減速定数
 		double a;	//先行計算用線形回帰パラメーター
 		double b;	//先行計算用線形回帰パラメーター
 		double c;	//先行計算用線形回帰パラメーター
@@ -58,13 +66,9 @@ namespace R_ATC {
 	extern void Calc(State, int *, int *);	//パラメーター算出
 	extern void Control(State, int *, int *);	//ATC制御
 	extern bool Update(State, Pattern);	//P更新・判定
+	extern void setout(void);	//出力値設定
 
 
-	enum param {
-		P_none = 0,	//通常
-		P_pretrain = 1,	//先行連動P
-		P_2step = 2,	//2段P
-	};
 	enum stat {
 		off = 0,
 		on = 1,

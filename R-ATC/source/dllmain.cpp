@@ -59,6 +59,7 @@ DE void SC SetVehicleSpec(Spec s) {
 }
 DE void SC Initialize(int b) {
 	b = InitialPosition::Service;
+	reload();
 }
 DE Hand SC Elapse(State S, int * p, int * s)
 {
@@ -70,9 +71,8 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	if (ATC6::Emergency == true)ATC6::EmergencyDrive(S, p, s);	//ATC-6非常運転
 	ATC6::Check(S, p, s);	//ATC-6
 
-	//R_ATC::Status(S, p, s);	//状態管理
-	//R_ATC::Calc(S, p, s);	//先行計算
-	//R_ATC::Control(S, p, s);	//指令制御
+	//R-ATC
+	R_ATC::Control(S, p, s);
 
 	//02
 	if (ATCstatus == ATC_status::OFF) p[ATC_Panel::ATC01] = 2;
@@ -119,11 +119,8 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	}
 #endif //  TIMS
 
-	handle.C = ConstSPInfo::Continue;
-	//s[255] = SoundInfo::Continue;
 
-	if (S.V >= 7.5)
-	{
+	if (S.V >= 7.5)	{
 		//[km/h/s]	(S.V - Stat.V)
 	}
 
@@ -190,9 +187,10 @@ DE void SC SetSignal(int a) {
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
 	case ATC_Beacon::SpeedDown:
-		R_ATC::Route.target_Location = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
 	case ATC_Beacon::SpeedUp:
+		R_ATC::Route.target_Location = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
 		R_ATC::Route.target_Speed = int(b.Data % 1000);	//下3桁のみ
+		R_ATC::Route.SetBeaconData(int(b.Data / 1000), int(b.Data % 1000));
 		break;
 	case ATC_Beacon::PlatformStart_1:
 	case ATC_Beacon::PlatformStart_2:
@@ -203,21 +201,19 @@ DE void SC SetBeaconData(Beacon b) {
 
 		break;
 	case ATC_Beacon::LocationCorrection:
-
+		::distance = b.Data;
 		break;
 	case ATC_Beacon::PreTrainDistance_1:
 	case ATC_Beacon::PreTrainDistance_2:
 	case ATC_Beacon::PreTrainDistance_3:
 	case ATC_Beacon::PreTrainDistance_4:
 	case ATC_Beacon::PreTrainDistance_5:
-		Sort(b.Data, R_ATC::distance, 5);
 		break;
 	case ATC_Beacon::PreTrainTime_1:
 	case ATC_Beacon::PreTrainTime_2:
 	case ATC_Beacon::PreTrainTime_3:
 	case ATC_Beacon::PreTrainTime_4:
 	case ATC_Beacon::PreTrainTime_5:
-		Sort(b.Data, R_ATC::time, 5);
 		break;
 	case ATC_Beacon::Status:
 		R_ATC::stat = b.Data;
@@ -233,4 +229,5 @@ DE void SC SetBeaconData(Beacon b) {
 		break;
 	}
 }
+
 

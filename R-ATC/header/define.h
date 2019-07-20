@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#define DECELERATION_PATTERN 22
+#define DECELERATION_PATTERN 19.5	//P接近計算用減速定数
 #define DECELERATION_BRAKE 19.5	//常用P計算用減速定数
 #define DECELARATION_EMR 25	//非常P計算用減速定数
 #define ATC_MAX 120.0	//ATC最高速度[km/h]
