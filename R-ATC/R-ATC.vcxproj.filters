@@ -22,6 +22,9 @@
     <Filter Include="ATC-10">
       <UniqueIdentifier>{0908771a-a834-4b21-a2b8-d7d1f668b9ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{3aac294c-f4de-4521-9437-373ecbf4d447}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Header.h">
@@ -48,6 +51,9 @@
     <ClInclude Include="resource\resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton\Singleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dllmain.cpp">
@@ -67,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="ATC-10\ATC-10.cpp">
       <Filter>ATC-10</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton\Singleton.cpp">
+      <Filter>Singleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
