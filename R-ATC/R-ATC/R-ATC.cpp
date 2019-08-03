@@ -11,26 +11,15 @@ extern int signal;
 extern int ATCstatus;
 
 
-//define
-int R_ATC::stat;	//ATCstatus
-bool R_ATC::P;	//P接近
-bool R_ATC::Bell;	//ATCベル
-double R_ATC::StopLimit;	//停止限界残距離
-double R_ATC::Limit;	//制限速度[km/h]
-double R_ATC::Location;	//過走限界[m]
-double R_ATC::target;	//目標
-double R_ATC::pattern_speed[2];	//P接近速度
-//double R_ATC::pattern_brake;	//���e�ō����x
-double R_ATC::notice_dist;	//P接近距離
-double R_ATC::brake_speed[11];	//B開始速度記録
-//先行列車
-std::vector<int> PreTrain_Time;	//時刻
-std::vector<int> PreTrain_Distance;	//距離
-R_ATC::Pattern R_ATC::PreTrain(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //先行列車連動P
-R_ATC::Pattern R_ATC::Step2(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //2段P
-R_ATC::Pattern R_ATC::Crossing(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //踏切防護P
-R_ATC::Pattern R_ATC::Route(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //路線依存P（曲線速度制限）
 
+//define
+
+void R_ATC::load() {
+	Pattern PreTrain(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //先行列車連動P
+	Pattern Step2(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //2段P
+	Pattern Crossing(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //踏切防護P
+	Pattern Route(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //路線依存P（曲線速度制限）
+}
 
 
 void R_ATC::Status(State S, int * panel, int * sound) {	//ATC動作
@@ -188,7 +177,7 @@ bool R_ATC::Update(State S, R_ATC::Pattern pat) {
 
 void R_ATC::setout(void) {
 	double Limit;	//制限速度[km/h] <=ATC現示値
-	double Location = 0b1111111111111111111111111111111;	//停止限界[m]
+	double Location = DBL_MAX;	//停止限界[m]
 	double StopLimit;	//停止限界残距離[m]
 	Pattern * pat;
 

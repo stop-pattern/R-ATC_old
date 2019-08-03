@@ -7,28 +7,28 @@
 #include "../header/define.h"
 
 
-namespace R_ATC {
-	extern int stat;	//ATCstatus
+class R_ATC {
+	int stat;	//ATCstatus
 
-	extern bool P;	//P接近
-	extern bool Bell;	//ATCベル
+	bool P;	//P接近
+	bool Bell;	//ATCベル
 
-	extern double StopLimit;	//停止限界残距離
+	double StopLimit;	//停止限界残距離
 
-	extern double Limit;	//制限速度[km/h]
-	extern double Location;	//過走限界[m]
+	double Limit;	//制限速度[km/h]
+	double Location;	//過走限界[m]
 
 
 
-	extern double target;	//目標
-	extern double pattern_speed[2];	//P接近速度
-	//extern double pattern_brake;	//���e�ō����x
-	extern double notice_dist;	//P接近距離
-	extern double brake_speed[11];	//B開始速度記録
+	double target;	//目標
+	double pattern_speed[2];	//P接近速度
+	//double pattern_brake;	//���e�ō����x
+	double notice_dist;	//P接近距離
+	double brake_speed[11];	//B開始速度記録
 
 	//先行列車
-	extern std::vector<int> PreTrain_Time;	//時刻
-	extern std::vector<int> PreTrain_Distance;	//距離
+	std::vector<int> PreTrain_Time;	//時刻
+	std::vector<int> PreTrain_Distance;	//距離
 
 
 	class Pattern {
@@ -60,17 +60,12 @@ namespace R_ATC {
 		double c;	//先行計算用線形回帰パラメーター
 	};
 
-	extern R_ATC::Pattern PreTrain;    //先行列車連動P
-	extern R_ATC::Pattern Step2;   //2段P
-	extern R_ATC::Pattern Crossing;    //踏切防護P
-	extern R_ATC::Pattern Route;   //路線依存P（曲線速度制限）
-
-
-	extern void Status(State, int *, int *);	//ATC状態管理
-	extern void Calc(State, int *, int *);	//パラメーター算出
-	extern void Control(State, int *, int *);	//ATC制御
-	extern bool Update(State, Pattern);	//P更新・判定
-	extern void setout(void);	//出力値設定
+	void load();	//consractor
+	void Status(State, int *, int *);	//ATC状態管理
+	void Calc(State, int *, int *);	//パラメーター算出
+	void Control(State, int *, int *);	//ATC制御
+	bool Update(State, Pattern);	//P更新・判定
+	void setout(void);	//出力値設定
 
 
 	enum stat {
