@@ -11,22 +11,22 @@
 using namespace std;
 
 
-string dllPath;	//.dllのpath
-string iniPath;	//.iniのpath
+extern string dllPath;	//.dllのpath
+extern string iniPath;	//.iniのpath
 
-int signal;	//信号インデックス
-double speed;	//現在速度
-double distance;	//現在位置
+extern int signal;	//信号インデックス
+extern double speed;	//現在速度
+extern double distance;	//現在位置
 
-bool door;	//ドア状態
-int ATCstatus;	//ATC状態
-int LimitSpeed;	//制限速度
-double accelaration;	//加減速度
+extern bool door;	//ドア状態
+extern int ATCstatus;	//ATC状態
+extern int LimitSpeed;	//制限速度
+extern double accelaration;	//加減速度
 
-Spec specific;	//車両性能
-State Stat;	//車両状態(前フレーム)
-Hand manual;	//手動ハンドル位置
-Hand handle;	//ハンドル制御値
+extern Spec specific;	//車両性能
+extern State Stat;	//車両状態(前フレーム)
+extern Hand manual;	//手動ハンドル位置
+extern Hand handle;	//ハンドル制御値
 
 
 void GetPath(HMODULE hModule);
