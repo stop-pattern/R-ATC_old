@@ -4,8 +4,6 @@
 
 using namespace std;
 
-extern string dllPath;
-extern string iniPath;
 
 
 void GetPath(HMODULE hModule) {
