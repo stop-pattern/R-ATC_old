@@ -20,6 +20,24 @@ void c_R_ATC::Load() {
 }
 
 
+
+
+void c_R_ATC::Interpolation() {
+	patterns[pattern_name::PreTrain]->target;	//設定先
+	int pram[2][2];	//index
+	for (size_t i = 0; i < PreTrain_Time.size(); i++) {
+		if (PreTrain_Time[i] > Stat.T) {	//現在時刻直後を検知
+			for (size_t j = 0; j < 2; j++) {
+				pram[0][j] = PreTrain_Time[i - 1 + j];	//現在時刻直前後の時刻を抽出
+				pram[1][j] = PreTrain_Distance[i - 1 + j];	//現在時刻直前後の距離を抽出
+			}
+		}
+		else return;
+	}
+	patterns[pattern_name::PreTrain]->target = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
+}
+
+
 void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 	bool x = 0;
 

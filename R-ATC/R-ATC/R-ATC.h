@@ -57,7 +57,7 @@ public:
 
 	void Load();	//consractor
 	void Status(State, int *, int *);	//ATC状態管理
-	void Interpolation();	//パラメーター算出
+	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int *, int *);	//ATC制御
 	bool Update(State, Pattern);	//P更新・判定
 	void SetOut(void);	//出力値設定
