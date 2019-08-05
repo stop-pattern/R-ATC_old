@@ -1,4 +1,5 @@
 ﻿#include <math.h>
+#include <vector>
 #include "../header/ats.h"
 #include "../header/define.h"
 #include "../header/Header.h"
@@ -12,7 +13,7 @@ extern int ATCstatus;
 
 
 
-void c_R_ATC::load() {
+void c_R_ATC::Load() {
 	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
 		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
 	}
@@ -95,7 +96,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 		patterns[i]->calc(S, panel, sound);
 	}
 
-	setout();
+	SetOut();
 
 	if (stat != stat::off) {
 
@@ -152,7 +153,7 @@ bool c_R_ATC::Update(State S, c_R_ATC::Pattern pat) {
 	return false;
 }
 
-void c_R_ATC::setout(void) {
+void c_R_ATC::SetOut(void) {
 	double Limit;	//制限速度[km/h] <=ATC現示値
 	double Location = DBL_MAX;	//停止限界[m]
 	double StopLimit;	//停止限界残距離[m]
@@ -173,6 +174,9 @@ void c_R_ATC::setout(void) {
 	}
 	//処理
 }
+
+
+
 
 
 c_R_ATC::Pattern::Pattern(double P, double B, double E) {

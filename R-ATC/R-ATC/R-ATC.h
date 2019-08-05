@@ -55,12 +55,12 @@ public:
 	};
 
 
-	void load();	//consractor
+	void Load();	//consractor
 	void Status(State, int *, int *);	//ATC状態管理
-	void Calc(State, int *, int *);	//パラメーター算出
+	void Interpolation();	//パラメーター算出
 	void Control(State, int *, int *);	//ATC制御
 	bool Update(State, Pattern);	//P更新・判定
-	void setout(void);	//出力値設定
+	void SetOut(void);	//出力値設定
 
 
 	Pattern* patterns[pattern_name::pattern_number];

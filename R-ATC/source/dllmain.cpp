@@ -38,7 +38,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 DE void SC Load() {
 	R_ATC = new c_R_ATC();
-	R_ATC->load();
+	R_ATC->Load();
 	/*
 	ini.GetIni(iniPath);
 	ofstream fs;
