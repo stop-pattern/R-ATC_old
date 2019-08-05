@@ -28,6 +28,8 @@ extern State Stat;	//車両状態(前フレーム)
 extern Hand manual;	//手動ハンドル位置
 extern Hand handle;	//ハンドル制御値
 
+extern c_R_ATC* R_ATC;	//R-ATC
+
 
 void GetPath(HMODULE hModule);
 double Sort(double, int array[], int);
