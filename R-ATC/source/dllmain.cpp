@@ -36,13 +36,17 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	return TRUE;
 }
 
-DE void SC Load() {/*
+DE void SC Load() {
+	R_ATC = new c_R_ATC();
+	R_ATC->load();
+	/*
 	ini.GetIni(iniPath);
 	ofstream fs;
 	fs.open("./output.log", ios::app);
 	while (!fs.is_open())
 		fs << iniPath << endl;
-	fs.close();*/
+	fs.close();
+	*/
 }
 DE void SC Dispose() {
 }
@@ -72,7 +76,7 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	ATC6::Check(S, p, s);	//ATC-6
 
 	//R-ATC
-	R_ATC::Control(S, p, s);
+	R_ATC->Control(S, p, s);
 
 	//02
 	if (ATCstatus == ATC_status::OFF) p[ATC_Panel::ATC01] = 2;
@@ -188,41 +192,31 @@ DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
 	case ATC_Beacon::SpeedDown:
 	case ATC_Beacon::SpeedUp:
-		R_ATC::Route.target_Location = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
-		R_ATC::Route.target_Speed = int(b.Data % 1000);	//下3桁のみ
-		R_ATC::Route.SetBeaconData(int(b.Data / 1000), int(b.Data % 1000));
+		R_ATC->patterns[R_ATC->pattern_name::Route]->target_Location = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
+		R_ATC->patterns[R_ATC->pattern_name::Route]->target_Speed = int(b.Data % 1000);	//下3桁のみ
+		R_ATC->patterns[R_ATC->pattern_name::Route]->SetBeaconData(int(b.Data / 1000), int(b.Data % 1000));
 		break;
-	case ATC_Beacon::PlatformStart_1:
-	case ATC_Beacon::PlatformStart_2:
-
+	case ATC_Beacon::PlatformStart:
+		R_ATC->PlatformStart.push_back(b.Data);
 		break;
-	case ATC_Beacon::PlatformEnd_1:
-	case ATC_Beacon::PlatformEnd_2:
-
+	case ATC_Beacon::PlatformEnd:
+		R_ATC->PlatformEnd.push_back(b.Data);
 		break;
 	case ATC_Beacon::LocationCorrection:
 		::distance = b.Data;
 		break;
-	case ATC_Beacon::PreTrainDistance_1:
-	case ATC_Beacon::PreTrainDistance_2:
-	case ATC_Beacon::PreTrainDistance_3:
-	case ATC_Beacon::PreTrainDistance_4:
-	case ATC_Beacon::PreTrainDistance_5:
-		R_ATC::PreTrain_Distance.push_back(b.Data);
+	case ATC_Beacon::PreTrainDistance:
+		R_ATC->PreTrain_Distance.push_back(b.Data);
 		break;
-	case ATC_Beacon::PreTrainTime_1:
-	case ATC_Beacon::PreTrainTime_2:
-	case ATC_Beacon::PreTrainTime_3:
-	case ATC_Beacon::PreTrainTime_4:
-	case ATC_Beacon::PreTrainTime_5:
-		R_ATC::PreTrain_Time.push_back(b.Data);
+	case ATC_Beacon::PreTrainTime:
+		R_ATC->PreTrain_Time.push_back(b.Data);
 		break;
 	case ATC_Beacon::Status:
-		R_ATC::stat = b.Data;
+		R_ATC->stat = b.Data;
 		break;
 	case ATC_Beacon::Set2StepPattern:
-		R_ATC::Step2.target_Location = b.Data;
-		R_ATC::Step2.target_Speed = 0;
+		R_ATC->patterns[R_ATC->pattern_name::Step2]->target_Location = b.Data;
+		R_ATC->patterns[R_ATC->pattern_name::Step2]->target_Speed = 0;
 		break;
 	case ATC_Beacon::ATC10_notice_f:
 		ATC10::Notice(b);

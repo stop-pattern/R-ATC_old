@@ -51,21 +51,11 @@ enum ATC_Beacon {
 	Status = 150,	//ATC状態管理
 	SpeedUp,	//ATC最高速度変化(即時)
 	SpeedDown,	//ATC最高速度変化(P制御)
-	PlatformStart_1,	//ホーム区始端
-	PlatformStart_2,	//ホーム区始端
-	PlatformEnd_1,	//ホーム区終端
-	PlatformEnd_2,	//ホーム区終端
+	PlatformStart,	//ホーム区始端
+	PlatformEnd,	//ホーム区終端
 	LocationCorrection,	//R-ATC距離補正
-	PreTrainDistance_1,	//先行列車位置更新
-	PreTrainDistance_2,	//先行列車位置更新
-	PreTrainDistance_3,	//先行列車位置更新
-	PreTrainDistance_4,	//先行列車位置更新
-	PreTrainDistance_5,	//先行列車位置更新
-	PreTrainTime_1,	//先行列車時刻更新
-	PreTrainTime_2,	//先行列車時刻更新
-	PreTrainTime_3,	//先行列車時刻更新
-	PreTrainTime_4,	//先行列車時刻更新
-	PreTrainTime_5,	//先行列車時刻更新
+	PreTrainDistance,	//先行列車位置更新
+	PreTrainTime,	//先行列車時刻更新
 	Set2StepPattern,	//2段パターン設定
 
 

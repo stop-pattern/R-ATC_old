@@ -7,30 +7,8 @@
 #include "../header/define.h"
 
 
-class R_ATC {
-	int stat;	//ATCstatus
-
-	bool P;	//P接近
-	bool Bell;	//ATCベル
-
-	double StopLimit;	//停止限界残距離
-
-	double Limit;	//制限速度[km/h]
-	double Location;	//過走限界[m]
-
-
-
-	double target;	//目標
-	double pattern_speed[2];	//P接近速度
-	//double pattern_brake;	//���e�ō����x
-	double notice_dist;	//P接近距離
-	double brake_speed[11];	//B開始速度記録
-
-	//先行列車
-	std::vector<int> PreTrain_Time;	//時刻
-	std::vector<int> PreTrain_Distance;	//距離
-
-
+class c_R_ATC {
+private:
 	class Pattern {
 	public:
 		double Limit;	//制限速度[km/h] <=ATC現示値(=P_Speed
@@ -60,6 +38,23 @@ class R_ATC {
 		double c;	//先行計算用線形回帰パラメーター
 	};
 
+public:
+
+	enum stat {
+		off = 0,
+		on = 1,
+		inside = 2,
+		outside = 3,
+	};
+	enum pattern_name {
+		PreTrain,	//先行列車連動P
+		Step2,	//防護2段パターン
+		Crossing,	//踏切防護P
+		Route,	//路線依存P（曲線速度制限）
+		pattern_number	//P総数
+	};
+
+
 	void load();	//consractor
 	void Status(State, int *, int *);	//ATC状態管理
 	void Calc(State, int *, int *);	//パラメーター算出
@@ -68,12 +63,33 @@ class R_ATC {
 	void setout(void);	//出力値設定
 
 
-	enum stat {
-		off = 0,
-		on = 1,
-		inside = 2,
-		outside = 3,
-	};
+	Pattern* patterns[pattern_name::pattern_number];
+
+	int stat;	//ATCstatus
+
+	bool P;	//P接近
+	bool Bell;	//ATCベル
+
+	double StopLimit;	//停止限界残距離
+
+	double Limit;	//制限速度[km/h]
+	double Location;	//過走限界[m]
+
+
+	double target;	//目標
+	double pattern_speed[2];	//P接近速度
+	//double pattern_brake;	//���e�ō����x
+	double notice_dist;	//P接近距離
+	double brake_speed[11];	//B開始速度記録
+
+	//先行列車
+	std::vector<int> PreTrain_Time;	//時刻
+	std::vector<int> PreTrain_Distance;	//距離
+
+	//路線情報
+	std::vector<int> PlatformStart;	//ホーム区始端
+	std::vector<int> PlatformEnd;	//ホーム区終端
+
 };
 
 

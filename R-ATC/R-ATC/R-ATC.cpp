@@ -12,17 +12,14 @@ extern int ATCstatus;
 
 
 
-//define
-
-void R_ATC::load() {
-	Pattern PreTrain(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //先行列車連動P
-	Pattern Step2(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //2段P
-	Pattern Crossing(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);    //踏切防護P
-	Pattern Route(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);   //路線依存P（曲線速度制限）
+void c_R_ATC::load() {
+	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
+	}
 }
 
 
-void R_ATC::Status(State S, int * panel, int * sound) {	//ATC動作
+void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 	bool x = 0;
 
 	if (ATCstatus == ATC_status::R__ATC) {
@@ -92,31 +89,11 @@ void R_ATC::Status(State S, int * panel, int * sound) {	//ATC動作
 }
 
 
+void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
-void R_ATC::Calc(State S, int * panel, int * sound) {
-	//先行列車
-	PreTrain.calc(S, panel, sound);
-
-
-	//2段パターン
-	Step2.calc(S, panel, sound);
-
-
-	//踏切
-	Crossing.calc(S, panel, sound);
-
-
-	//路線
-	Route.calc(S, panel, sound);
-}
-
-
-void R_ATC::Control(State S, int * panel, int * sound) {	//ATC判定
-
-	PreTrain.calc(S, panel, sound);
-	Step2.calc(S, panel, sound);
-	Route.calc(S, panel, sound);
-	Crossing.calc(S, panel, sound);
+	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+		patterns[i]->calc(S, panel, sound);
+	}
 
 	setout();
 
@@ -168,38 +145,23 @@ void R_ATC::Control(State S, int * panel, int * sound) {	//ATC判定
 }
 
 
-bool R_ATC::Update(State S, R_ATC::Pattern pat) {
+bool c_R_ATC::Update(State S, c_R_ATC::Pattern pat) {
 	if (S.Z > pat.target_Location) {
 		return false;
 	}
 	return false;
 }
 
-void R_ATC::setout(void) {
+void c_R_ATC::setout(void) {
 	double Limit;	//制限速度[km/h] <=ATC現示値
 	double Location = DBL_MAX;	//停止限界[m]
 	double StopLimit;	//停止限界残距離[m]
-	Pattern * pat;
+	Pattern* pat;
 
 	int cnt;
-	for (size_t i = 0; i < 4; i++) {
-		switch (i) {
-		case 0:
-			pat = &PreTrain;
-			break;
-		case 1:
-			pat = &Step2;
-			break;
-		case 2:
-			pat = &Crossing;
-			break;
-		case 4:
-			pat = &Route;
-			break;
-		default:
-			pat = nullptr;
-			break;
-		}
+
+	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+		pat = patterns[i];
 
 		if (Location < pat->target_Location) {
 			Location = pat->target_Location;
@@ -208,22 +170,18 @@ void R_ATC::setout(void) {
 
 			cnt = i;
 		}
-		if (i = 4) {
-			if (1) 0;
-
-		}
 	}
 	//処理
 }
 
 
-R_ATC::Pattern::Pattern(double P, double B, double E) {
+c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 	P_deceleration = P;
 	B_deceleration = B;
 	E_deceleration = E;
 }
 
-void R_ATC::Pattern::calc(State S, int * panel, int * sound) {
+void c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
 	this->StopLimit = this->target - S.Z;
 	sqrt(this->StopLimit * B_deceleration) < this->target_Speed ? P_Speed = sqrt(this->StopLimit * B_deceleration) : P_Speed = this->target_Speed;
 	sqrt(this->StopLimit * E_deceleration) < this->target_Speed ? B_Speed = sqrt(this->StopLimit * E_deceleration) : B_Speed = this->target_Speed;
@@ -232,13 +190,13 @@ void R_ATC::Pattern::calc(State S, int * panel, int * sound) {
 
 	this->StopLimit = S.Z - this->target_Location;	//停止限界更新
 
-	if (this->useage = true) {	//線形回帰計算
+	if (this->useage == true) {	//線形回帰計算
 		this->target_Location = S.T * this->a + this->b;
 		this->target_Speed;
 	}
 }
 
-void R_ATC::Pattern::out(State S, int * panel, int * sound) {
+void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	if (S.V > P_Speed) {
 		panel[ATC_Panel::pattern] = true;
 		if (S.V > B_Speed) {
@@ -269,11 +227,11 @@ void R_ATC::Pattern::out(State S, int * panel, int * sound) {
 	else panel[ATC_Panel::ATCbrake] = false;
 }
 
-double R_ATC::Pattern::jadge(void) {
+double c_R_ATC::Pattern::jadge(void) {
 	return param;
 }
 
-void R_ATC::Pattern::SetBeaconData(int location, int speed) {
+void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Location = Stat.Z + location;
 	target_Speed = speed;
 }
