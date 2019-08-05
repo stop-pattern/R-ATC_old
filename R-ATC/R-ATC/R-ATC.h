@@ -33,9 +33,6 @@ private:
 		double P_deceleration;	//P接近減速定数
 		double B_deceleration;	//B動作減速定数
 		double E_deceleration;	//EB動作減速定数
-		double a;	//先行計算用線形回帰パラメーター
-		double b;	//先行計算用線形回帰パラメーター
-		double c;	//先行計算用線形回帰パラメーター
 	};
 
 public:
