@@ -12,9 +12,9 @@ private:
 	class Pattern {
 	public:
 		//double Limit;	//制限速度[km/h] <=ATC現示値(=P_Speed
-		double target;	//停止限界[m] <=距離程
-		double StopLimit;	//停止限界残距離[m] <=毎フレーム更新値
-		double target_Speed;	//目標速度[km/h] <=入力値(固定)
+		double target = 0;	//停止限界[m] <=距離程
+		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
+		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
 		double target_Location;	//目標距離程[m] <=入力値(固定)
 		double P_Speed;	//P接近速度
 		double B_Speed;	//B動作速度
@@ -23,10 +23,8 @@ private:
 		//double B_Location;	//B動作距離
 		//double E_Location;	//EB動作距離
 		Pattern(double, double, double);
-		void calc(State, int *, int *);
+		int calc(State, int *, int *);
 		void out(State, int *, int *);
-		bool useage;	//線形回帰判別
-		double jadge(void);	//P制御採用判定
 		void SetBeaconData(int, int);
 	private:
 		double P_deceleration;	//P接近減速定数
@@ -56,7 +54,6 @@ public:
 	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int *, int *);	//ATC制御
 	bool Update(State, Pattern);	//P更新・判定
-	void SetOut(void);	//出力値設定
 
 
 	Pattern* patterns[pattern_name::pattern_number];
