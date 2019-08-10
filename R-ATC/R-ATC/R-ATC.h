@@ -15,11 +15,11 @@ private:
 		double target = 0;	//停止限界[m] <=距離程
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
 		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
-		double target_Location;	//目標距離程[m] <=入力値(固定)
-		double P_Speed;	//P接近速度
-		double B_Speed;	//B動作速度
-		double E_Speed;	//EB動作速度
-		double P_Location;	//P接近距離
+		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
+		double P_Speed = DBL_MAX;	//P接近速度
+		double B_Speed = DBL_MAX;	//B動作速度
+		double E_Speed = DBL_MAX;	//EB動作速度
+		double P_Location = DBL_MAX;	//P接近距離
 		//double B_Location;	//B動作距離
 		//double E_Location;	//EB動作距離
 		Pattern(double, double, double);
@@ -53,7 +53,7 @@ public:
 	void Status(State, int *, int *);	//ATC状態管理
 	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int *, int *);	//ATC制御
-	bool Update(State, Pattern);	//P更新・判定
+	bool Update(State, c_R_ATC::Pattern);	//P更新・判定
 
 
 	Pattern* patterns[pattern_name::pattern_number];
