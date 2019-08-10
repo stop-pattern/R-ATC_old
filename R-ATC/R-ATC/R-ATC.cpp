@@ -154,21 +154,23 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 
 void c_R_ATC::Interpolation() {
-	int pram[2][2];	//index
-	for (size_t i = 0; i < PreTrain_Time.size(); i++) {
-		if (PreTrain_Time[i] > Stat.T) {	//現在時刻直後を検知
-			for (size_t j = 0; j < 2; j++) {
-				pram[0][j] = PreTrain_Time[i - 1 + j];	//現在時刻直前後の時刻を抽出
-				pram[1][j] = PreTrain_Distance[i - 1 + j];	//現在時刻直前後の距離を抽出
+	if (PreTrain_Time.size() > 2 && PreTrain_Distance.size() > 2) {
+		int pram[2][2];	//index
+		for (size_t i = 0; i < PreTrain_Time.size(); i++) {
+			if (PreTrain_Time[i] > Stat.T) {	//現在時刻直後を検知
+				for (size_t j = 0; j < 2; j++) {
+					pram[0][j] = PreTrain_Time[i - 1 + j];	//現在時刻直前後の時刻を抽出
+					pram[1][j] = PreTrain_Distance[i - 1 + j];	//現在時刻直前後の距離を抽出
+				}
 			}
+			else return;
 		}
-		else return;
+		//距離設定
+		if ((pram[0][1] - pram[0][0]) > 0) {
+			patterns[pattern_name::PreTrain]->target_Location = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
+		}
+		else patterns[pattern_name::PreTrain]->target_Location = DBL_MAX;
 	}
-	//距離設定
-	if ((pram[0][1] - pram[0][0]) > 0) {
-	patterns[pattern_name::PreTrain]->target_Location = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
-	}
-	else patterns[pattern_name::PreTrain]->target_Location = DBL_MAX;
 	return;
 }
 
@@ -190,10 +192,10 @@ c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 
 int c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
 	if (this->target - S.Z <= 0) {
-	this->StopLimit = this->target - S.Z;
-	sqrt(this->StopLimit * B_deceleration) < this->target_Speed ? P_Speed = sqrt(this->StopLimit * B_deceleration) : P_Speed = this->target_Speed;
-	sqrt(this->StopLimit * E_deceleration) < this->target_Speed ? B_Speed = sqrt(this->StopLimit * E_deceleration) : B_Speed = this->target_Speed;
-	P_Location = S.V / 1000 * NOTICE_TIME / 60 / 60;
+		this->StopLimit = this->target - S.Z;
+		sqrt(this->StopLimit * B_deceleration) < this->target_Speed ? P_Speed = sqrt(this->StopLimit * B_deceleration) : P_Speed = this->target_Speed;
+		sqrt(this->StopLimit * E_deceleration) < this->target_Speed ? B_Speed = sqrt(this->StopLimit * E_deceleration) : B_Speed = this->target_Speed;
+		P_Location = S.V / 1000 * NOTICE_TIME / 60 / 60;
 	}
 	else {
 		this->StopLimit = DBL_MAX;
