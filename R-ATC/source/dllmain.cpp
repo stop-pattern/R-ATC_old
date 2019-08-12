@@ -101,7 +101,7 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	p[93] = abs(S.I);	//test
 
 	//ユニット
-	if (S.I = 0)
+	if (S.I == 0)
 	{
 		p[105] = 0;
 		p[106] = 0;
