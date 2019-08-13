@@ -38,7 +38,7 @@ private:
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
 	public:
 		int calc(State);	//メイン演算
-		void out(State, int*, int*);	//出力s
+		void out(State, int*, int*);	//出力
 		void SetTarget(int);
 		void SetTarget(float);
 		void SetTarget(double);
