@@ -100,18 +100,19 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 	if (stat != stat::off) {
 
-		//過走限界
-		int num;
-		double lim;
-		for (size_t i = 0; i < this->limit_name::number; i++) {
-			double buf = this->limits[i]->calc(S);
-			if (lim > buf) {
-				lim = buf;	//最も手前を選択
-				num = i;
+		{	//過走限界
+			int num;
+			double lim;
+			for (size_t i = 0; i < this->limit_name::number; i++) {
+				double buf = this->limits[i]->calc(S);
+				if (lim > buf) {
+					lim = buf;	//最も手前を選択
+					num = i;
+				}
 			}
+			//出力
+			this->limits[num]->out(S, panel, sound);
 		}
-		//過走限界出力
-		this->limits[num]->out(S, panel, sound);
 
 
 		/*	//変数設定
