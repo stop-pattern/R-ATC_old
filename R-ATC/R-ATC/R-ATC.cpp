@@ -100,6 +100,21 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 	if (stat != stat::off) {
 
+		{	//過走限界
+			int num;
+			double lim;
+			for (size_t i = 0; i < this->limit_name::number; i++) {
+				double buf = this->limits[i]->calc(S);
+				if (lim > buf) {
+					lim = buf;	//最も手前を選択
+					num = i;
+				}
+			}
+			//出力
+			this->limits[num]->out(S, panel, sound);
+		}
+
+
 		/*	//変数設定
 		target = Location[param::P_pretrain] - S.Z;
 		sqrt(target * DECELERATION_BRAKE) < Limit[param::P_pretrain] ? pattern_speed[0] = sqrt(target * DECELERATION_BRAKE) : pattern_speed[0] = Limit[param::P_pretrain];
@@ -139,7 +154,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 		panel[ATC_Panel::Limit_1] = int(pattern_speed[0]);
 		int(pattern_speed[0]) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(pattern_speed[0] / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(pattern_speed[0] / 10) * 10;
 	}
-	else {
+	else {	//ATC切
 		panel[ATC_Panel::pattern] = false;
 		panel[ATC_Panel::ATCbrake] = false;
 	}
@@ -193,12 +208,7 @@ int c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
 
 
 	this->StopLimit = S.Z - this->target_Location;	//停止限界更新
-	
-/*
-	if (this->useage == true) {	//線形回帰計算
-		this->target_Location = S.T * this->a + this->b;
-		this->target_Speed;
-	}*/
+
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
@@ -231,12 +241,30 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	}
 	else panel[ATC_Panel::ATCbrake] = false;
 }
-/*
-double c_R_ATC::Pattern::jadge(void) {
-	return param;
-}*/
 
 void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Location = Stat.Z + location;
 	target_Speed = speed;
+}
+
+
+int c_R_ATC::Limit::calc(State S) {
+	this->StopLimit = this->Target - S.Z;
+	return this->StopLimit;
+}
+
+void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
+	panel[ATC_Panel::StopLimit_1] = static_cast<int>(this->StopLimit * 10) % 100;
+	panel[ATC_Panel::StopLimit_100] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 100 % 100);
+	panel[ATC_Panel::StopLimit_10000] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 10000 % 100);
+}
+
+void c_R_ATC::Limit::SetTarget(int arg) {
+	this->Target = arg;
+}
+void c_R_ATC::Limit::SetTarget(float arg) {
+	this->Target = arg;
+}
+void c_R_ATC::Limit::SetTarget(double arg) {
+	this->Target = arg;
 }
