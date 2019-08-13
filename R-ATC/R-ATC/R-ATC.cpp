@@ -100,6 +100,16 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 	if (stat != stat::off) {
 
+		//過走限界
+		double lim;
+		for (size_t i = 0; i < this->limit_name::number; i++) {
+			double buf = this->limits[i]->calc(S, panel, sound);
+			if (buf > S.Z && lim > buf) {
+				lim = buf;	// (現在位置より奥 && 最も手前) を選択
+			}
+		}
+
+
 		/*	//変数設定
 		target = Location[param::P_pretrain] - S.Z;
 		sqrt(target * DECELERATION_BRAKE) < Limit[param::P_pretrain] ? pattern_speed[0] = sqrt(target * DECELERATION_BRAKE) : pattern_speed[0] = Limit[param::P_pretrain];
@@ -139,7 +149,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 		panel[ATC_Panel::Limit_1] = int(pattern_speed[0]);
 		int(pattern_speed[0]) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(pattern_speed[0] / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(pattern_speed[0] / 10) * 10;
 	}
-	else {
+	else {	//ATC切
 		panel[ATC_Panel::pattern] = false;
 		panel[ATC_Panel::ATCbrake] = false;
 	}
@@ -230,4 +240,11 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Location = Stat.Z + location;
 	target_Speed = speed;
+}
+
+c_R_ATC::Limit::Limit() {
+}
+
+int c_R_ATC::Limit::calc(State, int*, int*) {
+	return this->target_Location;
 }

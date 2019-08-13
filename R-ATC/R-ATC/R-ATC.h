@@ -34,12 +34,11 @@ private:
 
 	class Limit {
 	public:
-		//double Limit;	//制限速度[km/h] <=ATC現示値(=P_Speed
 		double target = 0;	//停止限界[m] <=距離程
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
-		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
 		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
-		int calc(State, int*, int*);
+		Limit();
+		int calc(State, int*, int*);	//メイン演算
 		void out(State, int*, int*);
 		void SetBeaconData(int, int);
 	};
