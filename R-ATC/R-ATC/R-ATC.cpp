@@ -14,7 +14,7 @@ extern int ATCstatus;
 
 
 void c_R_ATC::Load() {
-	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+	for (size_t i = 0; i < pattern_name::number; i++) {
 		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
 	}
 }
@@ -97,7 +97,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 	//パターン判定
 	long dis = LONG_MAX;
-	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+	for (size_t i = 0; i < pattern_name::number; i++) {
 		//最近停目探索
 		int z = patterns[i]->calc(S, panel, sound);
 		if (dis > z) {
@@ -105,7 +105,24 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 		}
 	}
 
+	SetOut();
+
 	if (stat != stat::off) {
+
+		{	//過走限界
+			int num;
+			double lim;
+			for (size_t i = 0; i < this->limit_name::number; i++) {
+				double buf = this->limits[i]->calc(S);
+				if (lim > buf) {
+					lim = buf;	//最も手前を選択
+					num = i;
+				}
+			}
+			//出力
+			this->limits[num]->out(S, panel, sound);
+		}
+
 
 		/*	//変数設定
 		target = Location[param::P_pretrain] - S.Z;
@@ -146,7 +163,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 		panel[ATC_Panel::Limit_1] = int(pattern_speed[0]);
 		int(pattern_speed[0]) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(pattern_speed[0] / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(pattern_speed[0] / 10) * 10;
 	}
-	else {
+	else {	//ATC切
 		panel[ATC_Panel::pattern] = false;
 		panel[ATC_Panel::ATCbrake] = false;
 	}
@@ -180,6 +197,28 @@ bool c_R_ATC::Update(State S, c_R_ATC::Pattern pat) {
 		return false;
 	}
 	return false;
+}
+
+void c_R_ATC::SetOut(void) {
+	double Limit;	//制限速度[km/h] <=ATC現示値
+	double Location = DBL_MAX;	//停止限界[m]
+	double StopLimit;	//停止限界残距離[m]
+	Pattern* pat;
+
+	int cnt;
+
+	for (size_t i = 0; i < pattern_name::number; i++) {
+		pat = patterns[i];
+
+		if (Location < pat->target_Location) {
+			Location = pat->target_Location;
+			StopLimit = ::distance - pat->StopLimit;
+			pat->B_Speed < ATC_MAX ? Limit = ATC_MAX : Limit = pat->B_Speed;
+
+			cnt = i;
+		}
+	}
+	//処理
 }
 
 
@@ -238,8 +277,29 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	else panel[ATC_Panel::ATCbrake] = false;
 }
 
-
 void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Location = Stat.Z + location;
 	target_Speed = speed;
+}
+
+
+int c_R_ATC::Limit::calc(State S) {
+	this->StopLimit = this->Target - S.Z;
+	return this->StopLimit;
+}
+
+void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
+	panel[ATC_Panel::StopLimit_1] = static_cast<int>(this->StopLimit * 10) % 100;
+	panel[ATC_Panel::StopLimit_100] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 100 % 100);
+	panel[ATC_Panel::StopLimit_10000] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 10000 % 100);
+}
+
+void c_R_ATC::Limit::SetTarget(int arg) {
+	this->Target = arg;
+}
+void c_R_ATC::Limit::SetTarget(float arg) {
+	this->Target = arg;
+}
+void c_R_ATC::Limit::SetTarget(double arg) {
+	this->Target = arg;
 }
