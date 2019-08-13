@@ -45,7 +45,6 @@ private:
 		double P_Location = DBL_MAX;	//P接近距離
 		//double B_Location;	//B動作距離
 		//double E_Location;	//EB動作距離
-		Pattern(double, double, double);
 		int calc(State, int*, int*);
 		void out(State, int*, int*);
 		void SetBeaconData(int, int);
@@ -80,6 +79,7 @@ public:
 
 
 	void Load();	//consractor
+	void SetOut();
 	void Status(State, int*, int*);	//ATC状態管理
 	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int*, int*);	//ATC制御

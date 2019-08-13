@@ -14,7 +14,7 @@ extern int ATCstatus;
 
 
 void c_R_ATC::Load() {
-	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+	for (size_t i = 0; i < pattern_name::number; i++) {
 		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
 	}
 }
@@ -92,7 +92,7 @@ void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 
 void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
-	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+	for (size_t i = 0; i < pattern_name::number; i++) {
 		patterns[i]->calc(S, panel, sound);
 	}
 
@@ -161,7 +161,7 @@ void c_R_ATC::SetOut(void) {
 
 	int cnt;
 
-	for (size_t i = 0; i < pattern_name::pattern_number; i++) {
+	for (size_t i = 0; i < pattern_name::number; i++) {
 		pat = patterns[i];
 
 		if (Location < pat->target_Location) {
@@ -185,7 +185,7 @@ c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 	E_deceleration = E;
 }
 
-void c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
+int c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
 	this->StopLimit = this->target - S.Z;
 	sqrt(this->StopLimit * B_deceleration) < this->target_Speed ? P_Speed = sqrt(this->StopLimit * B_deceleration) : P_Speed = this->target_Speed;
 	sqrt(this->StopLimit * E_deceleration) < this->target_Speed ? B_Speed = sqrt(this->StopLimit * E_deceleration) : B_Speed = this->target_Speed;
@@ -193,11 +193,12 @@ void c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
 
 
 	this->StopLimit = S.Z - this->target_Location;	//停止限界更新
-
+	
+/*
 	if (this->useage == true) {	//線形回帰計算
 		this->target_Location = S.T * this->a + this->b;
 		this->target_Speed;
-	}
+	}*/
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
@@ -230,10 +231,10 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	}
 	else panel[ATC_Panel::ATCbrake] = false;
 }
-
+/*
 double c_R_ATC::Pattern::jadge(void) {
 	return param;
-}
+}*/
 
 void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Location = Stat.Z + location;
