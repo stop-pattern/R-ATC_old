@@ -248,9 +248,18 @@ void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Speed = speed;
 }
 
-c_R_ATC::Limit::Limit() {
+
+int c_R_ATC::Limit::calc(State S, int* panel, int* sound) {
+	this->StopLimit = this->Target - S.Z;
+	return this->StopLimit;
 }
 
-int c_R_ATC::Limit::calc(State, int*, int*) {
-	return this->target_Location;
+void c_R_ATC::Limit::SetTarget(int arg) {
+	this->Target = arg;
+}
+void c_R_ATC::Limit::SetTarget(float arg) {
+	this->Target = arg;
+}
+void c_R_ATC::Limit::SetTarget(double arg) {
+	this->Target = arg;
 }

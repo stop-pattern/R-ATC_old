@@ -33,14 +33,14 @@ private:
 	};
 
 	class Limit {
-	public:
-		double target = 0;	//停止限界[m] <=距離程
+	private:
+		double Target = 0;	//停止限界[m] <=距離程 <=入力値(固定)
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
-		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
-		Limit();
+	public:
 		int calc(State, int*, int*);	//メイン演算
-		void out(State, int*, int*);
-		void SetBeaconData(int, int);
+		void SetTarget(int);
+		void SetTarget(float);
+		void SetTarget(double);
 	};
 
 public:
