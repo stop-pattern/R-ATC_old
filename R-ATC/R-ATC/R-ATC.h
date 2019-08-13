@@ -37,7 +37,8 @@ private:
 		double Target = 0;	//停止限界[m] <=距離程 <=入力値(固定)
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
 	public:
-		int calc(State, int*, int*);	//メイン演算
+		int calc(State);	//メイン演算
+		void out(State, int*, int*);	//出力s
 		void SetTarget(int);
 		void SetTarget(float);
 		void SetTarget(double);
