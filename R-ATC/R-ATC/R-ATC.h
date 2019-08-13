@@ -23,25 +23,18 @@ private:
 		//double B_Location;	//B動作距離
 		//double E_Location;	//EB動作距離
 		Pattern(double, double, double);
-		int calc(State, int*, int*);
+		void calc(State, int*, int*);
 		void out(State, int*, int*);
+		bool useage;	//線形回帰判別
+		double jadge(void);	//P制御採用判定
 		void SetBeaconData(int, int);
 	private:
 		double P_deceleration;	//P接近減速定数
 		double B_deceleration;	//B動作減速定数
 		double E_deceleration;	//EB動作減速定数
-	};
-
-	class Limit {
-	private:
-		double Target = 0;	//停止限界[m] <=距離程 <=入力値(固定)
-		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
-	public:
-		int calc(State);	//メイン演算
-		void out(State, int*, int*);	//出力
-		void SetTarget(int);
-		void SetTarget(float);
-		void SetTarget(double);
+		double a;	//先行計算用線形回帰パラメーター
+		double b;	//先行計算用線形回帰パラメーター
+		double c;	//先行計算用線形回帰パラメーター
 	};
 
 public:
@@ -68,10 +61,11 @@ public:
 
 
 	void Load();	//consractor
-	void SetOut();
-	void Status(State, int*, int*);	//ATC状態管理
-	void Control(State, int*, int*);	//ATC制御
-	bool Update(State, c_R_ATC::Pattern);	//P更新・判定
+	void Status(State, int *, int *);	//ATC状態管理
+	void Interpolation();	//パラメーター算出
+	void Control(State, int *, int *);	//ATC制御
+	bool Update(State, Pattern);	//P更新・判定
+	void SetOut(void);	//出力値設定
 
 
 	Pattern* patterns[pattern_name::number];	//照査速度パターン制御
