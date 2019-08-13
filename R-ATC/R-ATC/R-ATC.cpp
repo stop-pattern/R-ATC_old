@@ -101,13 +101,19 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	if (stat != stat::off) {
 
 		//過走限界
+		int num;
 		double lim;
 		for (size_t i = 0; i < this->limit_name::number; i++) {
 			double buf = this->limits[i]->calc(S, panel, sound);
-			if (buf > S.Z && lim > buf) {
-				lim = buf;	// (現在位置より奥 && 最も手前) を選択
+			if (lim > buf) {
+				lim = buf;	//最も手前を選択
+				num = i;
 			}
 		}
+		//過走限界出力
+		panel[ATC_Panel::StopLimit_1] = static_cast<int>(lim * 10) % 100;
+		panel[ATC_Panel::StopLimit_100] = static_cast<int>(static_cast<int>(lim * 10) / 100 % 100);
+		panel[ATC_Panel::StopLimit_10000] = static_cast<int>(static_cast<int>(lim * 10) / 10000 % 100);
 
 
 		/*	//変数設定
