@@ -22,6 +22,9 @@
     <Filter Include="ATC-10">
       <UniqueIdentifier>{0908771a-a834-4b21-a2b8-d7d1f668b9ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EffectiveDigit">
+      <UniqueIdentifier>{d095cbea-850a-43eb-891b-44831e8addd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Header.h">
@@ -48,6 +51,9 @@
     <ClInclude Include="resource\resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
+    <ClInclude Include="EffectiveDigit\EffectiveDigit.h">
+      <Filter>EffectiveDigit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dllmain.cpp">
@@ -67,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="ATC-10\ATC-10.cpp">
       <Filter>ATC-10</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectiveDigit\EffectiveDigit.cpp">
+      <Filter>EffectiveDigit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

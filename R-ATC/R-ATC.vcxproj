@@ -116,6 +116,7 @@
   <ItemGroup>
     <ClInclude Include="ATC-10\ATC-10.h" />
     <ClInclude Include="ATC-6\ATC-6.h" />
+    <ClInclude Include="EffectiveDigit\EffectiveDigit.h" />
     <ClInclude Include="header\ats.h" />
     <ClInclude Include="header\define.h" />
     <ClInclude Include="header\Header.h" />
@@ -126,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="ATC-10\ATC-10.cpp" />
     <ClCompile Include="ATC-6\ATC-6.cpp" />
+    <ClCompile Include="EffectiveDigit\EffectiveDigit.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\Function.cpp" />
     <ClCompile Include="source\Header.cpp" />
