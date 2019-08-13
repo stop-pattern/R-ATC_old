@@ -12,16 +12,12 @@ private:
 	class Pattern {
 	public:
 		//double Limit;	//制限速度[km/h] <=ATC現示値(=P_Speed
-		double target = 0;	//停止限界[m] <=距離程
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値
 		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
 		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
 		double P_Speed = DBL_MAX;	//P接近速度
 		double B_Speed = DBL_MAX;	//B動作速度
 		double E_Speed = DBL_MAX;	//EB動作速度
-		double P_Location = DBL_MAX;	//P接近距離
-		//double B_Location;	//B動作距離
-		//double E_Location;	//EB動作距離
 		Pattern(double, double, double);
 		int calc(State, int*, int*);
 		void out(State, int*, int*);
