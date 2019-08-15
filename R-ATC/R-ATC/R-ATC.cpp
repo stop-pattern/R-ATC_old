@@ -100,7 +100,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	long dis = LONG_MAX;
 	for (size_t i = 0; i < pattern_name::number; i++) {
 		//最近停目探索
-		int z = patterns[i]->calc(S, panel, sound);
+		int z = patterns[i]->calc(S);
 		if (dis > z) {
 			dis = z;
 		}
@@ -108,21 +108,35 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 
 	if (stat != stat::off) {
+		{
+			int num;	//インデックス格納
 
-		{	//過走限界
-			int num;
-			double lim;
-			for (size_t i = 0; i < this->limit_name::number; i++) {
-				double buf = this->limits[i]->calc(S);
-				if (lim > buf) {
-					lim = buf;	//最も手前を選択
-					num = i;
+			{	//過走限界
+				double lim;
+				for (size_t i = 0; i < this->limit_name::number; i++) {
+					double buf = this->limits[i]->calc(S);
+					if (lim > buf) {
+						lim = buf;	//最も手前を選択
+						num = i;
+					}
 				}
+				//出力
+				this->limits[num]->out(S, panel, sound);
 			}
-			//出力
-			this->limits[num]->out(S, panel, sound);
-		}
 
+			{	//ATC P現示
+				double lim = this->patterns[num]->calc(S);
+				for (size_t i = this->limit_name::number; i < this->pattern_name::number; i++) {
+					double buf = this->patterns[i]->calc(S);
+					if (lim > buf) {
+						lim = buf;	//最低を選択
+						num = i;
+					}
+				}
+				//出力
+				this->patterns[num]->out(S, panel, sound);
+			}
+		}
 
 		/*	//変数設定
 		target = Location[param::P_pretrain] - S.Z;
@@ -186,6 +200,7 @@ void c_R_ATC::Interpolation() {
 		if ((pram[0][1] - pram[0][0]) > 0) {
 			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
 			limits[limit_name::PreTrain]->SetTarget(temp);
+			patterns[pattern_name::PreTrain]->target_Location = temp;
 		}
 		else limits[limit_name::PreTrain]->SetTarget(DBL_MAX);
 	}
@@ -201,31 +216,23 @@ c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 	E_deceleration = E;
 }
 
-int c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
-	if (this->target - S.Z <= 0) {
-		this->StopLimit = this->target - S.Z;
-		sqrt(this->StopLimit * B_deceleration) < this->target_Speed ? P_Speed = sqrt(this->StopLimit * B_deceleration) : P_Speed = this->target_Speed;
-		sqrt(this->StopLimit * E_deceleration) < this->target_Speed ? B_Speed = sqrt(this->StopLimit * E_deceleration) : B_Speed = this->target_Speed;
-		P_Location = S.V / 1000 * NOTICE_TIME / 60 / 60;
+int c_R_ATC::Pattern::calc(State S) {
+	if (S.Z < this->target_Location) {
+		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
 	}
-	else {
-		this->StopLimit = DBL_MAX;
-		P_Location = INT_MAX;
-	}
+	else this->Limit = DBL_MAX;
 
-	this->StopLimit = S.Z - this->target_Location;	//停止限界更新
-
-	return this->StopLimit;
+	return this->Limit;
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
-	if (S.V > P_Speed) {
-		panel[ATC_Panel::pattern] = true;
-		if (S.V > B_Speed) {
-			panel[ATC_Panel::ATCbrake] = true;
+	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
+		panel[ATC_Panel::pattern] = true;	//P接近
+		if (S.V > this->Limit) {
+			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			handle.B = specific.B;
-			if (S.V > E_Speed) {
-				panel[ATC_Panel::ATCemr] = true;
+			if (S.V > sqrt(this->E_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
+				panel[ATC_Panel::ATCemr] = true;	//EB動作
 				handle.B = specific.E;
 			}
 			else panel[ATC_Panel::ATCemr] = false;
@@ -234,19 +241,18 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	}
 	else panel[ATC_Panel::pattern] = false;
 
+	//ATC針1刻み
+	panel[ATC_Panel::Limit_1] = int(this->Limit);
+	//ATC針5刻み
+	panel[ATC_Panel::Limit_5] = int(this->Limit) % 10 > 5.0 ? (static_cast<int>(this->Limit / 10) + 1) * 10 : static_cast<int>(this->Limit / 10) * 10;
+}
 
-	if (S.Z > P_Location) panel[ATC_Panel::pattern] = true;
-	else panel[ATC_Panel::pattern] = false;
-	if (S.V > B_Speed) {
-		panel[ATC_Panel::ATCbrake] = true;
-		handle.B = specific.B;
-		if (S.V > E_Speed) {
-			panel[ATC_Panel::ATCemr] = true;
-			handle.B = specific.E;
-		}
-		else panel[ATC_Panel::ATCemr] = false;
-	}
-	else panel[ATC_Panel::ATCbrake] = false;
+void c_R_ATC::Pattern::setSpeed(int arg) {
+	this->target_Speed = arg;
+}
+
+void c_R_ATC::Pattern::setLocation(double arg) {
+	this->target_Location = arg;
 }
 
 void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
