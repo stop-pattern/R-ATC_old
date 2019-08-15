@@ -68,11 +68,9 @@ public:
 
 
 	void Load();	//consractor
-	void SetOut();
 	void Status(State, int *, int *);	//ATC状態管理
 	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int *, int *);	//ATC制御
-	bool Update(State, c_R_ATC::Pattern);	//P更新・判定
 
 
 	Pattern* patterns[pattern_name::number];	//照査速度パターン制御

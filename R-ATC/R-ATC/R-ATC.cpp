@@ -194,36 +194,6 @@ void c_R_ATC::Interpolation() {
 }
 
 
-bool c_R_ATC::Update(State S, c_R_ATC::Pattern pat) {
-	if (S.Z > pat.target_Location) {
-		return false;
-	}
-	return false;
-}
-
-void c_R_ATC::SetOut(void) {
-	double Limit;	//制限速度[km/h] <=ATC現示値
-	double Location = DBL_MAX;	//停止限界[m]
-	double StopLimit;	//停止限界残距離[m]
-	Pattern* pat;
-
-	int cnt;
-
-	for (size_t i = 0; i < pattern_name::number; i++) {
-		pat = patterns[i];
-
-		if (Location < pat->target_Location) {
-			Location = pat->target_Location;
-			StopLimit = ::distance - pat->StopLimit;
-			pat->B_Speed < ATC_MAX ? Limit = ATC_MAX : Limit = pat->B_Speed;
-
-			cnt = i;
-		}
-	}
-	//処理
-}
-
-
 /* ----- Pattern ----- */
 
 c_R_ATC::Pattern::Pattern(double P, double B, double E) {
