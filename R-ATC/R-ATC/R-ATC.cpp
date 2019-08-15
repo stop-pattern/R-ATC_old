@@ -12,6 +12,7 @@ extern int signal;
 extern int ATCstatus;
 
 
+/* ===== c_R_ATC ===== */
 
 void c_R_ATC::Load() {
 	for (size_t i = 0; i < pattern_name::number; i++) {
@@ -223,6 +224,7 @@ void c_R_ATC::SetOut(void) {
 }
 
 
+/* ----- Pattern ----- */
 
 c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 	P_deceleration = P;
@@ -283,6 +285,8 @@ void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Speed = speed;
 }
 
+
+/* ----- Limit ----- */
 
 int c_R_ATC::Limit::calc(State S) {
 	this->StopLimit = this->Target - S.Z;
