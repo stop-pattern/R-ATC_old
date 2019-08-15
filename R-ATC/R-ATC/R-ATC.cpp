@@ -15,7 +15,7 @@ extern int ATCstatus;
 /* ===== c_R_ATC ===== */
 
 void c_R_ATC::Load() {
-	for (size_t i = 0; i < pattern_name::number; i++) {
+	for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
 		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
 	}
 }
@@ -27,18 +27,18 @@ void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 
 	if (ATCstatus == ATC_status::R__ATC) {
 		switch (stat) {
-		case stat::off:
+		case static_cast<int>(stat::off):
 			panel[ATC_Panel::ATC] = false;
 			panel[ATC_Panel::here] = false;
 			panel[ATC_Panel::RATC] = false;
 			panel[ATC_Panel::Limit_1] = false;
 			panel[ATC_Panel::Limit_5] = false;
-		case stat::on:
+		case static_cast<int>(stat::on):
 			panel[ATC_Panel::ATCpower] = stat;
 			break;
-		case stat::inside:
+		case static_cast<int>(stat::inside):
 			x = 1;
-		case stat::outside:
+		case static_cast<int>(stat::outside):
 			panel[ATC_Panel::ATC] = x;
 			panel[ATC_Panel::here] = x;
 			panel[ATC_Panel::RATC] = x;
@@ -98,7 +98,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 	//パターン判定
 	long dis = LONG_MAX;
-	for (size_t i = 0; i < pattern_name::number; i++) {
+	for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
 		//最近停目探索
 		int z = patterns[i]->calc(S);
 		if (dis > z) {
@@ -107,13 +107,13 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	}
 
 
-	if (stat != stat::off) {
+	if (stat != static_cast<int>(stat::off)) {
 		{
 			int num;	//インデックス格納
 
 			{	//過走限界
 				double lim;
-				for (size_t i = 0; i < this->limit_name::number; i++) {
+				for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
 					double buf = this->limits[i]->calc(S);
 					if (lim > buf) {
 						lim = buf;	//最も手前を選択
@@ -126,7 +126,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 			{	//ATC P現示
 				double lim = this->patterns[num]->calc(S);
-				for (size_t i = this->limit_name::number; i < this->pattern_name::number; i++) {
+				for (size_t i = static_cast<int>(limit_name::number); i < static_cast<int>(pattern_name::number); i++) {
 					double buf = this->patterns[i]->calc(S);
 					if (lim > buf) {
 						lim = buf;	//最低を選択
@@ -199,10 +199,10 @@ void c_R_ATC::Interpolation() {
 		//距離設定
 		if ((pram[0][1] - pram[0][0]) > 0) {
 			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
-			limits[limit_name::PreTrain]->SetTarget(temp);
-			patterns[pattern_name::PreTrain]->target_Location = temp;
+			limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(temp);
+			patterns[static_cast<int>(pattern_name::PreTrain)]->target_Location = temp;
 		}
-		else limits[limit_name::PreTrain]->SetTarget(DBL_MAX);
+		else limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(DBL_MAX);
 	}
 	return;
 }
