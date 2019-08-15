@@ -269,6 +269,10 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 		else panel[ATC_Panel::ATCbrake] = false;
 	}
 	else panel[ATC_Panel::pattern] = false;
+
+	panel[ATC_Panel::Limit_1] = int(this->Limit);
+	int(this->Limit) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(this->Limit / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(this->Limit / 10) * 10;
+
 }
 
 void c_R_ATC::Pattern::setSpeed(int arg) {
