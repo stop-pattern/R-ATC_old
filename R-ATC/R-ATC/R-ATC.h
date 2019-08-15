@@ -16,7 +16,7 @@ private:
 		double B_deceleration;	//B動作減速定数
 		double E_deceleration;	//EB動作減速定数
 		//variable about pattern
-		double Limit;	//制限速度[km/h] <=ATC現示値(=P_Speed <=calc{return}
+		double Limit;	//制限速度(ATC現示値)[km/h] (=P_Speed <=calc{return}
 		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
 		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
 	public:
