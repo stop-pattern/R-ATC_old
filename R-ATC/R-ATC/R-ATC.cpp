@@ -99,7 +99,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	long dis = LONG_MAX;
 	for (size_t i = 0; i < pattern_name::number; i++) {
 		//最近停目探索
-		int z = patterns[i]->calc(S, panel, sound);
+		int z = patterns[i]->calc(S);
 		if (dis > z) {
 			dis = z;
 		}
