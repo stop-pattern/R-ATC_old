@@ -43,20 +43,20 @@ private:
 
 public:
 
-	enum stat {
+	enum class stat {
 		off = 0,
 		on = 1,
 		inside = 2,
 		outside = 3,
 	};
-	enum pattern_name {
+	enum class pattern_name {
 		PreTrain,	//先行列車連動P
 		Step2,	//防護2段パターン
 		Crossing,	//踏切防護P
 		Route,	//路線依存P（曲線速度制限）
 		number	//P総数
 	};
-	enum limit_name {
+	enum class limit_name {
 		PreTrain,	//先行列車連動P
 		Step2,	//防護2段パターン
 		Crossing,	//踏切防護P
@@ -70,8 +70,8 @@ public:
 	void Control(State, int *, int *);	//ATC制御
 
 
-	Pattern* patterns[pattern_name::number];	//照査速度パターン制御
-	Limit* limits[limit_name::number];	//過走限界計算
+	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
+	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
 	int stat;	//ATCstatus
 
