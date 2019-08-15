@@ -247,7 +247,7 @@ c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 
 int c_R_ATC::Pattern::calc(State S) {
 	if (S.Z < this->target_Location) {
-		this->Limit = sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
+		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
 	}
 	else this->Limit = DBL_MAX;
 

@@ -20,9 +20,6 @@ private:
 		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
 		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
 	public:
-		double P_Speed = DBL_MAX;	//P接近速度
-		double B_Speed = DBL_MAX;	//B動作速度
-		double E_Speed = DBL_MAX;	//EB動作速度
 		Pattern(double, double, double);
 		int calc(State);	//メイン演算
 		void SetBeaconData(int, int);
