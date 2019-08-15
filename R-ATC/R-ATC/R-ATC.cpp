@@ -186,6 +186,7 @@ void c_R_ATC::Interpolation() {
 		if ((pram[0][1] - pram[0][0]) > 0) {
 			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
 			limits[limit_name::PreTrain]->SetTarget(temp);
+			patterns[pattern_name::PreTrain]->target_Location = temp;
 		}
 		else limits[limit_name::PreTrain]->SetTarget(DBL_MAX);
 	}
