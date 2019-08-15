@@ -24,7 +24,7 @@ private:
 		double B_Speed = DBL_MAX;	//B動作速度
 		double E_Speed = DBL_MAX;	//EB動作速度
 		Pattern(double, double, double);
-		int calc(State, int*, int*);	//メイン演算
+		int calc(State);	//メイン演算
 		void SetBeaconData(int, int);
 		void out(State, int*, int*);	//出力
 		//入力

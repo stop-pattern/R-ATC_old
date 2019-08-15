@@ -108,21 +108,35 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	SetOut();
 
 	if (stat != stat::off) {
+		{
+			int num;	//インデックス格納
 
-		{	//過走限界
-			int num;
-			double lim;
-			for (size_t i = 0; i < this->limit_name::number; i++) {
-				double buf = this->limits[i]->calc(S);
-				if (lim > buf) {
-					lim = buf;	//最も手前を選択
-					num = i;
+			{	//過走限界
+				double lim;
+				for (size_t i = 0; i < this->limit_name::number; i++) {
+					double buf = this->limits[i]->calc(S);
+					if (lim > buf) {
+						lim = buf;	//最も手前を選択
+						num = i;
+					}
 				}
+				//出力
+				this->limits[num]->out(S, panel, sound);
 			}
-			//出力
-			this->limits[num]->out(S, panel, sound);
-		}
 
+			{	//ATC P現示
+				double lim = this->patterns[num]->calc(S);
+				for (size_t i = this->limit_name::number; i < this->pattern_name::number; i++) {
+					double buf = this->patterns[i]->calc(S);
+					if (lim > buf) {
+						lim = buf;	//最低を選択
+						num = i;
+					}
+				}
+				//出力
+				this->patterns[num]->out(S, panel, sound);
+			}
+		}
 
 		/*	//変数設定
 		target = Location[param::P_pretrain] - S.Z;
@@ -231,21 +245,13 @@ c_R_ATC::Pattern::Pattern(double P, double B, double E) {
 	E_deceleration = E;
 }
 
-int c_R_ATC::Pattern::calc(State S, int* panel, int* sound) {
-	if (this->target - S.Z <= 0) {
-		this->StopLimit = this->target - S.Z;
-		sqrt(this->StopLimit * B_deceleration) < this->target_Speed ? P_Speed = sqrt(this->StopLimit * B_deceleration) : P_Speed = this->target_Speed;
-		sqrt(this->StopLimit * E_deceleration) < this->target_Speed ? B_Speed = sqrt(this->StopLimit * E_deceleration) : B_Speed = this->target_Speed;
-		P_Location = S.V / 1000 * NOTICE_TIME / 60 / 60;
+int c_R_ATC::Pattern::calc(State S) {
+	if (S.Z < this->target_Location) {
+		this->Limit = sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
 	}
-	else {
-		this->StopLimit = DBL_MAX;
-		P_Location = INT_MAX;
-	}
+	else this->Limit = DBL_MAX;
 
-	this->StopLimit = S.Z - this->target_Location;	//停止限界更新
-
-	return this->StopLimit;
+	return this->Limit;
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
