@@ -256,12 +256,12 @@ int c_R_ATC::Pattern::calc(State S) {
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
-		panel[ATC_Panel::pattern] = true;
+		panel[ATC_Panel::pattern] = true;	//P接近
 		if (S.V > this->Limit) {
-			panel[ATC_Panel::ATCbrake] = true;
+			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			handle.B = specific.B;
 			if (S.V > sqrt(this->E_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
-				panel[ATC_Panel::ATCemr] = true;
+				panel[ATC_Panel::ATCemr] = true;	//EB動作
 				handle.B = specific.E;
 			}
 			else panel[ATC_Panel::ATCemr] = false;
@@ -270,7 +270,9 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	}
 	else panel[ATC_Panel::pattern] = false;
 
+	//ATC針1刻み
 	panel[ATC_Panel::Limit_1] = int(this->Limit);
+	//ATC針5刻み
 	int(this->Limit) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(this->Limit / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(this->Limit / 10) * 10;
 
 }
