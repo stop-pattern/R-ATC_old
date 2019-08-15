@@ -8,6 +8,13 @@
 
 
 class c_R_ATC {
+public:
+
+	struct RouteLimit {
+		int Speed;
+		double Position;
+	};
+
 private:
 	class Pattern {
 	private:
@@ -22,7 +29,7 @@ private:
 	public:
 		Pattern(double, double, double);
 		int calc(State);	//メイン演算
-		void SetBeaconData(int, int);
+		void SetBeaconData(RouteLimit);
 		void out(State, int*, int*);	//出力
 		//入力
 		void setSpeed(int);
@@ -39,11 +46,6 @@ private:
 		void SetTarget(int);
 		void SetTarget(float);
 		void SetTarget(double);
-	};
-
-	struct RouteLimit {
-		int speed;
-		double Position;
 	};
 
 public:

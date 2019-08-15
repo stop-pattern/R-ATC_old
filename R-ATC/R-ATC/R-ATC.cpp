@@ -255,9 +255,9 @@ void c_R_ATC::Pattern::setLocation(double arg) {
 	this->target_Location = arg;
 }
 
-void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
-	target_Location = Stat.Z + location;
-	target_Speed = speed;
+void c_R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
+	target_Location = Stat.Z + arg.Position;
+	target_Speed = arg.Speed;
 }
 
 
