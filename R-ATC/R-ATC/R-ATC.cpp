@@ -255,12 +255,12 @@ int c_R_ATC::Pattern::calc(State S) {
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
-	if (S.V > P_Speed) {
+	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
 		panel[ATC_Panel::pattern] = true;
-		if (S.V > B_Speed) {
+		if (S.V > this->Limit) {
 			panel[ATC_Panel::ATCbrake] = true;
 			handle.B = specific.B;
-			if (S.V > E_Speed) {
+			if (S.V > sqrt(this->E_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
 				panel[ATC_Panel::ATCemr] = true;
 				handle.B = specific.E;
 			}
@@ -269,20 +269,6 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 		else panel[ATC_Panel::ATCbrake] = false;
 	}
 	else panel[ATC_Panel::pattern] = false;
-
-
-	if (S.Z > P_Location) panel[ATC_Panel::pattern] = true;
-	else panel[ATC_Panel::pattern] = false;
-	if (S.V > B_Speed) {
-		panel[ATC_Panel::ATCbrake] = true;
-		handle.B = specific.B;
-		if (S.V > E_Speed) {
-			panel[ATC_Panel::ATCemr] = true;
-			handle.B = specific.E;
-		}
-		else panel[ATC_Panel::ATCemr] = false;
-	}
-	else panel[ATC_Panel::ATCbrake] = false;
 }
 
 void c_R_ATC::Pattern::setSpeed(int arg) {
