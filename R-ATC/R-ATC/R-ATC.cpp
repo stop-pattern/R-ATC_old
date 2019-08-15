@@ -106,7 +106,6 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 		}
 	}
 
-	SetOut();
 
 	if (stat != stat::off) {
 
