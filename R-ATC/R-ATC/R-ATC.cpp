@@ -184,9 +184,9 @@ void c_R_ATC::Interpolation() {
 		}
 		//距離設定
 		if ((pram[0][1] - pram[0][0]) > 0) {
-			patterns[pattern_name::PreTrain]->target_Location = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
+			limits[pattern_name::PreTrain]->SetTarget(pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]));
 		}
-		else patterns[pattern_name::PreTrain]->target_Location = DBL_MAX;
+		else limits[pattern_name::PreTrain]->SetTarget(DBL_MAX);
 	}
 	return;
 }
