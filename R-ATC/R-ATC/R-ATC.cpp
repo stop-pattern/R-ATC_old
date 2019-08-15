@@ -279,6 +279,14 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	else panel[ATC_Panel::ATCbrake] = false;
 }
 
+void c_R_ATC::Pattern::setSpeed(int arg) {
+	this->target_Speed = arg;
+}
+
+void c_R_ATC::Pattern::setLocation(double arg) {
+	this->target_Location = arg;
+}
+
 void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
 	target_Location = Stat.Z + location;
 	target_Speed = speed;
