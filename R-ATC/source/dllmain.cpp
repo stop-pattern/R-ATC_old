@@ -219,8 +219,7 @@ DE void SC SetBeaconData(Beacon b) {
 		R_ATC->stat = b.Data;
 		break;
 	case ATC_Beacon::Set2StepPattern:
-		R_ATC->patterns[R_ATC->pattern_name::Step2]->target_Location = b.Data;
-		R_ATC->patterns[R_ATC->pattern_name::Step2]->target_Speed = 0;
+		R_ATC->Stop2Step.push_back(b.Data / 10);
 		break;
 	case ATC_Beacon::ATC10_notice_f:
 		ATC10::Notice(b);

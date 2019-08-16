@@ -103,6 +103,7 @@ public:
 
 	//路線情報
 	std::vector<RouteLimit> SpeedLimit;	//速度制限
+	std::vector<double> Stop2Step;	//2段パターン
 	std::vector<int> Crossings;	//踏切
 	std::vector<int> PlatformStart;	//ホーム区始端
 	std::vector<int> PlatformEnd;	//ホーム区終端
