@@ -8,6 +8,13 @@
 
 
 class c_R_ATC {
+public:
+
+	struct RouteLimit {
+		int Speed;
+		double Position;
+	};
+
 private:
 	class Pattern {
 	private:
@@ -22,7 +29,7 @@ private:
 	public:
 		Pattern(double, double, double);
 		int calc(State);	//メイン演算
-		void SetBeaconData(int, int);
+		void SetBeaconData(RouteLimit);
 		void out(State, int*, int*);	//出力
 		//入力
 		void setSpeed(int);
@@ -95,6 +102,8 @@ public:
 	std::vector<int> PreTrain_Distance;	//距離
 
 	//路線情報
+	std::vector<RouteLimit> SpeedLimit;	//速度制限
+	std::vector<double> Stop2Step;	//2段パターン
 	std::vector<int> Crossings;	//踏切
 	std::vector<int> PlatformStart;	//ホーム区始端
 	std::vector<int> PlatformEnd;	//ホーム区終端

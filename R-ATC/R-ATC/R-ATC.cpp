@@ -220,7 +220,7 @@ int c_R_ATC::Pattern::calc(State S) {
 	if (S.Z < this->target_Location) {
 		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
 	}
-	else this->Limit = DBL_MAX;
+	else this->Limit = this->target_Speed;
 
 	return this->Limit;
 }
@@ -255,9 +255,9 @@ void c_R_ATC::Pattern::setLocation(double arg) {
 	this->target_Location = arg;
 }
 
-void c_R_ATC::Pattern::SetBeaconData(int location, int speed) {
-	target_Location = Stat.Z + location;
-	target_Speed = speed;
+void c_R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
+	target_Location = Stat.Z + arg.Position;
+	target_Speed = arg.Speed;
 }
 
 
