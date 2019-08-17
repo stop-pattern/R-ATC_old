@@ -8,6 +8,13 @@
 
 
 class c_R_ATC {
+public:
+
+	struct RouteLimit {
+		int Speed;
+		double Position;
+	};
+
 private:
 	class Pattern {
 	private:
@@ -22,7 +29,7 @@ private:
 	public:
 		Pattern(double, double, double);
 		int calc(State);	//メイン演算
-		void SetBeaconData(int, int);
+		void SetBeaconData(RouteLimit);
 		void out(State, int*, int*);	//出力
 		//入力
 		void setSpeed(int);
@@ -43,20 +50,20 @@ private:
 
 public:
 
-	enum stat {
+	enum class stat {
 		off = 0,
 		on = 1,
 		inside = 2,
 		outside = 3,
 	};
-	enum pattern_name {
+	enum class pattern_name {
 		PreTrain,	//先行列車連動P
 		Step2,	//防護2段パターン
 		Crossing,	//踏切防護P
 		Route,	//路線依存P（曲線速度制限）
 		number	//P総数
 	};
-	enum limit_name {
+	enum class limit_name {
 		PreTrain,	//先行列車連動P
 		Step2,	//防護2段パターン
 		Crossing,	//踏切防護P
@@ -65,15 +72,13 @@ public:
 
 
 	void Load();	//consractor
-	void SetOut();
 	void Status(State, int *, int *);	//ATC状態管理
 	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int *, int *);	//ATC制御
-	bool Update(State, c_R_ATC::Pattern);	//P更新・判定
 
 
-	Pattern* patterns[pattern_name::number];	//照査速度パターン制御
-	Limit* limits[limit_name::number];	//過走限界計算
+	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
+	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
 	int stat;	//ATCstatus
 
@@ -97,6 +102,8 @@ public:
 	std::vector<int> PreTrain_Distance;	//距離
 
 	//路線情報
+	std::vector<RouteLimit> SpeedLimit;	//速度制限
+	std::vector<double> Stop2Step;	//2段パターン
 	std::vector<int> Crossings;	//踏切
 	std::vector<int> PlatformStart;	//ホーム区始端
 	std::vector<int> PlatformEnd;	//ホーム区終端
