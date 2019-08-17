@@ -112,7 +112,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 			int num;	//インデックス格納
 
 			{	//過走限界
-				double lim;
+				double lim = DBL_MAX;
 				for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
 					double buf = this->limits[i]->calc(S);
 					if (lim > buf) {
@@ -200,7 +200,6 @@ void c_R_ATC::Interpolation() {
 		if ((pram[0][1] - pram[0][0]) > 0) {
 			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
 			limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(temp);
-			patterns[static_cast<int>(pattern_name::PreTrain)]->target_Location = temp;
 		}
 		else limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(DBL_MAX);
 	}
