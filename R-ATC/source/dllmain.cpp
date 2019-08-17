@@ -196,7 +196,7 @@ DE void SC SetBeaconData(Beacon b) {
 			c_R_ATC::RouteLimit temp;
 			temp.Position = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
 			temp.Speed = int(b.Data % 1000);	//下3桁のみ
-			R_ATC->patterns[static_cast<int>(c_R_ATC::pattern_name::Route)]->SetBeaconData();
+			R_ATC->patterns[static_cast<int>(c_R_ATC::pattern_name::Route)]->SetBeaconData(temp);
 		}
 	case ATC_Beacon::SpeedUp:
 		{
