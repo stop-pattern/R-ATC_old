@@ -5,7 +5,7 @@ extern int signal;	//信号インデックス
 extern bool door;	//ドア状態
 extern int ATCstatus;	//ATC状態
 extern int LimitSpeed;	//制限速度
-extern struct Spec specific;	//車両性能
+extern struct SpecPlus specific;	//車両性能
 extern struct Hand manual;	//手動ハンドル位置
 extern struct Hand handle;	//ハンドル制御値
 

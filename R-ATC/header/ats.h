@@ -17,6 +17,9 @@ struct Spec		//列車のスペックに関する情報
 	int A = 0;	//ATS確認段数
 	int J = 0;	//常用段数67
 	int C = 0;	//編成車両数
+};
+struct SpecPlus : Spec
+{
 	int E = 0;	//非常段数
 };
 struct State		//列車状態に関する情報

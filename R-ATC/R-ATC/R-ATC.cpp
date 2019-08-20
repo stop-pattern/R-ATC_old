@@ -6,7 +6,7 @@
 
 extern Hand handle;
 extern State Stat;
-extern Spec specific;
+extern SpecPlus specific;
 extern int signal;
 extern int ATCstatus;
 
