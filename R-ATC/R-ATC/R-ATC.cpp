@@ -200,8 +200,9 @@ void c_R_ATC::Interpolation() {
 		if ((pram[0][1] - pram[0][0]) > 0) {
 			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
 			limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(temp);
+			patterns[static_cast<int>(pattern_name::PreTrain)]->SetTarget(temp);
 		}
-		else limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(DBL_MAX);
+		else limits[limit_name::PreTrain]->SetTarget(DBL_MAX);	//制限位置超過時
 	}
 	return;
 }
