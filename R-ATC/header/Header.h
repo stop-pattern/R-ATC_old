@@ -32,7 +32,5 @@ extern c_R_ATC* R_ATC;	//R-ATC
 
 
 void GetPath(HMODULE hModule);
-double Sort(double, int array[], int);
-void reload(void);	//駅ジャンプ時再読み込み処理
 
 #endif // !HEADER
