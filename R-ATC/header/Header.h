@@ -21,10 +21,9 @@ extern double distance;	//現在位置
 extern bool door;	//ドア状態
 extern int ATCstatus;	//ATC状態
 extern int LimitSpeed;	//制限速度
-extern double accelaration;	//加減速度
 
 extern SpecPlus specific;	//車両性能
-extern State Stat;	//車両状態(前フレーム)
+extern StatePlus Stat;	//車両状態(前フレーム)
 extern Hand manual;	//手動ハンドル位置
 extern Hand handle;	//ハンドル制御値
 

@@ -10,10 +10,9 @@ double distance;	//現在位置
 bool door;	//ドア状態
 int ATCstatus;	//ATC状態
 int LimitSpeed;	//制限速度
-double accelaration;	//加減速度
 
 SpecPlus specific;	//車両性能
-State Stat;	//車両状態(前フレーム)
+StatePlus Stat;	//車両状態(前フレーム)
 Hand manual;	//手動ハンドル位置
 Hand handle;	//ハンドル制御値
 

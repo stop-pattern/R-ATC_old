@@ -34,6 +34,10 @@ struct State		//列車状態に関する情報
 	float SAP = 0;	//SAP圧力[kPa]
 	float I = 0;	//電流[A]
 };
+struct StatePlus : State
+{
+	double A = 0;	//加減速度[km/h/s]
+};
 struct Hand		//ハンドル位置に関する情報
 {
 	int B = 0;	//ブレーキハンドル位置
