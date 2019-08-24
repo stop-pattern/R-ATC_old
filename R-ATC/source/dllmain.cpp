@@ -189,8 +189,11 @@ DE void SC SetSignal(int a) {
 }
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
-	case ATC_Beacon::SpeedDown:
+	case ATC_Beacon::Status:
+		R_ATC->stat = b.Data;
+		break;
 	case ATC_Beacon::SpeedUp:
+	case ATC_Beacon::SpeedDown:
 		R_ATC->patterns[R_ATC->pattern_name::Route]->target_Location = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
 		R_ATC->patterns[R_ATC->pattern_name::Route]->target_Speed = int(b.Data % 1000);	//下3桁のみ
 		R_ATC->patterns[R_ATC->pattern_name::Route]->SetBeaconData(int(b.Data / 1000), int(b.Data % 1000));
@@ -202,16 +205,13 @@ DE void SC SetBeaconData(Beacon b) {
 		R_ATC->PlatformEnd.push_back(b.Data);
 		break;
 	case ATC_Beacon::LocationCorrection:
-		::distance = b.Data;
+		Stat.Zd = b.Data;
 		break;
 	case ATC_Beacon::PreTrainDistance:
 		R_ATC->PreTrain_Distance.push_back(b.Data);
 		break;
 	case ATC_Beacon::PreTrainTime:
 		R_ATC->PreTrain_Time.push_back(b.Data);
-		break;
-	case ATC_Beacon::Status:
-		R_ATC->stat = b.Data;
 		break;
 	case ATC_Beacon::Set2StepPattern:
 		R_ATC->patterns[R_ATC->pattern_name::Step2]->target_Location = b.Data;
