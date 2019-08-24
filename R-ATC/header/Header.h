@@ -8,7 +8,7 @@
 #include "../R-ATC/R-ATC.h"
 #include "../ATC-6/ATC-6.h"
 
-using namespace std;
+using std::string;
 
 
 extern string dllPath;	//.dllのpath
