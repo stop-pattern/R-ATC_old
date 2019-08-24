@@ -63,7 +63,6 @@ DE void SC SetVehicleSpec(Spec s) {
 }
 DE void SC Initialize(int b) {
 	b = InitialPosition::Service;
-	reload();
 }
 DE Hand SC Elapse(State S, int * p, int * s)
 {
