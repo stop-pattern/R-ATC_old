@@ -21,6 +21,7 @@ struct Spec		//列車のスペックに関する情報
 struct SpecPlus : Spec
 {
 	int E = 0;	//非常段数
+	void setData(Spec);	//設定値代入
 };
 struct State		//列車状態に関する情報
 {
@@ -36,7 +37,11 @@ struct State		//列車状態に関する情報
 };
 struct StatePlus : State
 {
+	long double dV = 0;	//フレーム間速度差[km/h]
+	long double dT = 0;	//フレーム間経過時間[ms]
+	double Zd = 0;	//列車位置(誤差含)[m]
 	double A = 0;	//加減速度[km/h/s]
+	void setData(StatePlus, State);	//設定値代入
 };
 struct Hand		//ハンドル位置に関する情報
 {

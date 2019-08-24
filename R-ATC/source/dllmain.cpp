@@ -128,7 +128,7 @@ DE Hand SC Elapse(State S, int * p, int * s)
 		//[km/h/s]	(S.V - Stat.V)
 	}
 
-	Stat = S;
+	Stat.setData(Stat, S);
 	return handle;
 }
 DE void SC SetPower(int p) {

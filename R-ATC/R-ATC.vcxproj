@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="ATC-10\ATC-10.cpp" />
     <ClCompile Include="ATC-6\ATC-6.cpp" />
+    <ClCompile Include="source\ats.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\Function.cpp" />
     <ClCompile Include="source\Header.cpp" />

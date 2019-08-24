@@ -68,6 +68,9 @@
     <ClCompile Include="ATC-10\ATC-10.cpp">
       <Filter>ATC-10</Filter>
     </ClCompile>
+    <ClCompile Include="source\ats.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dllmain.def">
