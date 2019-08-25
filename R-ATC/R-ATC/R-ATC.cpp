@@ -126,6 +126,19 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 				this->patterns[num]->out(S, panel, sound);
 			}
 
+			if (door) {	//転動防止
+				if (panel[ATC_Panel::Rolling]) {
+					handle.B = specific.B;	//常用最大
+				}
+				else {
+					if (rand() % 2) {
+						panel[ATC_Panel::Rolling] = true;	//転動防止動作
+					}
+				}
+			}
+			else if (manual.B <= specific.B / 3) {	//戸閉&&B段(常用最大*1/3)
+				panel[ATC_Panel::Rolling] = false;	//転動防止解除
+			}
 
 	}
 	else {	//ATC切
