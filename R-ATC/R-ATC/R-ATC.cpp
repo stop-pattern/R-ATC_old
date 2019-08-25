@@ -108,7 +108,6 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 
 	if (stat != static_cast<int>(stat::off)) {
-		{
 			int num;	//インデックス格納
 
 			{	//過走限界
@@ -136,46 +135,8 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 				//出力
 				this->patterns[num]->out(S, panel, sound);
 			}
-		}
-
-		/*	//変数設定
-		target = Location[param::P_pretrain] - S.Z;
-		sqrt(target * DECELERATION_BRAKE) < Limit[param::P_pretrain] ? pattern_speed[0] = sqrt(target * DECELERATION_BRAKE) : pattern_speed[0] = Limit[param::P_pretrain];
-		sqrt(target * DECELARATION_EMR) < Limit[param::P_pretrain] ? pattern_speed[1] = sqrt(target * DECELARATION_EMR) : pattern_speed[1] = Limit[param::P_pretrain];
-		notice_dist = S.V / 1000 * NOTICE_TIME / 60 / 60;
-		*/
 
 
-		/*	//P接近判定
-		if (S.Z + notice_dist > Location[param::P_pretrain] - (pow(S.V, 2) / DECELERATION_BRAKE)) {
-			panel[ATC_Panel::pattern] = true;
-			for (int i = 1; i < 10; i++) {
-				brake_speed[i] = brake_speed[0] / 10 * i;
-			}
-		}
-		else {
-			panel[ATC_Panel::pattern] = false;
-			brake_speed[0] = S.V;
-		}
-		*/
-
-		//for (int i = 0; i < PATTERN_BRAKE; i++) {	//B動作
-			//if (brake_speed[ini.brake_div[i]] >= pattern_speed[0]) {
-			//	handle.B = (specific.B - 1) / ini.handle_div * ini.brake_div[i];
-			//	panel[ATC_Panel::ATCbrake] = true;
-			//}
-		if (S.V >= pattern_speed[0]) {
-			handle.B = (specific.B - 1);	// / ini.handle_div * ini.brake_div[i];
-			panel[ATC_Panel::ATCbrake] = true;
-		}
-		else
-		{
-			panel[ATC_Panel::ATCbrake] = false;
-		}
-		//}
-
-		panel[ATC_Panel::Limit_1] = int(pattern_speed[0]);
-		int(pattern_speed[0]) % 10 > 5.0 ? panel[ATC_Panel::Limit_5] = (int(pattern_speed[0] / 10) + 1) * 10 : panel[ATC_Panel::Limit_5] = int(pattern_speed[0] / 10) * 10;
 	}
 	else {	//ATC切
 		panel[ATC_Panel::pattern] = false;
