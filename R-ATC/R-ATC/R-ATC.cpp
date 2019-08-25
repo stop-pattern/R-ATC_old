@@ -6,7 +6,7 @@
 #include "R-ATC.h"
 
 extern Hand handle;
-extern State Stat;
+extern StatePlus Stat;
 extern SpecPlus specific;
 extern int signal;
 extern int ATCstatus;

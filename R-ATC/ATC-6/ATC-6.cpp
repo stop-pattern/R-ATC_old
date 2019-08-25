@@ -42,11 +42,9 @@ void ATC6::Check(State status, int *panel, int *sound) {
 				handle.P = 0;
 				handle.B = specific.B;
 			}
+			else panel[ATC_Panel::ATCbrake] = false;
 		}
-		else {
-			panel[ATC_Panel::pattern] = false;
-			panel[ATC_Panel::ATCbrake] = false;
-		}
+		else panel[ATC_Panel::pattern] = false;
 
 		//単打ベル
 		sound[ATC_bell] = SoundInfo::PlayContinue;

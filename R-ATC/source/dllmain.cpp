@@ -12,7 +12,6 @@
 #include "../ATC-10/ATC-10.h"
 #include "../header/Header.h"
 #include "../header/define.h"
-#include "../TIMS.h"
 
 #include <fstream>
 
@@ -63,7 +62,6 @@ DE void SC SetVehicleSpec(Spec s) {
 }
 DE void SC Initialize(int b) {
 	b = InitialPosition::Service;
-	reload();
 }
 DE Hand SC Elapse(State S, int * p, int * s)
 {
@@ -91,44 +89,12 @@ DE Hand SC Elapse(State S, int * p, int * s)
 		}
 	}
 
-#ifdef  TIMS	//TIMS代用機能
-
-	//速度計
-	p[50] = abs(int(S.V));
-	p[83] = abs(int(signal)) / 100 % 10;
-	p[84] = abs(int(signal)) / 10 % 10;
-	p[85] = abs(int(signal)) % 10;
-	p[93] = abs(S.I);	//test
-
-	//ユニット
-	if (S.I == 0)
-	{
-		p[105] = 0;
-		p[106] = 0;
-		p[107] = 0;
-		p[108] = 0;
-	}
-	else
-	{
-		p[41] = true;
-		p[42] = true;
-		p[43] = true;
-		p[44] = true;
-	}
-	for (size_t i = 105; i < 109; i++)
-	{
-		if (S.I > 0 && p[i] != 1 && rand() % 25 == 0) { p[i] = 1; }
-		else if (S.I < 0 && p[i] != 2 && rand() % 25 == 0) { p[i] = 2; }
-		else if (S.I == 0 && p[i] != 0 && rand() % 25 == 0) { p[i] = 0; }
-	}
-#endif //  TIMS
-
 
 	if (S.V >= 7.5)	{
 		//[km/h/s]	(S.V - Stat.V)
 	}
 
-	Stat = S;
+	Stat.setData(Stat, S);
 	return handle;
 }
 DE void SC SetPower(int p) {
@@ -190,6 +156,10 @@ DE void SC SetSignal(int a) {
 }
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
+	case ATC_Beacon::Status:
+		R_ATC->stat = b.Data;
+		break;
+	case ATC_Beacon::SpeedUp:
 	case ATC_Beacon::SpeedDown:
 		c_R_ATC::RouteLimit temp;
 		{
@@ -211,16 +181,13 @@ DE void SC SetBeaconData(Beacon b) {
 		R_ATC->PlatformEnd.push_back(b.Data);
 		break;
 	case ATC_Beacon::LocationCorrection:
-		::distance = b.Data;
+		Stat.Zd = b.Data;
 		break;
 	case ATC_Beacon::PreTrainDistance:
 		R_ATC->PreTrain_Distance.push_back(b.Data);
 		break;
 	case ATC_Beacon::PreTrainTime:
 		R_ATC->PreTrain_Time.push_back(b.Data);
-		break;
-	case ATC_Beacon::Status:
-		R_ATC->stat = b.Data;
 		break;
 	case ATC_Beacon::Set2StepPattern:
 		R_ATC->Stop2Step.push_back(b.Data / 10);

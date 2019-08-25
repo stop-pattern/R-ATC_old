@@ -39,9 +39,6 @@
     <ClInclude Include="R-ATC\R-ATC.h">
       <Filter>R-ATC</Filter>
     </ClInclude>
-    <ClInclude Include="TIMS.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="ATC-10\ATC-10.h">
       <Filter>ATC-10</Filter>
     </ClInclude>
@@ -67,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="ATC-10\ATC-10.cpp">
       <Filter>ATC-10</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ats.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
