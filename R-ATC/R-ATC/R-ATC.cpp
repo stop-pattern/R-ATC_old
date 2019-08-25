@@ -234,9 +234,13 @@ int c_R_ATC::Limit::calc(State S) {
 }
 
 void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
+	//過走限界残距離
 	panel[ATC_Panel::StopLimit_1] = static_cast<int>(this->StopLimit * 10) % 100;
+	if (panel[ATC_Panel::StopLimit_1] == 0) panel[ATC_Panel::StopLimit_1] = 100;
 	panel[ATC_Panel::StopLimit_100] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 100 % 100);
+	if (panel[ATC_Panel::StopLimit_100] == 0) panel[ATC_Panel::StopLimit_100] = 100;
 	panel[ATC_Panel::StopLimit_10000] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 10000 % 100);
+	if (panel[ATC_Panel::StopLimit_10000] == 0)panel[ATC_Panel::StopLimit_10000] = 100;
 }
 
 void c_R_ATC::Limit::SetTarget(int arg) {
