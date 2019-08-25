@@ -183,7 +183,7 @@ int c_R_ATC::Pattern::calc(State S) {
 	}
 	else this->Limit = this->target_Speed;
 
-	return this->Limit;
+	return (int)this->Limit;
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
@@ -230,7 +230,7 @@ void c_R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
 
 int c_R_ATC::Limit::calc(State S) {
 	this->StopLimit = this->Target - S.Z;
-	return this->StopLimit;
+	return (int)this->StopLimit;
 }
 
 void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
