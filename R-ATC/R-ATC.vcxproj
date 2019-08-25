@@ -121,7 +121,6 @@
     <ClInclude Include="header\Header.h" />
     <ClInclude Include="R-ATC\R-ATC.h" />
     <ClInclude Include="resource\resource.h" />
-    <ClInclude Include="TIMS.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ATC-10\ATC-10.cpp" />

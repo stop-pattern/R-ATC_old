@@ -12,7 +12,6 @@
 #include "../ATC-10/ATC-10.h"
 #include "../header/Header.h"
 #include "../header/define.h"
-#include "../TIMS.h"
 
 #include <fstream>
 
@@ -89,38 +88,6 @@ DE Hand SC Elapse(State S, int * p, int * s)
 			*/
 		}
 	}
-
-#ifdef  TIMS	//TIMS代用機能
-
-	//速度計
-	p[50] = abs(int(S.V));
-	p[83] = abs(int(signal)) / 100 % 10;
-	p[84] = abs(int(signal)) / 10 % 10;
-	p[85] = abs(int(signal)) % 10;
-	p[93] = abs(S.I);	//test
-
-	//ユニット
-	if (S.I == 0)
-	{
-		p[105] = 0;
-		p[106] = 0;
-		p[107] = 0;
-		p[108] = 0;
-	}
-	else
-	{
-		p[41] = true;
-		p[42] = true;
-		p[43] = true;
-		p[44] = true;
-	}
-	for (size_t i = 105; i < 109; i++)
-	{
-		if (S.I > 0 && p[i] != 1 && rand() % 25 == 0) { p[i] = 1; }
-		else if (S.I < 0 && p[i] != 2 && rand() % 25 == 0) { p[i] = 2; }
-		else if (S.I == 0 && p[i] != 0 && rand() % 25 == 0) { p[i] = 0; }
-	}
-#endif //  TIMS
 
 
 	if (S.V >= 7.5)	{
