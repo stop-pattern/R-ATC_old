@@ -187,14 +187,18 @@ int c_R_ATC::Pattern::calc(State S) {
 }
 
 void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
+	sound[ATC_Sound::RATC_bell] = SoundInfo::PlayContinue;
+
 	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
 		panel[ATC_Panel::pattern] = true;	//P接近
 		if (S.V > this->Limit) {
 			panel[ATC_Panel::ATCbrake] = true;	//B動作
-			handle.B = specific.B;
+			sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
+			handle.B = specific.B;	//常用最大
 			if (S.V > sqrt(this->E_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
 				panel[ATC_Panel::ATCemr] = true;	//EB動作
-				handle.B = specific.E;
+				sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
+				handle.B = specific.E;	//EB
 			}
 			else panel[ATC_Panel::ATCemr] = false;
 		}
