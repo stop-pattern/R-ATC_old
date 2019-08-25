@@ -244,6 +244,58 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 	if (panel[ATC_Panel::StopLimit_100] == 0) panel[ATC_Panel::StopLimit_100] = 100;
 	panel[ATC_Panel::StopLimit_10000] = static_cast<int>(static_cast<int>(this->StopLimit * 10) / 10000 % 100);
 	if (panel[ATC_Panel::StopLimit_10000] == 0)panel[ATC_Panel::StopLimit_10000] = 100;
+
+	{	//開通情報(D-ATC互換)
+		const int length = 10;	//領域
+		int stopSection = 10;	//停止進路
+		int openInf[length] = {};	//開通情報一時保存
+
+		//停止進路断定
+		//未開通区間設定
+		for (size_t i = length; i <= 1; --i) {
+			if (this->StopLimit < i * 100) {
+				openInf[i - 1] == 2;	//停止進路以降を2(停止進路)で埋める
+				stopSection = i;
+				for (i++; i < length; i++) {
+					openInf[i] = 1;	//停止進路以降を1(未開通)で埋める
+				}
+				break;
+			}
+		}
+
+		//開通区間設定
+		for (size_t i = 0; i < stopSection; i++) {
+			openInf[i] = 3;	//停止進路以前を3(開通)で埋める
+		}
+
+		//駅位置設定
+		if (R_ATC->PlatformStart.size() != 0 && R_ATC->PlatformStart.size() == R_ATC->PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
+			for (size_t i = 0; i < R_ATC->PlatformStart.size(); i++) {	//登録駅全探索
+				if (R_ATC->PlatformStart[i] <= S.Z + stopSection * 100 && R_ATC->PlatformEnd[i] >= S.Z) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
+					bool sw = false;
+					for (size_t j = 0; j < stopSection; j++) {
+
+						//todo : 駅表示対応
+
+						/*
+						if (R_ATC->PlatformStart[i] >= S.Z) sw = true;	//駅始点探索
+						if (sw) {
+							openInf[j] = 4;	//駅表示
+							if (R_ATC->PlatformEnd[i] >= S.Z + (j + 1) * 100) break;	//駅終点判定
+						}
+						*/
+					}
+
+				}
+			}
+		}
+
+
+		for (size_t i = ATC_Panel::info_0; i < ATC_Panel::info_9; i++) {
+			unsigned int buf = openInf[i - ATC_Panel::info_0];
+			panel[i] = buf > 4 ? 0 : buf;	//開通情報設定(0-4)
+		}
+	}
 }
 
 void c_R_ATC::Limit::SetTarget(int arg) {
