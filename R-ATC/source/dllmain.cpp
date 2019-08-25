@@ -159,7 +159,6 @@ DE void SC SetBeaconData(Beacon b) {
 	case ATC_Beacon::Status:
 		R_ATC->stat = b.Data;
 		break;
-	case ATC_Beacon::SpeedUp:
 	case ATC_Beacon::SpeedDown:
 		c_R_ATC::RouteLimit temp;
 		{
