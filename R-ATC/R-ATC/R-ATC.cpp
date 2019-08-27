@@ -312,6 +312,9 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 			panel[237/*開通情報開通領域*/] = vTotalNum;
 			panel[238/*開通情報未開通領域*/] = 0;
 		}
+
+		//todo : 駅表示対応
+
 		if (R_ATC->Crossings.size() > 0) {
 			short cnt = 0;
 			for (size_t i = 0; i < R_ATC->Crossings.size(); i++) {
@@ -321,6 +324,7 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 				else cnt++;
 			}
 		}
+
 	}
 }
 
