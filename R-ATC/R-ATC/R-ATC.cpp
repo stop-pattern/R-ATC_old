@@ -247,13 +247,13 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 
 	{	//開通情報(D-ATC互換)
 		const int length = 10;	//領域
-		int stopSection = 10;	//停止進路
+		short stopSection = 10;	//停止進路
 		int openInf[length] = {};	//開通情報一時保存(default:0)
 
 		//停止進路断定
 		//未開通区間設定
 		for (size_t i = 10; i >= 1; i--) {
-			if (!(this->StopLimit < i * 100)) {
+			if (!((unsigned int)this->StopLimit < i * 100)) {
 				continue;
 			}
 			else {
@@ -274,7 +274,7 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 		//駅位置設定
 		if (R_ATC->PlatformStart.size() != 0 && R_ATC->PlatformStart.size() == R_ATC->PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
 			for (size_t i = 0; i < R_ATC->PlatformStart.size(); i++) {	//登録駅全探索
-				if ((double)R_ATC->PlatformStart[i] <= Stat.Zd + stopSection * 100 && (double)R_ATC->PlatformEnd[i] >= Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
+				if (R_ATC->PlatformStart[i] <= (unsigned int)Stat.Zd + stopSection * 100 && R_ATC->PlatformEnd[i] >= (unsigned int)Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
 					bool sw = false;
 					for (size_t j = 0; j < (unsigned int)stopSection; j++) {
 
