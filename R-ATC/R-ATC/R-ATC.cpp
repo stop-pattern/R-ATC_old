@@ -271,17 +271,17 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 		//駅位置設定
 		if (R_ATC->PlatformStart.size() != 0 && R_ATC->PlatformStart.size() == R_ATC->PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
 			for (size_t i = 0; i < R_ATC->PlatformStart.size(); i++) {	//登録駅全探索
-				if (R_ATC->PlatformStart[i] <= S.Z + stopSection * 100 && R_ATC->PlatformEnd[i] >= S.Z) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
+				if (R_ATC->PlatformStart[i] <= Stat.Zd + stopSection * 100 && R_ATC->PlatformEnd[i] >= Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
 					bool sw = false;
 					for (size_t j = 0; j < stopSection; j++) {
 
 						//todo : 駅表示対応
 
 						/*
-						if (R_ATC->PlatformStart[i] >= S.Z) sw = true;	//駅始点探索
+						if (R_ATC->PlatformStart[i] >= Stat.Zd) sw = true;	//駅始点探索
 						if (sw) {
 							openInf[j] = 4;	//駅表示
-							if (R_ATC->PlatformEnd[i] >= S.Z + (j + 1) * 100) break;	//駅終点判定
+							if (R_ATC->PlatformEnd[i] >= Stat.Zd + (j + 1) * 100) break;	//駅終点判定
 						}
 						*/
 					}
