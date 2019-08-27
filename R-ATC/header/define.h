@@ -57,6 +57,7 @@ enum ATC_Beacon {
 	PreTrainDistance,	//先行列車位置更新
 	PreTrainTime,	//先行列車時刻更新
 	Set2StepPattern,	//2段パターン設定
+	Crossing,	//開通情報踏切登録
 
 
 //端子台未定義
@@ -113,6 +114,20 @@ enum ATC_Panel {
 
 	here = 94,	//自列車
 
+	openInfo_open = 237,	//開通情報(開通)
+	openInfo_unopen = 238,	//開通情報(未開通)
+	openInfo_stationBegin = 239,	//開通情報(駅区始)
+	openInfo_stationEnd = 240,	//開通情報(駅区終)
+	openInfo_crossing0 = 241,	//開通情報(踏切)
+	openInfo_crossing1,	//開通情報(踏切)
+	openInfo_crossing2,	//開通情報(踏切)
+	openInfo_crossing3,	//開通情報(踏切)
+	openInfo_crossing4,	//開通情報(踏切)
+	openInfo_crossing5,	//開通情報(踏切)
+	openInfo_crossing6,	//開通情報(踏切)
+	openInfo_crossing7,	//開通情報(踏切)
+	openInfo_crossing8,	//開通情報(踏切)
+	openInfo_crossing9 = 250,	//開通情報(踏切)
 //端子台未定義
 };
 
