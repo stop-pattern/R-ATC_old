@@ -312,7 +312,15 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 			panel[237/*開通情報開通領域*/] = vTotalNum;
 			panel[238/*開通情報未開通領域*/] = 0;
 		}
-
+		if (R_ATC->Crossings.size() > 0) {
+			short cnt = 0;
+			for (size_t i = 0; i < R_ATC->Crossings.size(); i++) {
+				if (!(R_ATC->Crossings[i] > Stat.Zd && R_ATC->Crossings[i] < Stat.Zd + maxDisp)) continue;
+				panel[ATC_Panel::openInfo_crossing0 + cnt] = R_ATC->Crossings[i] / maxDisp * vTotalNum;	//踏切
+				if (cnt >= 10) break;
+				else cnt++;
+			}
+		}
 	}
 }
 
