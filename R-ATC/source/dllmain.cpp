@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <math.h>
+#include <algorithm>
 #include "../R-ATC/R-ATC.h"
 #include "../ATC-6/ATC-6.h"
 #include "../ATC-10/ATC-10.h"
@@ -175,9 +176,11 @@ DE void SC SetBeaconData(Beacon b) {
 		}
 	case ATC_Beacon::PlatformStart:
 		R_ATC->PlatformStart.push_back(b.Data);
+		std::sort(R_ATC->PlatformStart.begin(), R_ATC->PlatformStart.end());	//昇順ソート
 		break;
 	case ATC_Beacon::PlatformEnd:
 		R_ATC->PlatformEnd.push_back(b.Data);
+		std::sort(R_ATC->PlatformEnd.begin(), R_ATC->PlatformEnd.end());	//昇順ソート
 		break;
 	case ATC_Beacon::LocationCorrection:
 		Stat.Zd = b.Data;
@@ -193,6 +196,7 @@ DE void SC SetBeaconData(Beacon b) {
 		break;
 	case ATC_Beacon::Crossing:
 		R_ATC->Crossings.push_back(b.Data);
+		std::sort(R_ATC->Crossings.begin(), R_ATC->Crossings.end());	//昇順ソート
 		break;
 	case ATC_Beacon::ATC10_notice_f:
 		ATC10::Notice(b);
