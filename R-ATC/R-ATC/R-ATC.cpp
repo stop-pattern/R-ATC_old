@@ -248,7 +248,7 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 	{	//開通情報(D-ATC互換)
 		const int length = 10;	//領域
 		int stopSection = 10;	//停止進路
-		int openInf[length] = {};	//開通情報一時保存
+		int openInf[length] = {};	//開通情報一時保存(default:0)
 
 		//停止進路断定
 		//未開通区間設定
