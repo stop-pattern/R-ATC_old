@@ -262,16 +262,16 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 				break;
 			}
 		}
-
+		
 		//開通区間設定
-		for (size_t i = 0; i < stopSection; i++) {
+		for (size_t i = 0; i < (unsigned int)stopSection; i++) {
 			openInf[i] = 3;	//停止進路以前を3(開通)で埋める
 		}
 
 		//駅位置設定
 		if (R_ATC->PlatformStart.size() != 0 && R_ATC->PlatformStart.size() == R_ATC->PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
 			for (size_t i = 0; i < R_ATC->PlatformStart.size(); i++) {	//登録駅全探索
-				if (R_ATC->PlatformStart[i] <= Stat.Zd + stopSection * 100 && R_ATC->PlatformEnd[i] >= Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
+				if ((double)R_ATC->PlatformStart[i] <= Stat.Zd + stopSection * 100 && (double)R_ATC->PlatformEnd[i] >= Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
 					bool sw = false;
 					for (size_t j = 0; j < stopSection; j++) {
 
