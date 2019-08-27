@@ -299,6 +299,21 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 			panel[i] = buf > 4 ? 0 : buf;	//開通情報設定(0-4)
 		}
 	}
+
+	{	//開通情報(R-ATC)
+		const int vTotalNum = 100;	//開通情報最大表示縦マス数
+		const short maxDisp = 1000;	//開通情報最大表示距離[m]
+		if (this->StopLimit < maxDisp) {
+			int a = this->StopLimit / maxDisp * vTotalNum;
+			panel[237/*開通情報開通領域*/] = a;	//開通領域設定
+			panel[238/*開通情報未開通領域*/] = a + 1;	//未開通領域設定
+		}
+		else {	//直近1㎞開通
+			panel[237/*開通情報開通領域*/] = vTotalNum;
+			panel[238/*開通情報未開通領域*/] = 0;
+		}
+
+	}
 }
 
 void c_R_ATC::Limit::SetTarget(int arg) {
