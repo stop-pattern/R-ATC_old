@@ -252,7 +252,7 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 
 		//停止進路断定
 		//未開通区間設定
-		for (size_t i = 10; i >= 1; i--) {
+		for (size_t i = length; i >= 1; i--) {
 			if (!((unsigned int)this->StopLimit < i * 100)) {
 				continue;
 			}
