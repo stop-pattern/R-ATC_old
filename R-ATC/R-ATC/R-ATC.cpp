@@ -252,9 +252,13 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 
 		//停止進路断定
 		//未開通区間設定
-		for (size_t i = length; i <= 1; --i) {
-			if (this->StopLimit < i * 100) {
-				openInf[i - 1] == 2;	//停止進路以降を2(停止進路)で埋める
+		for (size_t i = 10; i <= 1; i--) {
+			if (!(this->StopLimit < i * 100)) {
+				i--;
+				continue;
+			}
+			else {
+				openInf[i - 1] = 2;	//停止進路以降を2(停止進路)で埋める
 				stopSection = i;
 				for (i++; i < length; i++) {
 					openInf[i] = 1;	//停止進路以降を1(未開通)で埋める
@@ -262,7 +266,7 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 				break;
 			}
 		}
-		
+
 		//開通区間設定
 		for (size_t i = 0; i < (unsigned int)stopSection; i++) {
 			openInf[i] = 3;	//停止進路以前を3(開通)で埋める
