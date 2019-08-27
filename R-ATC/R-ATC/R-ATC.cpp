@@ -277,7 +277,7 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 			for (size_t i = 0; i < R_ATC->PlatformStart.size(); i++) {	//登録駅全探索
 				if ((double)R_ATC->PlatformStart[i] <= Stat.Zd + stopSection * 100 && (double)R_ATC->PlatformEnd[i] >= Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
 					bool sw = false;
-					for (size_t j = 0; j < stopSection; j++) {
+					for (size_t j = 0; j < (unsigned int)stopSection; j++) {
 
 						//todo : 駅表示対応
 
