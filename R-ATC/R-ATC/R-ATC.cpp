@@ -232,7 +232,12 @@ void c_R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
 /* ----- Limit ----- */
 
 int c_R_ATC::Limit::calc(State S) {
-	this->StopLimit = this->Target - S.Z;
+	if (this-isCalc()) {
+		this->StopLimit = this->Target - S.Z;
+	}
+	else {
+		this->StopLimit = 0;
+	}
 	return (int)this->StopLimit;
 }
 
@@ -336,4 +341,9 @@ void c_R_ATC::Limit::SetTarget(float arg) {
 }
 void c_R_ATC::Limit::SetTarget(double arg) {
 	this->Target = arg;
+}
+
+bool c_R_ATC::Limit::isCalc() {
+	if (this->Target != 0) return true;
+	else return false;
 }

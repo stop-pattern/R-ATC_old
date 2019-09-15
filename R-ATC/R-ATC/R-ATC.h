@@ -46,6 +46,7 @@ private:
 		void SetTarget(int);
 		void SetTarget(float);
 		void SetTarget(double);
+		bool isCalc();	//限界計算可否
 	};
 
 public:
