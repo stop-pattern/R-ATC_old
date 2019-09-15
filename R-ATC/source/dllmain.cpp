@@ -37,8 +37,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 }
 
 DE void SC Load() {
-	R_ATC = new c_R_ATC();
-	R_ATC->Load();
+	R_ATC::Load();
 	/*
 	ini.GetIni(iniPath);
 	ofstream fs;
@@ -75,7 +74,7 @@ DE Hand SC Elapse(State S, int * p, int * s)
 	ATC6::Check(S, p, s);	//ATC-6
 
 	//R-ATC
-	R_ATC->Control(S, p, s);
+	R_ATC::Control(S, p, s);
 
 	//02
 	if (ATCstatus == ATC_status::OFF) p[ATC_Panel::ATC01] = 2;
@@ -158,44 +157,44 @@ DE void SC SetSignal(int a) {
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
 	case ATC_Beacon::Status:
-		R_ATC->status = b.Data;
+		R_ATC::status = b.Data;
 		break;
 	case ATC_Beacon::SpeedDown:
 		{
-			c_R_ATC::RouteLimit temp;
+			R_ATC::RouteLimit temp;
 			temp.Position = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
 			temp.Speed = int(b.Data % 1000);	//下3桁のみ
-			R_ATC->patterns[static_cast<int>(c_R_ATC::pattern_name::Route)]->SetBeaconData(temp);
+			R_ATC::patterns[static_cast<int>(R_ATC::pattern_name::Route)]->SetBeaconData(temp);
 		}
 	case ATC_Beacon::SpeedUp:
 		{
-			c_R_ATC::RouteLimit temp = { b.Data, 0 };
-			R_ATC->patterns[static_cast<int>(c_R_ATC::pattern_name::Route)]->SetBeaconData(temp);
+			R_ATC::RouteLimit temp = { b.Data, 0 };
+			R_ATC::patterns[static_cast<int>(R_ATC::pattern_name::Route)]->SetBeaconData(temp);
 			break;
 		}
 	case ATC_Beacon::PlatformStart:
-		R_ATC->PlatformStart.push_back(b.Data);
-		std::sort(R_ATC->PlatformStart.begin(), R_ATC->PlatformStart.end());	//昇順ソート
+		R_ATC::PlatformStart.push_back(b.Data);
+		std::sort(R_ATC::PlatformStart.begin(), R_ATC::PlatformStart.end());	//昇順ソート
 		break;
 	case ATC_Beacon::PlatformEnd:
-		R_ATC->PlatformEnd.push_back(b.Data);
-		std::sort(R_ATC->PlatformEnd.begin(), R_ATC->PlatformEnd.end());	//昇順ソート
+		R_ATC::PlatformEnd.push_back(b.Data);
+		std::sort(R_ATC::PlatformEnd.begin(), R_ATC::PlatformEnd.end());	//昇順ソート
 		break;
 	case ATC_Beacon::LocationCorrection:
 		Stat.Zd = b.Data;
 		break;
 	case ATC_Beacon::PreTrainDistance:
-		R_ATC->PreTrain_Distance.push_back(b.Data);
+		R_ATC::PreTrain_Distance.push_back(b.Data);
 		break;
 	case ATC_Beacon::PreTrainTime:
-		R_ATC->PreTrain_Time.push_back(b.Data);
+		R_ATC::PreTrain_Time.push_back(b.Data);
 		break;
 	case ATC_Beacon::Set2StepPattern:
-		R_ATC->Stop2Step.push_back(b.Data / 10);
+		R_ATC::Stop2Step.push_back(b.Data / 10);
 		break;
 	case ATC_Beacon::Crossing:
-		R_ATC->Crossings.push_back(b.Data);
-		std::sort(R_ATC->Crossings.begin(), R_ATC->Crossings.end());	//昇順ソート
+		R_ATC::Crossings.push_back(b.Data);
+		std::sort(R_ATC::Crossings.begin(), R_ATC::Crossings.end());	//昇順ソート
 		break;
 	case ATC_Beacon::ATC10_notice_f:
 		ATC10::Notice(b);

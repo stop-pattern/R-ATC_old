@@ -11,10 +11,32 @@ extern SpecPlus specific;
 extern int signal;
 extern int ATCstatus;
 
+/* ===== member ===== */
+namespace R_ATC {
+	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
+	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
-/* ===== c_R_ATC ===== */
+	int status;	//ATCstatus
 
-void c_R_ATC::Load() {
+	double StopLimit = 0;	//停止限界残距離
+
+	double pattern_speed[2];	//P接近速度
+
+	//先行列車
+	std::vector<int> PreTrain_Time{ 0 };	//時刻
+	std::vector<int> PreTrain_Distance{ 0 };	//距離
+
+	//路線情報
+	std::vector<RouteLimit> SpeedLimit;	//速度制限
+	std::vector<double> Stop2Step;	//2段パターン
+	std::vector<int> Crossings;	//踏切
+	std::vector<int> PlatformStart;	//ホーム区始端
+	std::vector<int> PlatformEnd;	//ホーム区終端
+}
+
+/* ===== R_ATC ===== */
+
+void R_ATC::Load() {
 	for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
 		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
 	}
@@ -22,7 +44,7 @@ void c_R_ATC::Load() {
 
 
 //実行されない
-void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
+void R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 	bool x = 0;
 
 	if (ATCstatus == ATC_status::R__ATC) {
@@ -92,7 +114,7 @@ void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 }
 
 
-void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
+void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	//先行計算
 	Interpolation();
 
@@ -103,27 +125,27 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 			{	//過走限界
 				double lim = DBL_MAX;
 				for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
-					double buf = this->limits[i]->calc(S);
+					double buf = limits[i]->calc(S);
 					if (lim > buf) {
 						lim = buf;	//最も手前を選択
 						num = i;
 					}
 				}
 				//出力
-				this->limits[num]->out(S, panel, sound);
+				limits[num]->out(S, panel, sound);
 			}
 
 			{	//ATC P現示
-				double lim = this->patterns[num]->calc(S);
+				double lim = patterns[num]->calc(S);
 				for (size_t i = static_cast<int>(limit_name::number); i < static_cast<int>(pattern_name::number); i++) {
-					double buf = this->patterns[i]->calc(S);
+					double buf = patterns[i]->calc(S);
 					if (lim > buf) {
 						lim = buf;	//最低を選択
 						num = i;
 					}
 				}
 				//出力
-				this->patterns[num]->out(S, panel, sound);
+				patterns[num]->out(S, panel, sound);
 			}
 
 			if (door) {	//転動防止
@@ -148,7 +170,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 }
 
 
-void c_R_ATC::Interpolation() {
+void R_ATC::Interpolation() {
 	if (PreTrain_Time.size() > 2 && PreTrain_Distance.size() > 2) {
 		int pram[2][2];	//index
 		for (size_t i = 0; i < PreTrain_Time.size(); i++) {
@@ -174,13 +196,13 @@ void c_R_ATC::Interpolation() {
 
 /* ----- Pattern ----- */
 
-c_R_ATC::Pattern::Pattern(double P, double B, double E) {
+R_ATC::Pattern::Pattern(double P, double B, double E) {
 	P_deceleration = P;
 	B_deceleration = B;
 	E_deceleration = E;
 }
 
-int c_R_ATC::Pattern::calc(State S) {
+int R_ATC::Pattern::calc(State S) {
 	if (S.Z < this->target_Location) {
 		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
 	}
@@ -189,7 +211,7 @@ int c_R_ATC::Pattern::calc(State S) {
 	return (int)this->Limit;
 }
 
-void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
+void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	sound[ATC_Sound::RATC_bell] = SoundInfo::PlayContinue;
 
 	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
@@ -215,15 +237,15 @@ void c_R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	panel[ATC_Panel::Limit_5] = int(this->Limit) % 10 > 5.0 ? (static_cast<int>(this->Limit / 10) + 1) * 10 : static_cast<int>(this->Limit / 10) * 10;
 }
 
-void c_R_ATC::Pattern::setSpeed(int arg) {
+void R_ATC::Pattern::setSpeed(int arg) {
 	this->target_Speed = arg;
 }
 
-void c_R_ATC::Pattern::setLocation(double arg) {
+void R_ATC::Pattern::setLocation(double arg) {
 	this->target_Location = arg;
 }
 
-void c_R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
+void R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
 	target_Location = Stat.Z + arg.Position;
 	target_Speed = arg.Speed;
 }
@@ -231,7 +253,7 @@ void c_R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
 
 /* ----- Limit ----- */
 
-int c_R_ATC::Limit::calc(State S) {
+int R_ATC::Limit::calc(State S) {
 	if (this-isCalc()) {
 		this->StopLimit = this->Target - S.Z;
 	}
@@ -241,7 +263,7 @@ int c_R_ATC::Limit::calc(State S) {
 	return (int)this->StopLimit;
 }
 
-void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
+void R_ATC::Limit::out(State S, int* panel, int* sound) {
 	//過走限界残距離
 	panel[ATC_Panel::StopLimit_1] = static_cast<int>(this->StopLimit * 10) % 100;
 	if (panel[ATC_Panel::StopLimit_1] == 0) panel[ATC_Panel::StopLimit_1] = 100;
@@ -277,19 +299,19 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 		}
 
 		//駅位置設定
-		if (R_ATC->PlatformStart.size() != 0 && R_ATC->PlatformStart.size() == R_ATC->PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
-			for (size_t i = 0; i < R_ATC->PlatformStart.size(); i++) {	//登録駅全探索
-				if (R_ATC->PlatformStart[i] <= (unsigned int)Stat.Zd + stopSection * 100 && R_ATC->PlatformEnd[i] >= (unsigned int)Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
+		if (R_ATC::PlatformStart.size() != 0 && R_ATC::PlatformStart.size() == R_ATC::PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
+			for (size_t i = 0; i < R_ATC::PlatformStart.size(); i++) {	//登録駅全探索
+				if (R_ATC::PlatformStart[i] <= (unsigned int)Stat.Zd + stopSection * 100 && R_ATC::PlatformEnd[i] >= (unsigned int)Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
 					bool sw = false;
 					for (size_t j = 0; j < (unsigned int)stopSection; j++) {
 
 						//todo : 駅表示対応
 
 						/*
-						if (R_ATC->PlatformStart[i] >= Stat.Zd) sw = true;	//駅始点探索
+						if (R_ATC::PlatformStart[i] >= Stat.Zd) sw = true;	//駅始点探索
 						if (sw) {
 							openInf[j] = 4;	//駅表示
-							if (R_ATC->PlatformEnd[i] >= Stat.Zd + (j + 1) * 100) break;	//駅終点判定
+							if (R_ATC::PlatformEnd[i] >= Stat.Zd + (j + 1) * 100) break;	//駅終点判定
 						}
 						*/
 					}
@@ -320,11 +342,11 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 
 		//todo : 駅表示対応
 
-		if (R_ATC->Crossings.size() > 0) {
+		if (R_ATC::Crossings.size() > 0) {
 			short cnt = 0;
-			for (size_t i = 0; i < R_ATC->Crossings.size(); i++) {
-				if (!(R_ATC->Crossings[i] > Stat.Zd && R_ATC->Crossings[i] < Stat.Zd + maxDisp)) continue;
-				panel[ATC_Panel::openInfo_crossing0 + cnt] = R_ATC->Crossings[i] / maxDisp * vTotalNum;	//踏切
+			for (size_t i = 0; i < R_ATC::Crossings.size(); i++) {
+				if (!(R_ATC::Crossings[i] > Stat.Zd && R_ATC::Crossings[i] < Stat.Zd + maxDisp)) continue;
+				panel[ATC_Panel::openInfo_crossing0 + cnt] = R_ATC::Crossings[i] / maxDisp * vTotalNum;	//踏切
 				if (cnt >= 10) break;
 				else cnt++;
 			}
@@ -333,17 +355,17 @@ void c_R_ATC::Limit::out(State S, int* panel, int* sound) {
 	}
 }
 
-void c_R_ATC::Limit::SetTarget(int arg) {
+void R_ATC::Limit::SetTarget(int arg) {
 	this->Target = arg;
 }
-void c_R_ATC::Limit::SetTarget(float arg) {
+void R_ATC::Limit::SetTarget(float arg) {
 	this->Target = arg;
 }
-void c_R_ATC::Limit::SetTarget(double arg) {
+void R_ATC::Limit::SetTarget(double arg) {
 	this->Target = arg;
 }
 
-bool c_R_ATC::Limit::isCalc() {
+bool R_ATC::Limit::isCalc() {
 	if (this->Target != 0) return true;
 	else return false;
 }

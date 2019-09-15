@@ -15,5 +15,3 @@ SpecPlus specific;	//車両性能
 StatePlus Stat;	//車両状態(前フレーム)
 Hand manual;	//手動ハンドル位置
 Hand handle;	//ハンドル制御値
-
-c_R_ATC* R_ATC;	//R-ATC

@@ -7,15 +7,12 @@
 #include "../header/define.h"
 
 
-class c_R_ATC {
-public:
-
+namespace R_ATC {
 	struct RouteLimit {
 		int Speed;
 		double Position;
 	};
 
-private:
 	class Pattern {
 	private:
 		//const
@@ -49,7 +46,6 @@ private:
 		bool isCalc();	//限界計算可否
 	};
 
-public:
 
 	enum class stat {
 		off = 0,
@@ -78,36 +74,36 @@ public:
 	void Control(State, int *, int *);	//ATC制御
 
 
-	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
-	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
+	extern Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
+	extern Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
-	int status;	//ATCstatus
+	extern int status;	//ATCstatus
 
 	//bool P;	//P接近
 	//bool Bell;	//ATCベル
 
-	double StopLimit = 0;	//停止限界残距離
+	extern double StopLimit;	//停止限界残距離
 
 	//double Limit;	//制限速度[km/h]
 	//double Location;	//過走限界[m]
 
 
 	//double target;	//目標
-	double pattern_speed[2];	//P接近速度
+	extern double pattern_speed[2];	//P接近速度
 	//double pattern_brake;	//���e�ō����x
 	//double notice_dist;	//P接近距離
 	//double brake_speed[11];	//B開始速度記録
 
 	//先行列車
-	std::vector<int> PreTrain_Time{ 0 };	//時刻
-	std::vector<int> PreTrain_Distance{ 0 };	//距離
+	extern std::vector<int> PreTrain_Time;	//時刻
+	extern std::vector<int> PreTrain_Distance;	//距離
 
 	//路線情報
-	std::vector<RouteLimit> SpeedLimit;	//速度制限
-	std::vector<double> Stop2Step;	//2段パターン
-	std::vector<int> Crossings;	//踏切
-	std::vector<int> PlatformStart;	//ホーム区始端
-	std::vector<int> PlatformEnd;	//ホーム区終端
+	extern std::vector<RouteLimit> SpeedLimit;	//速度制限
+	extern std::vector<double> Stop2Step;	//2段パターン
+	extern std::vector<int> Crossings;	//踏切
+	extern std::vector<int> PlatformStart;	//ホーム区始端
+	extern std::vector<int> PlatformEnd;	//ホーム区終端
 
 };
 
