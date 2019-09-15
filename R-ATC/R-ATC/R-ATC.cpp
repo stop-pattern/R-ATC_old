@@ -273,16 +273,16 @@ void R_ATC::Limit::out(State S, int* panel, int* sound) {
 	}
 
 	{	//開通情報(R-ATC)
-		const int vTotalNum = 100;	//開通情報最大表示縦マス数
+		const short vTotalNum = 100;	//開通情報最大表示縦マス数 <=ini入力
 		const short maxDisp = 1000;	//開通情報最大表示距離[m]
 		if (this->StopLimit < maxDisp) {
 			int a = this->StopLimit / maxDisp * vTotalNum;
-			panel[237/*開通情報開通領域*/] = a;	//開通領域設定
-			panel[238/*開通情報未開通領域*/] = a + 1;	//未開通領域設定
+			panel[ATC_Panel::openInfo_open] = a;	//開通領域設定
+			panel[ATC_Panel::openInfo_unopen] = a + 1;	//未開通領域設定
 		}
 		else {	//直近1㎞開通
-			panel[237/*開通情報開通領域*/] = vTotalNum;
-			panel[238/*開通情報未開通領域*/] = 0;
+			panel[ATC_Panel::openInfo_open] = vTotalNum;
+			panel[ATC_Panel::openInfo_unopen] = 0;
 		}
 
 		//todo : 駅表示対応
@@ -297,7 +297,7 @@ void R_ATC::Limit::out(State S, int* panel, int* sound) {
 			}
 		}
 
-	}
+	};
 }
 
 void R_ATC::Limit::SetTarget(int arg) {
