@@ -219,7 +219,7 @@ void R_ATC::Limit::out(State S, int* panel, int* sound) {
 
 	{	//開通情報(D-ATC互換)
 		const int length = 10;	//領域
-		short stopSection = 10;	//停止進路
+		int stopSection = 10;	//停止進路
 		int openInf[length] = {};	//開通情報一時保存(default:0)
 
 		//停止進路断定
@@ -246,7 +246,7 @@ void R_ATC::Limit::out(State S, int* panel, int* sound) {
 		//駅位置設定
 		if (R_ATC::PlatformStart.size() != 0 && R_ATC::PlatformStart.size() == R_ATC::PlatformEnd.size()) {	//駅区間の始と終の要素数が一致したときのみ表示(0以外)
 			for (size_t i = 0; i < R_ATC::PlatformStart.size(); i++) {	//登録駅全探索
-				if (R_ATC::PlatformStart[i] <= (unsigned int)Stat.Zd + stopSection * 100 && R_ATC::PlatformEnd[i] >= (unsigned int)Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
+				if (R_ATC::PlatformStart[i] <= (int)Stat.Zd + stopSection * 100 && R_ATC::PlatformEnd[i] >= (int)Stat.Zd) {	//駅始点が停止進路以前かつ駅終点が現在位置以降
 					bool sw = false;
 					for (size_t j = 0; j < (unsigned int)stopSection; j++) {
 
@@ -276,7 +276,7 @@ void R_ATC::Limit::out(State S, int* panel, int* sound) {
 		const short vTotalNum = 100;	//開通情報最大表示縦マス数 <=ini入力
 		const short maxDisp = 1000;	//開通情報最大表示距離[m]
 		if (this->StopLimit < maxDisp) {
-			int a = this->StopLimit / maxDisp * vTotalNum;
+			int a = static_cast<int>(this->StopLimit / maxDisp * vTotalNum);
 			panel[ATC_Panel::openInfo_open] = a;	//開通領域設定
 			panel[ATC_Panel::openInfo_unopen] = a + 1;	//未開通領域設定
 		}
@@ -297,7 +297,7 @@ void R_ATC::Limit::out(State S, int* panel, int* sound) {
 			}
 		}
 
-	};
+	}
 }
 
 void R_ATC::Limit::SetTarget(int arg) {
