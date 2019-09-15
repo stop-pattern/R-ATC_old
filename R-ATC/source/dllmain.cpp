@@ -161,7 +161,6 @@ DE void SC SetBeaconData(Beacon b) {
 		R_ATC->stat = b.Data;
 		break;
 	case ATC_Beacon::SpeedDown:
-		c_R_ATC::RouteLimit temp;
 		{
 			c_R_ATC::RouteLimit temp;
 			temp.Position = Stat.Z + int(b.Data / 1000);	//下3桁切り捨て
