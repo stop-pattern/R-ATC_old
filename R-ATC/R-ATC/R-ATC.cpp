@@ -127,7 +127,7 @@ void R_ATC::Interpolation() {
 		}
 		//距離設定
 		if ((pram[0][1] - pram[0][0]) > 0) {
-			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);
+			auto temp = pram[1][0] + (pram[1][1] - pram[1][0]) * (Stat.T - pram[0][0]) / (pram[0][1] - pram[0][0]);	//在線位置線形補完
 			limits[static_cast<int>(limit_name::PreTrain)]->SetTarget(temp);
 			patterns[static_cast<int>(pattern_name::PreTrain)]->setLocation(temp);
 		}
