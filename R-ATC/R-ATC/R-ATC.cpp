@@ -40,6 +40,9 @@ void R_ATC::Load() {
 	for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
 		patterns[i] = new Pattern(DECELERATION_PATTERN, DECELERATION_BRAKE, DECELARATION_EMR);
 	}
+	for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
+		limits[i] = new Limit();
+	}
 }
 
 
