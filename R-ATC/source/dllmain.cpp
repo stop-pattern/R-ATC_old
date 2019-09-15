@@ -81,6 +81,19 @@ DE Hand SC Elapse(State S, int * p, int * s)
 
 	//ATS構内
 	if (ATCstatus == ATC_status::OFF) {
+
+		//ATCoff
+		p[ATC_Panel::ATCpower] = true;	//解放運転時以外on
+		p[ATC_Panel::ATC] = false;
+		p[ATC_Panel::ATCoff] = false;
+		p[ATC_Panel::ATCrelease] = false;
+		p[ATC_Panel::ATCemdrive] = false;
+		p[ATC_Panel::ATCemr] = false;
+		p[ATC_Panel::ATCbrake] = false;
+
+		p[ATC_Panel::ATC01] = 2;	//矢印隠し
+		p[ATC_Panel::ATC02] = false;
+		
 		if (S.V > SPEED_ATS_OFF) {
 			/*
 			handle.P = 0;

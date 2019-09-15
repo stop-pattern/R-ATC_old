@@ -94,8 +94,21 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 	}
 	else {	//ATC切
-		panel[ATC_Panel::pattern] = false;
-		panel[ATC_Panel::ATCbrake] = false;
+		panel[ATC_Panel::RATC] = false;
+		panel[ATC_Panel::IDmalfunction] = false;
+		panel[ATC_Panel::reduction] = false;
+		panel[ATC_Panel::pattern_2] = false;
+		panel[ATC_Panel::StopLimit_10000] = false;
+		panel[ATC_Panel::StopLimit_100] = false;
+		panel[ATC_Panel::StopLimit_1] = false;
+		panel[ATC_Panel::here] = false;
+
+		for (size_t i = ATC_Panel::info_0; i < ATC_Panel::info_9 + 1; i++) {
+			panel[i] = 0;
+		}
+		for (size_t i = ATC_Panel::openInfo_open; i < ATC_Panel::openInfo_crossing9 + 1; i++) {
+			panel[i] = 0;
+		}
 	}
 }
 
