@@ -78,21 +78,8 @@ namespace R_ATC {
 	extern Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
 	extern int status;	//ATCstatus
-
-	//bool P;	//P接近
-	//bool Bell;	//ATCベル
-
 	extern double StopLimit;	//停止限界残距離
-
-	//double Limit;	//制限速度[km/h]
-	//double Location;	//過走限界[m]
-
-
-	//double target;	//目標
 	extern double pattern_speed[2];	//P接近速度
-	//double pattern_brake;	//���e�ō����x
-	//double notice_dist;	//P接近距離
-	//double brake_speed[11];	//B開始速度記録
 
 	//先行列車
 	extern std::vector<int> PreTrain_Time;	//時刻

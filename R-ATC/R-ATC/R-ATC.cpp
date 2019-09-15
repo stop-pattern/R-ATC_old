@@ -17,9 +17,7 @@ namespace R_ATC {
 	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
 	int status;	//ATCstatus
-
 	double StopLimit = 0;	//停止限界残距離
-
 	double pattern_speed[2];	//P接近速度
 
 	//先行列車
@@ -42,77 +40,6 @@ void R_ATC::Load() {
 	}
 	for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
 		limits[i] = new Limit();
-	}
-}
-
-
-//実行されない
-void R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
-	bool x = 0;
-
-	if (ATCstatus == ATC_status::R__ATC) {
-		switch (status) {
-		case static_cast<int>(stat::off):
-			panel[ATC_Panel::ATC] = false;
-			panel[ATC_Panel::here] = false;
-			panel[ATC_Panel::RATC] = false;
-			panel[ATC_Panel::Limit_1] = false;
-			panel[ATC_Panel::Limit_5] = false;
-		case static_cast<int>(stat::on):
-			panel[ATC_Panel::ATCpower] = status;
-			break;
-		case static_cast<int>(stat::inside):
-			x = 1;
-		case static_cast<int>(stat::outside):
-			panel[ATC_Panel::ATC] = x;
-			panel[ATC_Panel::here] = x;
-			panel[ATC_Panel::RATC] = x;
-			break;
-		default:
-			break;
-		}
-
-		//停止限界設定?=>P接近&B動作
-
-			//停止限界残距離
-
-		if (int(StopLimit / 1000) % 100 == 0) {
-			panel[ATC_Panel::StopLimit_10000] = 0;
-		}
-		else {
-			panel[ATC_Panel::StopLimit_10000] = int(StopLimit / 1000) % 100;
-		}
-
-
-
-
-		if (int(StopLimit / 10) % 100 == 0) {
-			panel[ATC_Panel::StopLimit_100] = 0;
-		}
-		else {
-			panel[ATC_Panel::StopLimit_100] = int(StopLimit / 10) % 100;
-		}
-
-
-		if (int(StopLimit * 10) % 100 == 0) {
-			panel[ATC_Panel::StopLimit_1] = 100;
-		}
-		else {
-			panel[ATC_Panel::StopLimit_1] = int(StopLimit * 10) % 100;
-		}
-
-
-	}
-	else
-	{
-		panel[ATC_Panel::ATC] = status;
-		panel[ATC_Panel::here] = status;
-		panel[ATC_Panel::RATC] = status;
-		panel[ATC_Panel::Limit_1] = false;
-		panel[ATC_Panel::Limit_5] = false;
-		panel[ATC_Panel::StopLimit_10000] = false;
-		panel[ATC_Panel::StopLimit_100] = false;
-		panel[ATC_Panel::StopLimit_1] = false;
 	}
 }
 
