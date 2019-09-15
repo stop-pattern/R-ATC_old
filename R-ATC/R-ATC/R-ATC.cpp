@@ -26,7 +26,7 @@ void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 	bool x = 0;
 
 	if (ATCstatus == ATC_status::R__ATC) {
-		switch (stat) {
+		switch (status) {
 		case static_cast<int>(stat::off):
 			panel[ATC_Panel::ATC] = false;
 			panel[ATC_Panel::here] = false;
@@ -34,7 +34,7 @@ void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 			panel[ATC_Panel::Limit_1] = false;
 			panel[ATC_Panel::Limit_5] = false;
 		case static_cast<int>(stat::on):
-			panel[ATC_Panel::ATCpower] = stat;
+			panel[ATC_Panel::ATCpower] = status;
 			break;
 		case static_cast<int>(stat::inside):
 			x = 1;
@@ -80,9 +80,9 @@ void c_R_ATC::Status(State S, int* panel, int* sound) {	//ATC動作
 	}
 	else
 	{
-		panel[ATC_Panel::ATC] = stat;
-		panel[ATC_Panel::here] = stat;
-		panel[ATC_Panel::RATC] = stat;
+		panel[ATC_Panel::ATC] = status;
+		panel[ATC_Panel::here] = status;
+		panel[ATC_Panel::RATC] = status;
 		panel[ATC_Panel::Limit_1] = false;
 		panel[ATC_Panel::Limit_5] = false;
 		panel[ATC_Panel::StopLimit_10000] = false;
@@ -97,7 +97,7 @@ void c_R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 	Interpolation();
 
 
-	if (stat != static_cast<int>(stat::off)) {
+	if (status != static_cast<int>(stat::off)) {
 			int num;	//インデックス格納
 
 			{	//過走限界

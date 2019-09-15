@@ -80,12 +80,12 @@ public:
 	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
 	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
-	int stat;	//ATCstatus
+	int status;	//ATCstatus
 
 	//bool P;	//P接近
 	//bool Bell;	//ATCベル
 
-	double StopLimit;	//停止限界残距離
+	double StopLimit = 0;	//停止限界残距離
 
 	//double Limit;	//制限速度[km/h]
 	//double Location;	//過走限界[m]
@@ -98,8 +98,8 @@ public:
 	//double brake_speed[11];	//B開始速度記録
 
 	//先行列車
-	std::vector<int> PreTrain_Time;	//時刻
-	std::vector<int> PreTrain_Distance;	//距離
+	std::vector<int> PreTrain_Time{ 0 };	//時刻
+	std::vector<int> PreTrain_Distance{ 0 };	//距離
 
 	//路線情報
 	std::vector<RouteLimit> SpeedLimit;	//速度制限

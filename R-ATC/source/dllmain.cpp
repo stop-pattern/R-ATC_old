@@ -158,7 +158,7 @@ DE void SC SetSignal(int a) {
 DE void SC SetBeaconData(Beacon b) {
 	switch (b.Num) {
 	case ATC_Beacon::Status:
-		R_ATC->stat = b.Data;
+		R_ATC->status = b.Data;
 		break;
 	case ATC_Beacon::SpeedDown:
 		{
