@@ -65,7 +65,7 @@ DE void SC Initialize(int b) {
 }
 DE Hand SC Elapse(State S, int * p, int * s)
 {
-	if (door) handle.P = manual.P;
+	if (!door) handle.P = manual.P;
 	else handle.P = 0;
 	handle.B = manual.B;
 	handle.R = manual.R;
