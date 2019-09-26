@@ -32,7 +32,7 @@ void ATC10::Check(State status, int *panel, int *sound) {
 	if (ATCstatus == ATC_status::ATC__10) {
 
 		panel[ATC_Panel::Limit_1] = int(LimitSpeed);	//‘¬“x–îˆó1k
-		panel[ATC_Panel::Limit_5] = int(LimitSpeed) % 10 > 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//‘¬“x–îˆó5k
+		panel[ATC_Panel::Limit_5] = int(LimitSpeed) % 10 >= 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//‘¬“x–îˆó5k
 
 		if (notice)panel[ATC_Panel::fw_notice] = true;
 
