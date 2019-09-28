@@ -227,6 +227,9 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	}
 
 	//ATC針1刻み
+	if (abs(panel[ATC_Panel::Limit_1] - (int)(this->Limit)) >= 5) {
+		sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
+	}
 	panel[ATC_Panel::Limit_1] = static_cast<int>(this->Limit);
 	//ATC針5刻み
 	panel[ATC_Panel::Limit_5] = static_cast<int>(this->Limit) % 10 > 5.0 ? (static_cast<int>(this->Limit / 10) + 1) * 10 : static_cast<int>(this->Limit / 10) * 10;
