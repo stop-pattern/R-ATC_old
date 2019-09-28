@@ -147,7 +147,10 @@ R_ATC::Pattern::Pattern(double P, double B, double E) {
 
 int R_ATC::Pattern::calc(State S) {
 	if (S.Z < this->target_Location) {
-		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	//　(現示速度)=sqrt((減速定数)*abs(残距離))
+		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	// (現示速度)=sqrt((減速定数)*abs(残距離))
+	}
+	else if (S.Z - 300 > this->target_Location) {	// 自列車先頭 - 15両分列車長
+		this->Limit = 0;
 	}
 	else this->Limit = this->target_Speed;
 
