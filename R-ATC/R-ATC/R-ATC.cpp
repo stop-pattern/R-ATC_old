@@ -50,7 +50,7 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 
 	if (status != static_cast<int>(stat::off)) {
-		int num;	//インデックス格納
+		int num = -1;	//インデックス格納
 
 		{	//過走限界
 			double lim = DBL_MAX;
@@ -63,8 +63,27 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 					}
 				}
 			}
+
 			//出力
-			limits[num]->out(S, panel, sound);
+			if (num == -1) {	//該当なし
+				//過走限界0処理
+				panel[ATC_Panel::StopLimit_1] = 1;
+				panel[ATC_Panel::StopLimit_100] = 1;
+				panel[ATC_Panel::StopLimit_10000]  = 1;
+				for (size_t i = ATC_Panel::info_0; i < ATC_Panel::info_9; i++) {	//D-ATC互換領域
+					panel[i] = 1;	//開通情報設定(未開通)
+				}
+				panel[ATC_Panel::openInfo_open] = 0;	//R開通領域設定
+				panel[ATC_Panel::openInfo_unopen] = 1;	//R未開通領域設定
+				panel[ATC_Panel::openInfo_stationBegin] = 0;	//R駅領域始端設定
+				panel[ATC_Panel::openInfo_stationEnd] = 0;	//R駅領域終端設定
+				for (size_t i = ATC_Panel::openInfo_crossing0; i < ATC_Panel::openInfo_crossing9; i++) {	//R-ATC踏切領域
+					panel[ATC_Panel::openInfo_crossing0 + i] = 0;	//踏切設定(非表示)
+				}
+
+				num = 0;
+			}
+			else limits[num]->out(S, panel, sound);
 		}
 
 		{	//ATC P現示
