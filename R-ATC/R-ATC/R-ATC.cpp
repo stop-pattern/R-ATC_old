@@ -70,7 +70,7 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 				//過走限界0処理
 				panel[ATC_Panel::StopLimit_1] = 1;
 				panel[ATC_Panel::StopLimit_100] = 1;
-				panel[ATC_Panel::StopLimit_10000]  = 1;
+				panel[ATC_Panel::StopLimit_10000] = 1;
 				for (size_t i = ATC_Panel::info_0; i < ATC_Panel::info_9; i++) {	//D-ATC互換領域
 					panel[i] = 1;	//開通情報設定(未開通)
 				}
@@ -107,7 +107,7 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 				panel[ATC_Panel::ATCemr] = true;	//EB動作
 				handle.B = specific.E;	//EB
 				if (S.V != 0 && S.V < 5) {
-					handle.B = specific.E/ 2;	//ハーフブレーキ
+					handle.B = specific.E / 2;	//ハーフブレーキ
 				}
 
 			}
@@ -258,7 +258,7 @@ void R_ATC::Pattern::SetBeaconData(RouteLimit arg) {
 /* ----- Limit ----- */
 
 int R_ATC::Limit::calc(State S) {
-	if (this-isCalc()) {
+	if (this->isCalc()) {
 		this->StopLimit = this->Target - S.Z;
 	}
 	else {
