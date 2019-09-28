@@ -50,51 +50,51 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 
 	if (status != static_cast<int>(stat::off)) {
-			int num;	//インデックス格納
+		int num;	//インデックス格納
 
-			{	//過走限界
-				double lim = DBL_MAX;
-				for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
-					if (limits[i]->isCalc()) {
-						double buf = limits[i]->calc(S);
-						if (lim > buf) {
-							lim = buf;	//最も手前を選択
-							num = i;
-						}
-					}
-				}
-				//出力
-				limits[num]->out(S, panel, sound);
-			}
-
-			{	//ATC P現示
-				double lim = patterns[num]->calc(S);
-				for (size_t i = static_cast<int>(limit_name::number); i < static_cast<int>(pattern_name::number); i++) {
-					if (patterns[i]->isCalc()) {
-						double buf = patterns[i]->calc(S);
-						if (lim > buf) {
-							lim = buf;	//最低を選択
-							num = i;
-						}
-					}
-				}
-				//出力
-				patterns[num]->out(S, panel, sound);
-			}
-
-			if (door) {	//転動防止
-				if (panel[ATC_Panel::Rolling]) {
-					handle.B = specific.B;	//常用最大
-				}
-				else {
-					if (rand() % 2) {
-						panel[ATC_Panel::Rolling] = true;	//転動防止動作
+		{	//過走限界
+			double lim = DBL_MAX;
+			for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
+				if (limits[i]->isCalc()) {
+					double buf = limits[i]->calc(S);
+					if (lim > buf) {
+						lim = buf;	//最も手前を選択
+						num = i;
 					}
 				}
 			}
-			else if (manual.B <= specific.B / 3) {	//戸閉&&B段(常用最大*1/3)
-				panel[ATC_Panel::Rolling] = false;	//転動防止解除
+			//出力
+			limits[num]->out(S, panel, sound);
+		}
+
+		{	//ATC P現示
+			double lim = patterns[num]->calc(S);
+			for (size_t i = static_cast<int>(limit_name::number); i < static_cast<int>(pattern_name::number); i++) {
+				if (patterns[i]->isCalc()) {
+					double buf = patterns[i]->calc(S);
+					if (lim > buf) {
+						lim = buf;	//最低を選択
+						num = i;
+					}
+				}
 			}
+			//出力
+			patterns[num]->out(S, panel, sound);
+		}
+
+		if (door) {	//転動防止
+			if (panel[ATC_Panel::Rolling]) {
+				handle.B = specific.B;	//常用最大
+			}
+			else {
+				if (rand() % 2) {
+					panel[ATC_Panel::Rolling] = true;	//転動防止動作
+				}
+			}
+		}
+		else if (manual.B <= specific.B / 3) {	//戸閉&&B段(常用最大*1/3)
+			panel[ATC_Panel::Rolling] = false;	//転動防止解除
+		}
 
 	}
 	else {	//ATC切
