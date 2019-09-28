@@ -118,12 +118,18 @@ void R_ATC::Interpolation() {
 		int pram[2][2];	//index
 		for (size_t i = 0; i < PreTrain_Time.size(); i++) {
 			if (PreTrain_Time[i] > Stat.T) {	//現在時刻直後を検知
+				limits[static_cast<int>(limit_name::PreTrain)]->isCalc(true);	//有効化
+				patterns[static_cast<int>(pattern_name::PreTrain)]->isCalc(true);	//無効化
 				for (size_t j = 0; j < 2; j++) {
 					pram[0][j] = PreTrain_Time[i - 1 + j];	//現在時刻直前後の時刻を抽出
 					pram[1][j] = PreTrain_Distance[i - 1 + j];	//現在時刻直前後の距離を抽出
 				}
 			}
-			else return;
+			else {
+				limits[static_cast<int>(limit_name::PreTrain)]->isCalc(false);	//無効化
+				patterns[static_cast<int>(pattern_name::PreTrain)]->isCalc(false);	//無効化
+				return;
+			}
 		}
 		//距離設定
 		if ((pram[0][1] - pram[0][0]) > 0) {
@@ -181,6 +187,15 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	panel[ATC_Panel::Limit_1] = int(this->Limit);
 	//ATC針5刻み
 	panel[ATC_Panel::Limit_5] = int(this->Limit) % 10 > 5.0 ? (static_cast<int>(this->Limit / 10) + 1) * 10 : static_cast<int>(this->Limit / 10) * 10;
+}
+
+bool R_ATC::Pattern::isCalc() {
+	return this->status;
+}
+
+bool R_ATC::Pattern::isCalc(bool arg) {
+	this->status = arg;
+	return this->status;
 }
 
 void R_ATC::Pattern::setSpeed(int arg) {
@@ -314,6 +329,10 @@ void R_ATC::Limit::SetTarget(double arg) {
 }
 
 bool R_ATC::Limit::isCalc() {
-	if (this->Target != 0) return true;
-	else return false;
+	return this->status;
+}
+
+bool R_ATC::Limit::isCalc(bool arg) {
+	this->status = arg;
+	return this->status;
 }

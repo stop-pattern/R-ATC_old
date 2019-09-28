@@ -19,6 +19,8 @@ namespace R_ATC {
 		double P_deceleration;	//P接近減速定数
 		double B_deceleration;	//B動作減速定数
 		double E_deceleration;	//EB動作減速定数
+		//status
+		bool status = true;	//使用可否
 		//variable about pattern
 		double Limit = 0;	//制限速度(ATC現示値)[km/h] (=P_Speed <=calc{return}
 		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
@@ -28,6 +30,8 @@ namespace R_ATC {
 		int calc(State);	//メイン演算
 		void SetBeaconData(RouteLimit);
 		void out(State, int*, int*);	//出力
+		bool isCalc();	//計算使用可否判定
+		bool isCalc(bool);	//計算使用可否判定
 		//入力
 		void setSpeed(int);
 		void setLocation(double);
@@ -35,6 +39,7 @@ namespace R_ATC {
 
 	class Limit {
 	private:
+		bool status = true;	//使用可否
 		double Target = 0;	//停止限界[m] <=距離程 <=入力値(固定)
 		double StopLimit = 0;	//停止限界残距離[m] <=毎フレーム更新値 <=calc{return}
 	public:
@@ -43,7 +48,8 @@ namespace R_ATC {
 		void SetTarget(int);
 		void SetTarget(float);
 		void SetTarget(double);
-		bool isCalc();	//限界計算可否
+		bool isCalc();	//限界計算可否判定
+		bool isCalc(bool);	//限界計算可否判定
 	};
 
 
