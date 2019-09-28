@@ -22,5 +22,5 @@ void StatePlus::setData(StatePlus b, State a) {
 	this->dV = (double)a.V - (double)b.V;
 	this->dT = (double)a.T - (double)b.T;
 	this->Zd = b.Z + (this->dV * this->dT);
-	this->A = this->dV / this->dT;
+	this->A = this->dT != 0 ? this->dV / this->dT : 0;
 }
