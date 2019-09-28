@@ -188,7 +188,7 @@ R_ATC::Pattern::Pattern(double P, double B, double E) {
 
 int R_ATC::Pattern::calc(State S) {
 	if (S.Z < this->target_Location) {
-		this->Limit = sqrt(this->B_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed;	// (現示速度)=sqrt((減速定数)*abs(残距離))
+		this->Limit = sqrt(this->B_deceleration * abs(pow(this->target_Speed, 2) / this->B_deceleration + this->target_Location - S.Z));	// (現示速度)=sqrt((減速定数)*abs((目標速度^2/減速定数)+現在位置))
 	}
 	else this->Limit = this->target_Speed;
 
@@ -198,12 +198,12 @@ int R_ATC::Pattern::calc(State S) {
 void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	sound[ATC_Sound::RATC_bell] = SoundInfo::PlayContinue;
 
-	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
+	if (S.V > sqrt(this->P_deceleration * abs(pow(this->target_Speed, 2) / this->P_deceleration + this->target_Location - S.Z))) {
 		if (S.V > this->Limit) {
 			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
 			handle.B = specific.B;	//常用最大
-			if (S.V > sqrt(this->E_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
+			if (S.V > sqrt(this->E_deceleration * abs(pow(this->target_Speed, 2) / this->E_deceleration + this->target_Location - S.Z))) {
 				panel[ATC_Panel::ATCemr] = true;	//EB動作
 				sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
 				handle.B = specific.E;	//EB
