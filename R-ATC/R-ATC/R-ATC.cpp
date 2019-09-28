@@ -55,10 +55,12 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 			{	//過走限界
 				double lim = DBL_MAX;
 				for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
-					double buf = limits[i]->calc(S);
-					if (lim > buf) {
-						lim = buf;	//最も手前を選択
-						num = i;
+					if (limits[i]->isCalc()) {
+						double buf = limits[i]->calc(S);
+						if (lim > buf) {
+							lim = buf;	//最も手前を選択
+							num = i;
+						}
 					}
 				}
 				//出力
@@ -68,10 +70,12 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 			{	//ATC P現示
 				double lim = patterns[num]->calc(S);
 				for (size_t i = static_cast<int>(limit_name::number); i < static_cast<int>(pattern_name::number); i++) {
-					double buf = patterns[i]->calc(S);
-					if (lim > buf) {
-						lim = buf;	//最低を選択
-						num = i;
+					if (patterns[i]->isCalc()) {
+						double buf = patterns[i]->calc(S);
+						if (lim > buf) {
+							lim = buf;	//最低を選択
+							num = i;
+						}
 					}
 				}
 				//出力
