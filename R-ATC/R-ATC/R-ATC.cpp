@@ -188,9 +188,9 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	else panel[ATC_Panel::pattern] = false;
 
 	//ATC針1刻み
-	panel[ATC_Panel::Limit_1] = int(this->Limit);
+	panel[ATC_Panel::Limit_1] = static_cast<int>(this->Limit);
 	//ATC針5刻み
-	panel[ATC_Panel::Limit_5] = int(this->Limit) % 10 > 5.0 ? (static_cast<int>(this->Limit / 10) + 1) * 10 : static_cast<int>(this->Limit / 10) * 10;
+	panel[ATC_Panel::Limit_5] = static_cast<int>(this->Limit) % 10 > 5.0 ? (static_cast<int>(this->Limit / 10) + 1) * 10 : static_cast<int>(this->Limit / 10) * 10;
 }
 
 bool R_ATC::Pattern::isCalc() {
