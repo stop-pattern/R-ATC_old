@@ -86,7 +86,7 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 		{	//ATC P現示
 			int num = -1;	//インデックス格納
-			double lim = patterns[num]->calc(S);
+			double lim = DBL_MAX;//patterns[num]->calc(S);	<=配列外参照
 			for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
 				if (patterns[i]->isCalc()) {
 					double buf = patterns[i]->calc(S);
