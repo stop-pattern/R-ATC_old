@@ -50,9 +50,9 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 
 
 	if (status != static_cast<int>(stat::off)) {
-		int num = -1;	//インデックス格納
 
 		{	//過走限界
+			int num = -1;	//インデックス格納
 			double lim = DBL_MAX;
 			for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
 				if (limits[i]->isCalc()) {
@@ -65,7 +65,7 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 			}
 
 			//出力
-			if (num == -1) {	//該当なし
+			if (num == -1) {	//該当なし(全未開通)
 				//過走限界0処理
 				panel[ATC_Panel::StopLimit_1] = 1;
 				panel[ATC_Panel::StopLimit_100] = 1;
@@ -80,15 +80,14 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 				for (size_t i = ATC_Panel::openInfo_crossing0; i < ATC_Panel::openInfo_crossing9; i++) {	//R-ATC踏切領域
 					panel[ATC_Panel::openInfo_crossing0 + i] = 0;	//踏切設定(非表示)
 				}
-
-				num = 0;
 			}
 			else limits[num]->out(S, panel, sound);
 		}
 
 		{	//ATC P現示
+			int num = -1;	//インデックス格納
 			double lim = patterns[num]->calc(S);
-			for (size_t i = static_cast<int>(limit_name::number); i < static_cast<int>(pattern_name::number); i++) {
+			for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
 				if (patterns[i]->isCalc()) {
 					double buf = patterns[i]->calc(S);
 					if (lim > buf) {
@@ -98,7 +97,20 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 				}
 			}
 			//出力
-			patterns[num]->out(S, panel, sound);
+			if (num == -1) {	//該当なし(EB動作)
+				sound[ATC_Sound::RATC_bell] = SoundInfo::PlayContinue;
+				if (panel[ATC_Panel::ATCemr]) {
+					sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
+				}
+				panel[ATC_Panel::pattern] = true;	//P接近
+				panel[ATC_Panel::ATCemr] = true;	//EB動作
+				handle.B = specific.E;	//EB
+				if (S.V != 0 && S.V < 5) {
+					handle.B = specific.E/ 2;	//ハーフブレーキ
+				}
+
+			}
+			else patterns[num]->out(S, panel, sound);
 		}
 
 		if (door) {	//転動防止
@@ -187,7 +199,6 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	sound[ATC_Sound::RATC_bell] = SoundInfo::PlayContinue;
 
 	if (S.V > sqrt(this->P_deceleration * abs(this->target_Location - S.Z)) + this->target_Speed) {
-		panel[ATC_Panel::pattern] = true;	//P接近
 		if (S.V > this->Limit) {
 			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
