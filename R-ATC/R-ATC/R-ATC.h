@@ -24,7 +24,7 @@ namespace R_ATC {
 		//variable about pattern
 		double Limit = 0;	//制限速度(ATC現示値)[km/h] (=P_Speed <=calc{return}
 		double target_Speed = 0;	//目標速度[km/h] <=入力値(固定)
-		double target_Location = 0;	//目標距離程[m] <=入力値(固定)
+		double target_Location = DBL_MAX;	//目標距離程[m] <=入力値(固定)
 	public:
 		Pattern(double, double, double);
 		int calc(State);	//メイン演算
