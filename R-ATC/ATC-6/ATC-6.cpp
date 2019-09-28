@@ -28,7 +28,7 @@ void ATC6::Check(State status, int *panel, int *sound) {
 	if (ATCstatus == ATC_status::ATC__6 || ATCstatus == ATC_status::ATC__6_emergency) {
 
 		panel[ATC_Panel::Limit_1] = int(LimitSpeed);	//速度矢印1k
-		panel[ATC_Panel::Limit_5] = int(LimitSpeed) % 10 >= 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//速度矢印5k
+		panel[ATC_Panel::Limit_5] = int(LimitSpeed) % 10 > 5.0 ? (int(LimitSpeed / 10) + 1) * 10 : int(LimitSpeed / 10) * 10;	//速度矢印5k
 
 		//ATC-01/針隠し
 		if (LimitSpeed == 0) panel[ATC_Panel::ATC01] = 1;
