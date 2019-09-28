@@ -210,9 +210,16 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 			}
 			else panel[ATC_Panel::ATCemr] = false;
 		}
-		else panel[ATC_Panel::ATCbrake] = false;
+		else {
+			panel[ATC_Panel::ATCbrake] = false;
+			panel[ATC_Panel::ATCemr] = false;
+		}
 	}
-	else panel[ATC_Panel::pattern] = false;
+	else {
+		panel[ATC_Panel::pattern] = false;
+		panel[ATC_Panel::ATCbrake] = false;
+		panel[ATC_Panel::ATCemr] = false;
+	}
 
 	//ATC針1刻み
 	panel[ATC_Panel::Limit_1] = static_cast<int>(this->Limit);
