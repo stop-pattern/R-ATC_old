@@ -123,7 +123,7 @@ void R_ATC::Interpolation() {
 		for (size_t i = 0; i < PreTrain_Time.size(); i++) {
 			if (PreTrain_Time[i] > Stat.T) {	//現在時刻直後を検知
 				limits[static_cast<int>(limit_name::PreTrain)]->isCalc(true);	//有効化
-				patterns[static_cast<int>(pattern_name::PreTrain)]->isCalc(true);	//無効化
+				patterns[static_cast<int>(pattern_name::PreTrain)]->isCalc(true);	//有効化
 				for (size_t j = 0; j < 2; j++) {
 					pram[0][j] = PreTrain_Time[i - 1 + j];	//現在時刻直前後の時刻を抽出
 					pram[1][j] = PreTrain_Distance[i - 1 + j];	//現在時刻直前後の距離を抽出
