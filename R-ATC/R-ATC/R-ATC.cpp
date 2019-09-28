@@ -208,7 +208,7 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
 			handle.B = specific.B;	//常用最大
-			if (S.V > sqrt(this->E_deceleration * abs(pow(this->target_Speed, 2) / this->E_deceleration + this->target_Location - S.Z))) {
+			if (S.V > sqrt(this->E_deceleration * abs(pow(this->target_Speed + 2.5, 2) / this->E_deceleration + this->target_Location - S.Z))) {
 				panel[ATC_Panel::ATCemr] = true;	//EB動作
 				sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
 				handle.B = specific.E;	//EB
