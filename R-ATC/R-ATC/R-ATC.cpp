@@ -19,6 +19,7 @@ namespace R_ATC {
 	int status;	//ATCstatus
 	double StopLimit = 0;	//停止限界残距離
 	double pattern_speed[2];	//P接近速度
+	extern int maxSpeed = 120;	//路線最高速度
 
 	//先行列車
 	std::vector<int> PreTrain_Time{ 0 };	//時刻
@@ -191,6 +192,10 @@ int R_ATC::Pattern::calc(State S) {
 		this->Limit = sqrt(this->B_deceleration * abs(pow(this->target_Speed, 2) / this->B_deceleration + this->target_Location - S.Z));	// (現示速度)=sqrt((減速定数)*abs((目標速度^2/減速定数)+現在位置))
 	}
 	else this->Limit = this->target_Speed;
+
+	if (maxSpeed < this->Limit) {
+		this->Limit = maxSpeed;
+	}
 
 	return (int)this->Limit;
 }

@@ -86,6 +86,7 @@ namespace R_ATC {
 	extern int status;	//ATCstatus
 	extern double StopLimit;	//停止限界残距離
 	extern double pattern_speed[2];	//P接近速度
+	extern int maxSpeed;	//路線最高速度
 
 	//先行列車
 	extern std::vector<int> PreTrain_Time;	//時刻
