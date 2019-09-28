@@ -201,7 +201,7 @@ DE void SC SetBeaconData(Beacon b) {
 		R_ATC::PreTrain_Distance.push_back(b.Data);
 		break;
 	case ATC_Beacon::PreTrainTime:
-		R_ATC::PreTrain_Time.push_back(b.Data);
+		R_ATC::PreTrain_Time.push_back(b.Data * 1000);
 		break;
 	case ATC_Beacon::Set2StepPattern:
 		R_ATC::Stop2Step.push_back(b.Data / 10);
