@@ -204,6 +204,7 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 	sound[ATC_Sound::RATC_bell] = SoundInfo::PlayContinue;
 
 	if (S.V > sqrt(this->P_deceleration * abs(pow(this->target_Speed, 2) / this->P_deceleration + this->target_Location - S.Z))) {
+		panel[ATC_Panel::pattern] = true;	//P接近
 		if (S.V > this->Limit) {
 			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
