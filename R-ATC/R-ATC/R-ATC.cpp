@@ -205,6 +205,7 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 
 	if (S.V > sqrt(this->P_deceleration * abs(pow(this->target_Speed, 2) / this->P_deceleration + this->target_Location - S.Z))) {
 		panel[ATC_Panel::pattern] = true;	//P接近
+		sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
 		if (S.V > this->Limit) {
 			panel[ATC_Panel::ATCbrake] = true;	//B動作
 			sound[ATC_Sound::RATC_bell] = SoundInfo::PlayOnce;
@@ -226,6 +227,11 @@ void R_ATC::Pattern::out(State S, int* panel, int* sound) {
 		panel[ATC_Panel::ATCbrake] = false;
 		panel[ATC_Panel::ATCemr] = false;
 	}
+
+	panel[50] = S.V;
+	panel[102] = (int)(int(S.V) % 10) == 0 ? 10 : (int)(int(S.V) % 10);
+	panel[101] = (int)(int(S.V / 10) % 10) == 0 ? 10 : (int)(int(S.V / 10) % 10);
+	panel[100] = (int)(int(S.V / 100) % 10) == 0 ? 10 : (int)(int(S.V / 100) % 10);
 
 	//ATC針1刻み
 	if (abs(panel[ATC_Panel::Limit_1] - (int)(this->Limit)) >= 5) {
