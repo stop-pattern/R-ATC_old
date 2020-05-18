@@ -7,7 +7,8 @@
 #include "../header/define.h"
 
 
-namespace R_ATC {
+class  R_ATC {
+private:
 	struct RouteLimit {
 		int Speed;
 		double Position;
@@ -56,8 +57,7 @@ namespace R_ATC {
 	enum class stat {
 		off = 0,
 		on = 1,
-		inside = 2,
-		outside = 3,
+		backup = 2,
 	};
 	enum class pattern_name {
 		PreTrain,	//先行列車連動P
@@ -73,34 +73,38 @@ namespace R_ATC {
 		number	//総数
 	};
 
-
+public:
 	void Load();	//consractor
+	void On();	//consractor
+	void Off();	//consractor
 	void Status(State, int *, int *);	//ATC状態管理
 	void Interpolation();	//先行列車位置線形回帰
 	void Control(State, int *, int *);	//ATC制御
+	Hand Elapse(State, int*, int*);	//毎フレーム処理
 
+private:
+	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
+	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
-	extern Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
-	extern Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
-
-	extern int status;	//ATCstatus
-	extern double StopLimit;	//停止限界残距離
-	extern double pattern_speed[2];	//P接近速度
-	extern int maxSpeed;	//路線最高速度
+	int status;	//ATCstatus
+	double StopLimit;	//停止限界残距離
+	double pattern_speed[2];	//P接近速度
+	int maxSpeed;	//路線最高速度
 
 	//先行列車
-	extern std::vector<int> PreTrain_Time;	//時刻
-	extern std::vector<int> PreTrain_Distance;	//距離
+	std::vector<int> PreTrain_Time;	//時刻
+	std::vector<int> PreTrain_Distance;	//距離
 
 	//路線情報
-	extern std::vector<RouteLimit> SpeedLimit;	//速度制限
-	extern std::vector<double> Stop2Step;	//2段パターン
-	extern std::vector<int> Crossings;	//踏切
-	extern std::vector<int> PlatformStart;	//ホーム区始端
-	extern std::vector<int> PlatformEnd;	//ホーム区終端
+	std::vector<RouteLimit> SpeedLimit;	//速度制限
+	std::vector<double> Stop2Step;	//2段パターン
+	std::vector<int> Crossings;	//踏切
+	std::vector<int> PlatformStart;	//ホーム区始端
+	std::vector<int> PlatformEnd;	//ホーム区終端
 
 };
 
 
+R_ATC *rAtc;
 
 #endif // !_RATC_

@@ -12,7 +12,7 @@ extern int signal;
 extern int ATCstatus;
 
 /* ===== member ===== */
-namespace R_ATC {
+class R_ATC {
 	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
 	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
 
@@ -24,6 +24,7 @@ namespace R_ATC {
 	//先行列車
 	std::vector<int> PreTrain_Time{ 0 };	//時刻
 	std::vector<int> PreTrain_Distance{ 0 };	//距離
+	std::vector<std::vector<int>> PreTrain{ 0 };
 
 	//路線情報
 	std::vector<RouteLimit> SpeedLimit;	//速度制限
@@ -42,6 +43,14 @@ void R_ATC::Load() {
 	for (size_t i = 0; i < static_cast<int>(limit_name::number); i++) {
 		limits[i] = new Limit();
 	}
+}
+
+void R_ATC::On() {
+	status = static_cast<int>(stat::on);
+}
+
+void R_ATC::Off() {
+
 }
 
 
@@ -146,6 +155,11 @@ void R_ATC::Control(State S, int* panel, int* sound) {	//ATC判定
 			panel[i] = 0;
 		}
 	}
+}
+
+Hand R_ATC::Elapse(State, int*, int*)
+{
+	return Hand();
 }
 
 
@@ -389,3 +403,6 @@ bool R_ATC::Limit::isCalc(bool arg) {
 	this->status = arg;
 	return this->status;
 }
+
+
+R_ATC rAtc = R_ATC();

@@ -37,15 +37,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 }
 
 DE void SC Load() {
-	R_ATC::Load();
-	/*
-	ini.GetIni(iniPath);
-	ofstream fs;
-	fs.open("./output.log", ios::app);
-	while (!fs.is_open())
-		fs << iniPath << endl;
-	fs.close();
-	*/
+	rAtc = R_ATC();
+	rAtc->Load();
 }
 DE void SC Dispose() {
 }
@@ -72,10 +65,10 @@ DE Hand SC Elapse(State S, int * p, int * s)
 
 
 	if (ATC6::Emergency == true)ATC6::EmergencyDrive(S, p, s);	//ATC-6非常運転
-	ATC6::Check(S, p, s);	//ATC-6
+	//ATC6::Check(S, p, s);	//ATC-6
 
 	//R-ATC
-	R_ATC::Control(S, p, s);
+	if (ATCstatus == ATC_status::R__ATC) rAtc->Control(S, p, s);
 
 	//02
 	if (ATCstatus == ATC_status::OFF) p[ATC_Panel::ATC01] = 2;
@@ -152,8 +145,7 @@ DE void SC SetSignal(int a) {
 	if (a > 9) {
 		if (a == 35) ATCstatus = ATC_status::ATC__10_ORP;
 		if (a < 35) ATCstatus = ATC_status::ATC__10;
-		else if (a > 49)
-		{
+		else if (a > 49) {
 			if (a < 61) ATCstatus = ATC_status::R__ATC;
 			else if (a > 100) {
 				if (a < 113)ATCstatus = ATC_status::ATC__6;
