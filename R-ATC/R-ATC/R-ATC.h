@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef _RATC_
-#define _RATC_
 
 #include <vector>
 #include "../header/ats.h"
@@ -17,9 +15,9 @@ private:
 	class Pattern {
 	private:
 		//const
-		double P_deceleration;	//P接近減速定数
-		double B_deceleration;	//B動作減速定数
-		double E_deceleration;	//EB動作減速定数
+		const double P_deceleration;	//P接近減速定数
+		const double B_deceleration;	//B動作減速定数
+		const double E_deceleration;	//EB動作減速定数
 		//status
 		bool status = true;	//使用可否
 		//variable about pattern
@@ -74,6 +72,8 @@ private:
 	};
 
 public:
+	R_ATC();
+	~R_ATC();
 	void Load();	//consractor
 	void On();	//consractor
 	void Off();	//consractor
@@ -83,8 +83,9 @@ public:
 	Hand Elapse(State, int*, int*);	//毎フレーム処理
 
 private:
-	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
-	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
+	std::array<Pattern, static_cast<size_t>(pattern_name::number)> patterns;	//照査速度パターン制御
+	std::array<Limit, static_cast<size_t>(limit_name::number)> limits;	//過走限界計算
+	
 
 	int status;	//ATCstatus
 	double StopLimit;	//停止限界残距離
@@ -92,6 +93,7 @@ private:
 	int maxSpeed;	//路線最高速度
 
 	//先行列車
+	std::vector<std::pair<int, int>> PreTrain;
 	std::vector<int> PreTrain_Time;	//時刻
 	std::vector<int> PreTrain_Distance;	//距離
 
@@ -105,6 +107,40 @@ private:
 };
 
 
-R_ATC *rAtc;
 
-#endif // !_RATC_
+
+
+/*---------------------------------------------------------------------*/
+
+
+
+
+
+class  R_ATC {
+private:
+	double P_deceleration;	// P接近減速定数
+	double B_deceleration;	// B動作減速定数
+	double E_deceleration;	// EB動作減速定数
+
+	int status;	// 有効/無効
+	int maxSpeed;	// 路線最高速度
+	
+	std::vector<std::pair<int, int>> PreTrain;	// 先行列車
+	std::vector<std::pair<int, double>> SpeedLimit;	// 速度制限
+	std::vector<std::pair<int, double>> Stop2Step;	// 2段パターン
+	std::vector<int> Crossings;	// 踏切
+	std::vector<int> PlatformStart;	// ホーム区始端
+	std::vector<int> PlatformEnd;	// ホーム区終端
+
+	enum class stat : uint8_t;	// 状態表示
+
+public:
+	R_ATC();
+	R_ATC(double p, double b, double e, int max = 120);
+	~R_ATC();
+	void Interpolation();	// 先行列車位置線形回帰
+	Hand Elapse(State t, int* p, int* s);	// 毎フレーム処理
+	void SetBeaconData(Beacon b);	// beacon
+};
+
+R_ATC *rAtc;

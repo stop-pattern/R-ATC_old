@@ -12,29 +12,34 @@ extern int signal;
 extern int ATCstatus;
 
 /* ===== member ===== */
-class R_ATC {
-	Pattern* patterns[static_cast<int>(pattern_name::number)];	//照査速度パターン制御
-	Limit* limits[static_cast<int>(limit_name::number)];	//過走限界計算
+R_ATC::Pattern* R_ATC::patterns[static_cast<int>(R_ATC::pattern_name::number)];	//照査速度パターン制御
+R_ATC::Limit* R_ATC::limits[static_cast<int>(R_ATC::limit_name::number)];	//過走限界計算
 
-	int status;	//ATCstatus
-	double StopLimit = 0;	//停止限界残距離
-	double pattern_speed[2];	//P接近速度
-	extern int maxSpeed = 120;	//路線最高速度
+int status;	//ATCstatus
+double StopLimit = 0;	//停止限界残距離
+double pattern_speed[2];	//P接近速度
+extern int maxSpeed = 120;	//路線最高速度
 
-	//先行列車
-	std::vector<int> PreTrain_Time{ 0 };	//時刻
-	std::vector<int> PreTrain_Distance{ 0 };	//距離
-	std::vector<std::vector<int>> PreTrain{ 0 };
+//先行列車
+std::vector<int> PreTrain_Time{ 0 };	//時刻
+std::vector<int> PreTrain_Distance{ 0 };	//距離
+std::vector<std::pair<int, int>> PreTrain{};	//先行
 
-	//路線情報
-	std::vector<RouteLimit> SpeedLimit;	//速度制限
-	std::vector<double> Stop2Step;	//2段パターン
-	std::vector<int> Crossings;	//踏切
-	std::vector<int> PlatformStart;	//ホーム区始端
-	std::vector<int> PlatformEnd;	//ホーム区終端
-}
+//路線情報
+std::vector<RouteLimit> SpeedLimit;	//速度制限
+std::vector<double> Stop2Step;	//2段パターン
+std::vector<int> Crossings;	//踏切
+std::vector<int> PlatformStart;	//ホーム区始端
+std::vector<int> PlatformEnd;	//ホーム区終端
+
 
 /* ===== R_ATC ===== */
+R_ATC::R_ATC() {
+
+}
+R_ATC::~R_ATC() {
+
+}
 
 void R_ATC::Load() {
 	for (size_t i = 0; i < static_cast<int>(pattern_name::number); i++) {
@@ -50,7 +55,7 @@ void R_ATC::On() {
 }
 
 void R_ATC::Off() {
-
+	status = static_cast<int>(stat::off);
 }
 
 
@@ -164,6 +169,9 @@ Hand R_ATC::Elapse(State, int*, int*)
 
 
 void R_ATC::Interpolation() {
+	if (this->PreTrain.size() > 2) {
+
+	}
 	if (PreTrain_Time.size() > 2 && PreTrain_Distance.size() > 2) {
 		int pram[2][2];	//index
 		for (size_t i = 0; i < PreTrain_Time.size(); i++) {
@@ -405,4 +413,54 @@ bool R_ATC::Limit::isCalc(bool arg) {
 }
 
 
-R_ATC rAtc = R_ATC();
+
+
+
+
+
+
+/*---------------------------------------------------------------------*/
+
+
+
+
+enum class R_ATC::stat : uint8_t {
+	off = 0,
+	on = 1,
+	backup = 2,
+};
+
+R_ATC::R_ATC() {
+	this->P_deceleration = 0;
+	this->B_deceleration = 0;
+	this->E_deceleration = 0;
+	this->maxSpeed = 120;
+	this->status = 0;
+}
+R_ATC::R_ATC(double p, double b, double e, int max) {
+	this->P_deceleration = p;	// iniData.getData("R-ATC", "P", );
+	this->B_deceleration = b;	// iniData.getData("R-ATC", "B", );
+	this->E_deceleration = e;	// iniData.getData("R-ATC", "E", );
+	this->maxSpeed = max;	// iniData.getData("R-ATC", "Speed", 120);
+	this->status = 0;
+}
+
+R_ATC::~R_ATC() {
+
+}
+
+void R_ATC::Interpolation() {
+}
+
+Hand R_ATC::Elapse(State t, int* p, int* s) {
+
+}
+
+void R_ATC::SetBeaconData(Beacon b) {
+	switch (b.Num) {
+	default:
+		return;
+	}
+}
+
+R_ATC* rAtc = new R_ATC();

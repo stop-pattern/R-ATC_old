@@ -37,7 +37,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 }
 
 DE void SC Load() {
-	rAtc = R_ATC();
+	rAtc = new R_ATC(double p, double b, double e);
 	rAtc->Load();
 }
 DE void SC Dispose() {
