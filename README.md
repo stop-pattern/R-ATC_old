@@ -11,3 +11,11 @@ TetsuOtter氏の[BVE_ATSPITemp](https://github.com/TetsuOtter/BVE_ATSPITemp)を�
 
 ## LICENSE
 ライセンスは[WTFPL](http://www.wtfpl.net/about/)です
+
+## おことわり
+過去のコード読むのが辛くなってきたのと実装が闇で嫌になったので新しく作りなおすことにしました
+このrepoのコードはすべてWTFPLに基づいてCC0やPDのものと同様に扱っていただいて構いません
+(CC0とPDを一緒にすると怒られると思いますがその辺は適当に意訳してください)
+役立つものなんかないとは思いますが使いたければご自由にどうぞ
+勿論一切サポートはありませんし責任も負いません
+last update : 20200526@stop-pattern
